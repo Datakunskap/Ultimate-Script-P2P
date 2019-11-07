@@ -1,6 +1,5 @@
 package script.tasks.training.prayer;
 
-import org.pushingpixels.substance.internal.colorscheme.InvertedColorScheme;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -23,9 +22,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.priest_in_peril.data.Locations;
 import script.quests.priest_in_peril.data.Quest;
-import script.wrappers.MovementBreakerWrapper;
 import script.wrappers.SleepWrapper;
 
 import java.util.function.Predicate;
@@ -33,11 +30,13 @@ import java.util.function.Predicate;
 
 public class TrainTo50 extends Task {
 
-    public static final String DRAGON_BONES = "Dragon bones";
+    public static final String WINE_OF_ZAMORAK = "Wine of zamokrak";
+    public static final String TAKE_ACTION = "Take";
 
     Predicate<Item> dragonBones = x -> x.getName().contains("Dragon bones");
     Predicate<Item> glory = x -> x.getName().contains("Amulet of glory(");
     Predicate<Item> burningAmulet = x -> x.getName().contains("Burning amulet(");
+    Predicate[] neededItems = {dragonBones, glory, burningAmulet};
 
     public static final Position TEMPLE_POSITION = new Position(2950, 3820, 0);
     public static final Area WILDERNESS_TELEPORT_AREA = Area.rectangular(3008, 3849, 3046, 3815);
@@ -57,31 +56,9 @@ public class TrainTo50 extends Task {
 
         Player local = Players.getLocal();
 
-        Player pker = Players.getNearest();
+        hopFromPker();
 
-        if (pker != null) {
-            if (pker.getCombatLevel() <= 75) {
-                Log.info("There is another player nearby in our combat range");
-            }
-            if (pker.getCombatLevel() > 75) {
-                Log.info("There is another player nearby out our combat range");
-            }
-        }
-
-        if (pker == null) {
-            Log.info("There is no other player nearby");
-        }
-
-        if (BankLocation.LUMBRIDGE_CASTLE.getPosition().distance() < 50) {
-            if (WorldHopper.randomHopInP2p()) {
-                Time.sleepUntil(() -> Game.isLoggedIn(), SleepWrapper.longSleep7500());
-                if (Movement.walkTo(BankLocation.EDGEVILLE.getPosition())) {
-                    Time.sleepUntil(() -> BankLocation.EDGEVILLE.getPosition().distance() < 15, 5000);
-                }
-            }
-        }
-
-        if (TEMPLE_POSITION.distance() > 10) {
+        if (!atTemple()) {
             if (!Inventory.contains(dragonBones)
                     || !Inventory.contains(glory)
                     || !Inventory.contains(burningAmulet)) {
@@ -181,17 +158,61 @@ public class TrainTo50 extends Task {
             }
         }
 
-        if (TEMPLE_POSITION.distance() <= 10
-                && Inventory.contains(glory)
-                && !Inventory.contains(dragonBones)) {
-            Pickable wine = Pickables.getNearest("Wine of zamorak");
-            if (Health.getCurrent() != 0) {
-                wine.interact("Take");
-                Time.sleep(300, 500);
+        if (atTemple()
+                && hasItem(glory)
+                && !hasItem(dragonBones)) {
+            Pickable wine = Pickables.getNearest(WINE_OF_ZAMORAK);
+            if (!hasDied()) {
+                int healthBefore = getCurrentHealth();
+                if (wine.interact(TAKE_ACTION)) {
+                    Time.sleepUntil(() -> healthBefore != getCurrentHealth(), SleepWrapper.mediumSleep1500());
+                }
             }
         }
 
 
         return SleepWrapper.shortSleep350();
+    }
+
+    boolean atTemple() {
+        return TEMPLE_POSITION.distance() <= 10;
+    }
+
+    boolean hasItem(Predicate item) {
+        return Inventory.contains(item);
+    }
+
+    boolean hasDied() {
+        return Health.getCurrent() == 0;
+    }
+
+    int getCurrentHealth() {
+        return Health.getCurrent();
+    }
+
+    public void hopFromPker() {
+        Player local = Players.getLocal();
+        Player[] nearbyEnemies = Players.getLoaded();
+        if (nearbyEnemies.length > 1) {
+            Log.info("There is another player around");
+            for (Player p : nearbyEnemies) {
+                if (!p.getName().equals(local.getName())) {
+                    if (p.getCombatLevel() <= local.getCombatLevel() + 41) {
+                        Log.info("Hopping to a random p2p world");
+                        if (WorldHopper.randomHopInP2p()) {
+                            Time.sleepUntil(() -> !Game.isLoggedIn(), 5000);
+                            Time.sleepUntil(() -> Game.isLoggedIn(), 5000);
+                        }
+                    }
+                    if (p.getCombatLevel() > local.getCombatLevel() + 41) {
+                        Log.info("The other players combat is too high to attack me");
+                    }
+                }
+            }
+        }
+
+        if (nearbyEnemies.length <= 1) {
+            Log.info("There is no other player around");
+        }
     }
 }
