@@ -46,7 +46,7 @@ public class GEWrapper {
     }
 
     public static boolean hasSupplies(String[] supplies) {
-        if (Game.isLoggedIn() || Players.getLocal() == null)
+        if (!Game.isLoggedIn() || Players.getLocal() == null)
             return true;
 
         if (!Inventory.containsAll(supplies)) {
