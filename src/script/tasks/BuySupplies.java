@@ -99,13 +99,13 @@ public class BuySupplies extends Task {
         coinsToSpend = Inventory.getCount(true, "Coins");
 
         // check GP
-        if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && stillNeedsItem(itemToBuy)) {
+        /*if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && stillNeedsItem(itemToBuy)) {
             if (coinsToSpend < (getPrice(itemToBuy) * getQuantity(itemToBuy))) {
                 Log.severe("NOT ENOUGH GP  |  " + itemToBuy + " : " + (getPrice(itemToBuy) * getQuantity(itemToBuy)));
                 itemsIterator = null;
                 return SleepWrapper.shortSleep350();
             }
-        }
+        }*/
 
         if (!GrandExchange.isOpen()) {
             Bank.close();
