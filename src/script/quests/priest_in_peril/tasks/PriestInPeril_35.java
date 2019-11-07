@@ -14,6 +14,7 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
+import script.wrappers.MovementBreakerWrapper;
 
 import static script.quests.waterfall_quest.data.Quest.PRIEST_IN_PERIL;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -72,8 +73,8 @@ public class PriestInPeril_35 extends Task {
                         if(Bank.withdraw("Varrock teleport", 1)){
                             Time.sleepUntil(()-> Inventory.contains("Varrock teleport"), 5000);
                         }
-                        if(Bank.withdraw("Stamina potion", 1)){
-                            Time.sleepUntil(()-> Inventory.contains("Stamina potion"), 5000);
+                        if(Bank.withdraw("Stamina potion(4)", 1)){
+                            Time.sleepUntil(()-> Inventory.contains("Stamina potion(4)"), 5000);
                         }
                         if(Bank.withdraw("Rune essence", 25)){
                             Time.sleepUntil(()-> Inventory.contains("Rune essence"), 5000);
@@ -85,7 +86,7 @@ public class PriestInPeril_35 extends Task {
 
         if(Inventory.contains("Rune essence")){
             if(DREZEL_POSITION.distance() > 10){
-                Movement.walkToRandomized(DREZEL_POSITION);
+                Movement.walkTo(DREZEL_POSITION, MovementBreakerWrapper::shouldBreakOnRunenergy);
             }
             if(DREZEL_POSITION.distance() <= 10){
                 Npc drezel = Npcs.getNearest("Drezel");

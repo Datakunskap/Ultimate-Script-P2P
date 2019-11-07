@@ -13,6 +13,7 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.wrappers.MovementBreakerWrapper;
 
 import static script.quests.waterfall_quest.data.Quest.PRIEST_IN_PERIL;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -54,7 +55,7 @@ public class PriestInPeril_1 extends Task {
         }
 
         if (TEMPLE_DOOR.distance() > 10) {
-            Movement.walkToRandomized(TEMPLE_DOOR);
+            Movement.walkTo(TEMPLE_DOOR, MovementBreakerWrapper::shouldBreakOnRunenergy);
         }
 
         if (TEMPLE_DOOR.distance() <= 10) {

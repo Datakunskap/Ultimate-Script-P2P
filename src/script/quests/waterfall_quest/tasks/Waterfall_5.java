@@ -18,6 +18,8 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.wrappers.MovementBreakerWrapper;
+import script.wrappers.SleepWrapper;
 
 import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_OBJECT;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -42,7 +44,7 @@ public class Waterfall_5 extends Task {
     @Override
     public int execute() {
 
-        if (Skills.getCurrentLevel(Skill.HITPOINTS) <= Skills.getLevel(Skill.HITPOINTS) - 3) {
+        if (Skills.getCurrentLevel(Skill.HITPOINTS) <= Skills.getLevel(Skill.HITPOINTS) - 8) {
             if (Inventory.contains("Tuna")) {
                 Inventory.getFirst("Tuna").click();
                 RandomSleep();
@@ -51,7 +53,7 @@ public class Waterfall_5 extends Task {
         if (!Inventory.contains(298)) {
 
             if (!KeyArea.contains(Players.getLocal())) {
-                Movement.walkTo(KeyArea.getCenter());
+                Movement.walkTo(KeyArea.getCenter(), MovementBreakerWrapper::shouldBreakOnTarget);
                 RandomSleep();
                 RandomSleep();
 
@@ -69,7 +71,7 @@ public class Waterfall_5 extends Task {
         if (Inventory.contains(298)) {
             if (Players.getLocal().getY() < 9893) {
                 if(Door.distance() > 4) {
-                    Movement.walkTo(Door);
+                    Movement.walkTo(Door, MovementBreakerWrapper::shouldBreakOnTarget);
                     RandomSleep();
                     RandomSleep();
                 }

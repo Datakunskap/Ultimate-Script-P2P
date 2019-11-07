@@ -83,9 +83,10 @@ public class Waterfall_Preparation extends Task {
         }
 
         if (!readyToStartWaterfall) {
-            if (Equipment.contains(GEAR)
+            if (Equipment.contains(glory)
+                    && Equipment.contains(STAFF_OF_AIR)
                     && Inventory.getCount(false, GAMES_NECKLACE) == 1
-                    && Inventory.getCount(false, TUNA) == 7) {
+                    && Inventory.getCount(false, TUNA) >= 4) {
                 Log.info("Setting readyToStartWitchesHouse to true");
                 readyToStartWaterfall = true;
             }

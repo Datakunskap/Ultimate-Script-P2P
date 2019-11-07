@@ -38,8 +38,8 @@ public class Waterfall_3 extends Task {
     @Override
     public int execute() {
         if(Skills.getCurrentLevel(Skill.HITPOINTS) <= Skills.getLevel(Skill.HITPOINTS) - 8){
-            if(Inventory.contains("Lobster")){
-                Inventory.getFirst("Lobster").click();
+            if(Inventory.contains("Tuna")){
+                Inventory.getFirst("Tuna").click();
                 RandomSleep();
             }
         }

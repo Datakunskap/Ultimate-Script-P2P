@@ -1,4 +1,4 @@
-package script.tasks;
+package script.tasks.training.magic;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
@@ -19,7 +19,7 @@ import script.wrappers.SleepWrapper;
 
 import java.util.function.Predicate;
 
-public class TrainTo13Magic extends Task {
+public class TrainTo13 extends Task {
 
     boolean hasItems = false;
     boolean wearingGear = false;
@@ -120,7 +120,7 @@ public class TrainTo13Magic extends Task {
                     withdrawItem("Water rune", 200,true);
                     withdrawItem("Earth rune", 200,true );
                     withdrawItem("Lumbridge teleport", 5, true);
-                    withdrawItem("Tuna", 10,false);
+                    withdrawItem("Tuna", 15,false);
                 }
             }
         }
@@ -134,7 +134,7 @@ public class TrainTo13Magic extends Task {
                     if (Bank.depositAll(362)) {
                         if (Time.sleepUntil(() -> Bank.contains(361), 5000)) {
                             if (Bank.withdrawAll(361)) {
-                                Time.sleepUntil(() -> Inventory.getCount(false, TUNA) >= 10, 5000);
+                                Time.sleepUntil(() -> Inventory.getCount(false, TUNA) >= 15, 5000);
                             }
                         }
                     }
