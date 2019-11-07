@@ -1,6 +1,7 @@
 package script.tasks;
 
 import org.rspeer.script.task.Task;
+import script.wrappers.SleepWrapper;
 
 public class BuyItemsNeeded extends Task {
     @Override
@@ -10,6 +11,6 @@ public class BuyItemsNeeded extends Task {
 
     @Override
     public int execute() {
-        return 0;
+        return SleepWrapper.shortSleep350();
     }
 }

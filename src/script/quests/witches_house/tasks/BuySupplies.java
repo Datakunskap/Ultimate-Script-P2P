@@ -4,6 +4,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.wrappers.SleepWrapper;
 
 public class BuySupplies extends Task {
     @Override
@@ -13,7 +14,6 @@ public class BuySupplies extends Task {
 
     @Override
     public int execute() {
-        Log.info("Here I am");
-        return Random.mid(300,450);
+        return SleepWrapper.shortSleep350();
     }
 }
