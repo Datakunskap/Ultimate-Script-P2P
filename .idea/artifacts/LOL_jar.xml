@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="LOL:jar">
+    <output-path>$USER_HOME$/Documents/RSPeer/scripts</output-path>
+    <root id="archive" name="LOL.jar">
+      <element id="module-output" name="LOL" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/RSPeer/cache/rspeer.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
