@@ -71,8 +71,10 @@ public class BuySupplies extends Task {
             return true;
         }
 
+        if (Game.isLoggedIn() && Players.getLocal() != null) {
+            GEWrapper.setBuySupplies(false);
+        }
         Log.fine("Done Restocking");
-        GEWrapper.setBuySupplies(false);
         return false;
     }
 
