@@ -43,7 +43,9 @@ public class BuyItemsNeeded extends Task {
             "Bucket",
             "Rune essence",
             "Varrock teleport",
-            "Silver sickle"
+            "Silver sickle",
+            "Dragon bones",
+            "Burning amulet"
     };
 
 

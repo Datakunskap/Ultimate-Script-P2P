@@ -46,7 +46,9 @@ public class BuySupplies extends Task {
             "Bucket",
             "Rune essence",
             "Varrock teleport",
-            "Silver sickle"
+            "Silver sickle",
+            "Dragon bones",
+            "Burning amulet(5)"
     };
 
     private Iterator<String> itemsIterator;
@@ -167,7 +169,7 @@ public class BuySupplies extends Task {
         if (item.equalsIgnoreCase("Staff of fire"))
             return 1;
         if (item.equalsIgnoreCase("Amulet of glory(6)"))
-            return 2;
+            return 5;
         if (item.equalsIgnoreCase("Ring of wealth (5)"))
             return 2;
         if (item.equalsIgnoreCase("Mind rune"))
@@ -206,6 +208,10 @@ public class BuySupplies extends Task {
             return 5;
         if (item.equalsIgnoreCase("Silver sickle"))
             return 1;
+        if (item.equalsIgnoreCase("Dragon bones"))
+            return 300;
+        if (item.equalsIgnoreCase("Burning amulet"))
+            return 5;
         return 1;
     }
 

@@ -5,6 +5,7 @@ import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
@@ -22,6 +23,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.priest_in_peril.data.Locations;
 import script.quests.priest_in_peril.data.Quest;
 import script.wrappers.MovementBreakerWrapper;
 import script.wrappers.SleepWrapper;
@@ -54,6 +56,31 @@ public class TrainTo50 extends Task {
         Log.info("Prayer training");
 
         Player local = Players.getLocal();
+
+        Player pker = Players.getNearest();
+
+        if (pker != null) {
+            if (pker.getCombatLevel() <= 75) {
+                Log.info("There is another player nearby in our combat range");
+            }
+            if (pker.getCombatLevel() > 75) {
+                Log.info("There is another player nearby out our combat range");
+            }
+        }
+
+        if (pker == null) {
+            Log.info("There is no other player nearby");
+        }
+
+        if (BankLocation.LUMBRIDGE_CASTLE.getPosition().distance() < 50) {
+            if (WorldHopper.randomHopInP2p()) {
+                Time.sleepUntil(() -> Game.isLoggedIn(), SleepWrapper.longSleep7500());
+                if (Movement.walkTo(BankLocation.EDGEVILLE.getPosition())) {
+                    Time.sleepUntil(() -> BankLocation.EDGEVILLE.getPosition().distance() < 15, 5000);
+                }
+            }
+        }
+
         if (TEMPLE_POSITION.distance() > 10) {
             if (!Inventory.contains(dragonBones)
                     || !Inventory.contains(glory)
@@ -69,9 +96,9 @@ public class TrainTo50 extends Task {
                         }
                     }
                     if (Bank.isOpen()) {
-                        if(Inventory.contains("Amulet of glory")){
-                            if(Bank.depositAll("Amulet of glory")){
-                                Time.sleepUntil(()-> !Inventory.contains("Amulet of glory"), SleepWrapper.longSleep7500());
+                        if (Inventory.contains("Amulet of glory")) {
+                            if (Bank.depositAll("Amulet of glory")) {
+                                Time.sleepUntil(() -> !Inventory.contains("Amulet of glory"), SleepWrapper.longSleep7500());
                             }
                         }
                         if (!Inventory.contains(glory)) {
@@ -126,6 +153,7 @@ public class TrainTo50 extends Task {
         if (Inventory.contains(dragonBones)
                 && Inventory.contains(glory)
                 && WILDERNESS_AREA.contains(local)) {
+
             if (WILDERNESS_TELEPORT_AREA.contains(local)) {
                 Movement.walkToRandomized(new Position(2983, 3819, 0));
             }
