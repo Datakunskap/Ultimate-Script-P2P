@@ -7,6 +7,7 @@ import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.WorldHopper;
@@ -30,7 +31,7 @@ import java.util.function.Predicate;
 
 public class TrainTo50 extends Task {
 
-    public static final String WINE_OF_ZAMORAK = "Wine of zamokrak";
+    public static final String WINE_OF_ZAMORAK = "Wine of zamorak";
     public static final String TAKE_ACTION = "Take";
 
     Predicate<Item> dragonBones = x -> x.getName().contains("Dragon bones");
@@ -56,7 +57,11 @@ public class TrainTo50 extends Task {
 
         Player local = Players.getLocal();
 
-        hopFromPker();
+        if (WILDERNESS_AREA.contains(local)) {
+            hopFromPker();
+        }
+
+        toggleRun();
 
         if (!atTemple()) {
             if (!Inventory.contains(dragonBones)
@@ -144,12 +149,14 @@ public class TrainTo50 extends Task {
                     if (altar != null) {
                         if (bones != null) {
                             if (Dialog.canContinue()) {
-                                Dialog.processContinue();
+                                Log.info("Continuing dialog");
+                                if (Dialog.processContinue()) {
+                                    Time.sleepUntil(() -> Dialog.isProcessing(), SleepWrapper.mediumSleep1500());
+                                }
                             }
-                            Log.info("1");
                             int countBefore = Skills.getExperience(Skill.PRAYER);
+                            Log.info("Using dragons on altar");
                             if (Inventory.use(x -> x.getName().equals("Dragon bones"), altar)) {
-                                Log.info("2");
                                 Time.sleepUntil(() -> countBefore != Skills.getExperience(Skill.PRAYER), SleepWrapper.mediumSleep1500());
                             }
                         }
@@ -158,18 +165,16 @@ public class TrainTo50 extends Task {
             }
         }
 
-        if (atTemple()
-                && hasItem(glory)
-                && !hasItem(dragonBones)) {
-            Pickable wine = Pickables.getNearest(WINE_OF_ZAMORAK);
+        if (atTemple() && !hasItem(dragonBones)) {
             if (!hasDied()) {
+                Pickable wine = Pickables.getNearest(WINE_OF_ZAMORAK);
                 int healthBefore = getCurrentHealth();
+                Log.info("Taking the wine to lose hp");
                 if (wine.interact(TAKE_ACTION)) {
                     Time.sleepUntil(() -> healthBefore != getCurrentHealth(), SleepWrapper.mediumSleep1500());
                 }
             }
         }
-
 
         return SleepWrapper.shortSleep350();
     }
@@ -215,4 +220,15 @@ public class TrainTo50 extends Task {
             Log.info("There is no other player around");
         }
     }
+
+    public void toggleRun(){
+        if(!Movement.isRunEnabled()){
+            if(Movement.getRunEnergy() > Random.mid(5,20)){
+                if(Movement.toggleRun(true)){
+                    Time.sleepUntil(()-> Movement.isRunEnabled(), SleepWrapper.mediumSleep1500());
+                }
+            }
+        }
+    }
+
 }
