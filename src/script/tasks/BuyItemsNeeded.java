@@ -31,9 +31,6 @@ public class BuyItemsNeeded extends Task {
     @Override
     public int execute() {
 
-        //TODO: ?
-        Player local = Players.getLocal();
-
         if (Dialog.canContinue()) {
             Log.info("I am continuing the dialog");
             Dialog.processContinue();
