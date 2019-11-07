@@ -15,6 +15,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.data.IDs;
 import script.data.Strings;
+import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 
 public class BuyItemsNeeded extends Task {
@@ -30,6 +31,7 @@ public class BuyItemsNeeded extends Task {
     @Override
     public int execute() {
 
+        //TODO: ?
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
@@ -49,7 +51,7 @@ public class BuyItemsNeeded extends Task {
                 Item staminaPotion = Inventory.getFirst(x -> x.getName().contains(Strings.STAMINA_POTION));
                 Log.info("I am drinking a stamina potion");
                 if (staminaPotion.interact(Strings.DRINK_ACTION)) {
-                    Time.sleepUntil(() -> Movement.isStaminaEnhancementActive(), SleepWrapper.mediumSleep1500());
+                    Time.sleepUntil(Movement::isStaminaEnhancementActive, SleepWrapper.mediumSleep1500());
                 }
             }
         }
@@ -57,7 +59,7 @@ public class BuyItemsNeeded extends Task {
         if(Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)){
             if(!Bank.isOpen()){
                 if(Bank.open()){
-                    Time.sleepUntil(()-> Bank.isOpen(), SleepWrapper.longSleep7500());
+                    Time.sleepUntil(Bank::isOpen, SleepWrapper.longSleep7500());
                 }
             }
             if(Bank.isOpen()){
@@ -68,7 +70,8 @@ public class BuyItemsNeeded extends Task {
         }
 
         if(Inventory.containsOnly(Strings.COINS)){
-            //buy items
+            // buys
+            GEWrapper.setBuySupplies(true);
         }
 
         return SleepWrapper.shortSleep350();

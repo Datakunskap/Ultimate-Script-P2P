@@ -35,6 +35,15 @@ public class GEWrapper {
     private static final int TIMEOUT = 6000;
     private static final String EXCHANGE_ACTION = "Exchange";
     private static final String GE_NPC_NAME = "Grand Exchange Clerk";
+    private static boolean buySupplies;
+
+    public static void setBuySupplies(boolean buySupplies) {
+        GEWrapper.buySupplies = buySupplies;
+    }
+
+    public static boolean isBuySupplies() {
+        return buySupplies;
+    }
 
     public static boolean hasSupplies(String[] supplies) {
         if (Game.isLoggedIn() || Players.getLocal() == null)

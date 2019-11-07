@@ -20,7 +20,8 @@ public class Main extends TaskScript {
     @Override
     public void onStart() {
 
-        submit(new GetStartersGold(),
+        submit( new BuyItemsNeeded(),
+                new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13Magic()
         );
