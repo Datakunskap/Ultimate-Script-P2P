@@ -206,7 +206,7 @@ public class BuySupplies extends Task {
     }
 
     private int getPrice(String item) {
-        return coinsToSpend / items.size();
+        return coinsToSpend / items.size() / getQuantity(item);
     }
 
 }
