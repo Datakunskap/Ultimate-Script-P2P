@@ -32,6 +32,7 @@ public class BuySupplies extends Task {
             "Air rune",
             "Mind rune",
             "Water rune",
+            "Fire rune",
             "Earth rune",
             "Tuna",
             "Stamina potion(4)",
@@ -74,9 +75,6 @@ public class BuySupplies extends Task {
         if (Game.isLoggedIn() && Players.getLocal() != null) {
             GEWrapper.setBuySupplies(false);
         }
-
-        Log.fine("Done Restocking");
-        GEWrapper.closeGE();
         return false;
     }
 
@@ -180,6 +178,8 @@ public class BuySupplies extends Task {
             return 200;
         if (item.equalsIgnoreCase("Earth rune"))
             return 200;
+        if (item.equalsIgnoreCase("Fire rune"))
+            return 300;
         if (item.equalsIgnoreCase("Tuna"))
             return 100;
         if (item.equalsIgnoreCase("Stamina potion(4)"))

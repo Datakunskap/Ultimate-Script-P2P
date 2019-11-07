@@ -32,7 +32,7 @@ public class BuyItemsNeeded extends Task {
             "Water rune",
             "Earth rune",
             "Tuna",
-            "Stamina potion",
+            "Stamina potion(4)",
             "Cheese",
             "Leather gloves",
             "Falador teleport",
@@ -59,6 +59,8 @@ public class BuyItemsNeeded extends Task {
     @Override
     public int execute() {
 
+        Log.info("1");
+
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
@@ -80,13 +82,6 @@ public class BuyItemsNeeded extends Task {
                 if (staminaPotion.interact(Strings.DRINK_ACTION)) {
                     Time.sleepUntil(Movement::isStaminaEnhancementActive, SleepWrapper.mediumSleep1500());
                 }
-            }
-        }
-
-        if(!boughtItems){
-            if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
-                Log.info("Setting boughtItem to true");
-                boughtItems = true;
             }
         }
 

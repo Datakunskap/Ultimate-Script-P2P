@@ -21,8 +21,9 @@ import java.util.function.Predicate;
 
 public class TrainTo13Magic extends Task {
 
-    boolean hasItems = true;
-    boolean wearingGear = true;
+    boolean hasItems = false;
+    boolean wearingGear = false;
+    boolean boughtItems = false;
 
     private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
             "Lumbridge teleport",
@@ -35,7 +36,7 @@ public class TrainTo13Magic extends Task {
             "Water rune",
             "Earth rune",
             "Tuna",
-            "Stamina potion",
+            "Stamina potion(4)",
             "Cheese",
             "Leather gloves",
             "Falador teleport",
@@ -57,9 +58,16 @@ public class TrainTo13Magic extends Task {
 
     public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Staff of air", "Amulet of glory(6)", "Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Tuna"};
 
+
     @Override
     public boolean validate() {
-        return BuyItemsNeeded.boughtItems && Skills.getLevel(Skill.MAGIC) < 13;
+        if(!boughtItems){
+            if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
+                Log.info("Setting boughtItem to true");
+                boughtItems = true;
+            }
+        }
+        return boughtItems && Skills.getLevel(Skill.MAGIC) < 13;
     }
 
     @Override
@@ -76,16 +84,6 @@ public class TrainTo13Magic extends Task {
             if (Movement.getRunEnergy() > Random.mid(5, 30)) {
                 Log.info("I am toggling run");
                 Movement.toggleRun(true);
-            }
-        }
-
-        if (Inventory.contains(x -> x.getName().contains(Strings.STAMINA_POTION))) {
-            if (!Movement.isStaminaEnhancementActive()) {
-                Item staminaPotion = Inventory.getFirst(x -> x.getName().contains(Strings.STAMINA_POTION));
-                Log.info("I am drinking a stamina potion");
-                if (staminaPotion.interact(Strings.DRINK_ACTION)) {
-                    Time.sleepUntil(() -> Movement.isStaminaEnhancementActive(), SleepWrapper.mediumSleep1500());
-                }
             }
         }
 
@@ -106,23 +104,23 @@ public class TrainTo13Magic extends Task {
         if (Inventory.containsAnyExcept(ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING)) {
             if (!Bank.isOpen()) {
                 if (Bank.open()) {
-                    Time.sleepUntil(() -> Bank.isOpen(), SleepWrapper.longSleep7500());
+                    Time.sleepUntil(Bank::isOpen, SleepWrapper.longSleep7500());
                 }
             }
             if (Bank.isOpen()) {
                 if (Bank.depositInventory()) {
-                    Time.sleepUntil(() -> Inventory.isEmpty(), SleepWrapper.longSleep7500());
+                    Time.sleepUntil(Inventory::isEmpty, SleepWrapper.longSleep7500());
                 }
                 if (Inventory.isEmpty()) {
-                    withdrawItem("Staff of air", 1);
-                    withdrawItem("Amulet of glory(6)", 1);
-                    withdrawItem("Ring of wealth (5)", 1);
-                    withdrawItem("Stamina potion (4)", 1);
-                    withdrawItem("Mind rune", 1000);
-                    withdrawItem("Water rune", 200);
-                    withdrawItem("Earth rune", 200);
-                    withdrawItem("Lumbridge teleport", 5);
-                    withdrawItem("Tuna", 100);
+                    withdrawItem("Staff of air", 1, false);
+                    withdrawItem("Amulet of glory(6)", 1, false);
+                    withdrawItem("Ring of wealth (5)", 1,false );
+                    withdrawItem("Stamina potion(4)", 1,false);
+                    withdrawItem("Mind rune", 1000, true);
+                    withdrawItem("Water rune", 200,true);
+                    withdrawItem("Earth rune", 200,true );
+                    withdrawItem("Lumbridge teleport", 5, true);
+                    withdrawItem("Tuna", 10,false);
                 }
             }
         }
@@ -174,11 +172,6 @@ public class TrainTo13Magic extends Task {
                             Magic.Autocast.select(Magic.Autocast.Mode.OFFENSIVE, Spell.Modern.EARTH_STRIKE);
                         }
                     }
-                    if (Skills.getLevel(Skill.MAGIC) >= 13) {
-                        if (Magic.Autocast.getSelectedSpell() != Spell.Modern.FIRE_STRIKE) {
-                            Magic.Autocast.select(Magic.Autocast.Mode.OFFENSIVE, Spell.Modern.FIRE_STRIKE);
-                        }
-                    }
                 }
                 if (Magic.Autocast.isEnabled()) {
                     if (Skills.getLevel(Skill.MAGIC) < 5) {
@@ -194,11 +187,6 @@ public class TrainTo13Magic extends Task {
                     if (Skills.getLevel(Skill.MAGIC) >= 9 && Skills.getLevel(Skill.MAGIC) < 13) {
                         if (Magic.Autocast.getSelectedSpell() != Spell.Modern.EARTH_STRIKE) {
                             Magic.Autocast.select(Magic.Autocast.Mode.OFFENSIVE, Spell.Modern.EARTH_STRIKE);
-                        }
-                    }
-                    if (Skills.getLevel(Skill.MAGIC) >= 13) {
-                        if (Magic.Autocast.getSelectedSpell() != Spell.Modern.FIRE_STRIKE) {
-                            Magic.Autocast.select(Magic.Autocast.Mode.OFFENSIVE, Spell.Modern.FIRE_STRIKE);
                         }
                     }
                     if (local.getTargetIndex() == -1) {
@@ -221,10 +209,10 @@ public class TrainTo13Magic extends Task {
         return SleepWrapper.shortSleep350();
     }
 
-    public void withdrawItem(String item, int amount) {
+    public void withdrawItem(String item, int amount, boolean stack) {
         if (Inventory.getCount(item) < amount) {
             if (Bank.withdraw(item, amount)) {
-                Time.sleepUntil(() -> Inventory.getCount(item) == amount, SleepWrapper.longSleep7500());
+                Time.sleepUntil(() -> Inventory.getCount(stack, item) == amount, SleepWrapper.longSleep7500());
             }
         }
     }
