@@ -38,7 +38,7 @@ public class BuySupplies extends Task {
             "Cheese",
             "Leather gloves",
             "Falador teleport",
-            "Games necklace (8)",
+            "Games necklace(8)",
             "Rope",
             "Adamant scimitar",
             "Ring of recoil",

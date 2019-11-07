@@ -19,7 +19,30 @@ import script.wrappers.SleepWrapper;
 
 public class TrainTo13Magic extends Task {
 
-    public static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = {};
+    private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
+            "Lumbridge teleport",
+            "Staff of air",
+            "Staff of fire",
+            "Amulet of glory(6)",
+            "Ring of wealth (5)",
+            "Air rune",
+            "Mind rune",
+            "Water rune",
+            "Earth rune",
+            "Tuna",
+            "Stamina potion",
+            "Cheese",
+            "Leather gloves",
+            "Falador teleport",
+            "Games necklace(8)",
+            "Rope",
+            "Adamant scimitar",
+            "Ring of recoil",
+            "Bucket",
+            "Rune essence",
+            "Varrock teleport",
+            "Silver sickle"
+    };
     public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Staff of air", "Staff of fire", "Glory", "Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Tuna"};
     public static final String[] POSSIBLE_NOTED_ITEMS = {"Amulet of glory(6)", "Ring of wealth (5)", "Tuna", "Stamina potion(4)"};
 

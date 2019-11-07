@@ -31,7 +31,6 @@ public class BuyItemsNeeded extends Task {
     @Override
     public int execute() {
 
-        //TODO: ?
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
@@ -70,7 +69,6 @@ public class BuyItemsNeeded extends Task {
         }
 
         if(Inventory.containsOnly(Strings.COINS)){
-            // buys
             GEWrapper.setBuySupplies(true);
         }
 
