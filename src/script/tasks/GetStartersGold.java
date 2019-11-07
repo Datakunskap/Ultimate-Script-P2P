@@ -18,7 +18,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.data.IDs;
 import script.data.Strings;
-import script.wrappers.MovementBreakerWrapper;
+import script.wrappers.WalkingWrapper;
 import script.wrappers.SleepWrapper;
 
 public class GetStartersGold extends Task {
@@ -74,7 +74,7 @@ public class GetStartersGold extends Task {
         if (Worlds.getCurrent() == MULE_WORLD) {
             if (MULE_POSITION.distance() > 15) {
                 Log.info("I am walking to the mule");
-                Movement.walkTo(MULE_POSITION, MovementBreakerWrapper::shouldBreakOnTarget);
+                Movement.walkTo(MULE_POSITION, WalkingWrapper::shouldBreakOnTarget);
             }
 
             if (MULE_POSITION.distance() <= 15) {

@@ -1,6 +1,5 @@
 package script.tasks.fungus.data;
 
-import javafx.geometry.Pos;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 

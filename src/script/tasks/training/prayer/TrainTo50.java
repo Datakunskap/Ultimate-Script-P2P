@@ -1,6 +1,5 @@
 package script.tasks.training.prayer;
 
-import org.pushingpixels.substance.internal.colorscheme.InvertedColorScheme;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -23,9 +22,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.priest_in_peril.data.Locations;
 import script.quests.priest_in_peril.data.Quest;
-import script.wrappers.MovementBreakerWrapper;
 import script.wrappers.SleepWrapper;
 
 import java.util.function.Predicate;

@@ -14,7 +14,7 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
-import script.wrappers.MovementBreakerWrapper;
+import script.wrappers.WalkingWrapper;
 
 import static script.quests.waterfall_quest.data.Quest.PRIEST_IN_PERIL;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -86,7 +86,7 @@ public class PriestInPeril_35 extends Task {
 
         if(Inventory.contains("Rune essence")){
             if(DREZEL_POSITION.distance() > 10){
-                Movement.walkTo(DREZEL_POSITION, MovementBreakerWrapper::shouldBreakOnRunenergy);
+                Movement.walkTo(DREZEL_POSITION, WalkingWrapper::shouldBreakOnRunenergy);
             }
             if(DREZEL_POSITION.distance() <= 10){
                 Npc drezel = Npcs.getNearest("Drezel");
