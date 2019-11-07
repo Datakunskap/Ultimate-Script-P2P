@@ -12,6 +12,7 @@ import script.quests.the_restless_ghost.TheRestlessGhost;
 import script.quests.waterfall_quest.WaterfallQuest;
 import script.quests.witches_house.WitchesHouse;
 import script.tasks.BuyItemsNeeded;
+import script.tasks.BuySupplies;
 import script.tasks.GetStartersGold;
 import script.tasks.TrainTo13Magic;
 
@@ -20,7 +21,7 @@ public class Main extends TaskScript {
     @Override
     public void onStart() {
 
-        submit( new BuyItemsNeeded(),
+        submit( new BuySupplies(),
                 new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13Magic()
