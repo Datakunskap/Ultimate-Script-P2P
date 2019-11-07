@@ -71,6 +71,7 @@ public class BuySupplies extends Task {
             return true;
         }
 
+        Log.fine("Done Restocking");
         GEWrapper.setBuySupplies(false);
         return false;
     }
