@@ -33,12 +33,4 @@ public class Main extends TaskScript {
         submit(NatureSpirit.TASKS);
 
     }
-
-    public static boolean shouldBreakWalkLoop() {
-        Npc attacker = Npcs.getNearest(a -> true);
-        return Movement.getRunEnergy() > 0 &&!Movement.isRunEnabled() && attacker != null
-                && attacker.getTarget() != null
-                && attacker.getTarget().equals(Players.getLocal());
-    }
-
 }
