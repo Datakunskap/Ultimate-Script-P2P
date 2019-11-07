@@ -1,9 +1,5 @@
 package script;
 
-import org.rspeer.runetek.adapter.scene.Npc;
-import org.rspeer.runetek.api.movement.Movement;
-import org.rspeer.runetek.api.scene.Npcs;
-import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.TaskScript;
 import script.quests.nature_spirit.NatureSpirit;
