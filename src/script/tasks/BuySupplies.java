@@ -34,7 +34,7 @@ public class BuySupplies extends Task {
             "Water rune",
             "Earth rune",
             "Tuna",
-            "Stamina potion",
+            "Stamina potion(4)",
             "Cheese",
             "Leather gloves",
             "Falador teleport",
@@ -179,7 +179,7 @@ public class BuySupplies extends Task {
             return 200;
         if (item.equalsIgnoreCase("Tuna"))
             return 100;
-        if (item.equalsIgnoreCase("Stamina potion"))
+        if (item.equalsIgnoreCase("Stamina potion(4)"))
             return 10;
         if (item.equalsIgnoreCase("Cheese"))
             return 2;
@@ -203,7 +203,6 @@ public class BuySupplies extends Task {
             return 5;
         if (item.equalsIgnoreCase("Silver sickle"))
             return 1;
-
         return 1;
     }
 
