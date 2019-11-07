@@ -18,6 +18,7 @@ import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.runetek.providers.RSItemDefinition;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class GEWrapper {
 
@@ -43,6 +44,10 @@ public class GEWrapper {
 
     public static boolean isBuySupplies() {
         return buySupplies;
+    }
+
+    public static boolean hasSupplies(HashMap<String, Integer> map) {
+        return hasSupplies(map.keySet().toArray(new String[0]));
     }
 
     public static boolean hasSupplies(String[] supplies) {

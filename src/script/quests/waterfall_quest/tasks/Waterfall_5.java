@@ -18,8 +18,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.wrappers.MovementBreakerWrapper;
-import script.wrappers.SleepWrapper;
+import script.wrappers.WalkingWrapper;
 
 import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_OBJECT;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -53,7 +52,7 @@ public class Waterfall_5 extends Task {
         if (!Inventory.contains(298)) {
 
             if (!KeyArea.contains(Players.getLocal())) {
-                Movement.walkTo(KeyArea.getCenter(), MovementBreakerWrapper::shouldBreakOnTarget);
+                Movement.walkTo(KeyArea.getCenter(), WalkingWrapper::shouldBreakOnTarget);
                 RandomSleep();
                 RandomSleep();
 
@@ -71,7 +70,7 @@ public class Waterfall_5 extends Task {
         if (Inventory.contains(298)) {
             if (Players.getLocal().getY() < 9893) {
                 if(Door.distance() > 4) {
-                    Movement.walkTo(Door, MovementBreakerWrapper::shouldBreakOnTarget);
+                    Movement.walkTo(Door, WalkingWrapper::shouldBreakOnTarget);
                     RandomSleep();
                     RandomSleep();
                 }
