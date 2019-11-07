@@ -74,7 +74,9 @@ public class BuySupplies extends Task {
         if (Game.isLoggedIn() && Players.getLocal() != null) {
             GEWrapper.setBuySupplies(false);
         }
+
         Log.fine("Done Restocking");
+        GEWrapper.closeGE();
         return false;
     }
 
@@ -149,9 +151,10 @@ public class BuySupplies extends Task {
         if (!GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && itemsIterator == null) {
             Log.fine("Done Restocking");
             GEWrapper.setBuySupplies(false);
+            GEWrapper.closeGE();
         }
 
-        return Random.low(800, 1500);
+        return SleepWrapper.shortSleep350();
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
