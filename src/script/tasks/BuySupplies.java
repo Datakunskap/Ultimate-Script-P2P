@@ -184,7 +184,7 @@ public class BuySupplies extends Task {
             return 1;
         if (item.equalsIgnoreCase("Falador teleport"))
             return 5;
-        if (item.equalsIgnoreCase("Games necklace (8)"))
+        if (item.equalsIgnoreCase("Games necklace(8)"))
             return 1;
         if (item.equalsIgnoreCase("Rope"))
             return 2;

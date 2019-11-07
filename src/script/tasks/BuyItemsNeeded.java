@@ -19,6 +19,34 @@ import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 
 public class BuyItemsNeeded extends Task {
+
+    public static boolean boughtItems = false;
+    private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
+            "Lumbridge teleport",
+            "Staff of air",
+            "Staff of fire",
+            "Amulet of glory(6)",
+            "Ring of wealth (5)",
+            "Air rune",
+            "Mind rune",
+            "Water rune",
+            "Earth rune",
+            "Tuna",
+            "Stamina potion",
+            "Cheese",
+            "Leather gloves",
+            "Falador teleport",
+            "Games necklace(8)",
+            "Rope",
+            "Adamant scimitar",
+            "Ring of recoil",
+            "Bucket",
+            "Rune essence",
+            "Varrock teleport",
+            "Silver sickle"
+    };
+
+
     @Override
     public boolean validate() {
         return Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
@@ -55,13 +83,22 @@ public class BuyItemsNeeded extends Task {
             }
         }
 
+        if(!boughtItems){
+            if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
+                Log.info("Setting boughtItem to true");
+                boughtItems = true;
+            }
+        }
+
         if(Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)){
             if(!Bank.isOpen()){
+                Log.info("Opening bank");
                 if(Bank.open()){
                     Time.sleepUntil(Bank::isOpen, SleepWrapper.longSleep7500());
                 }
             }
             if(Bank.isOpen()){
+                Log.info("Depositing everything expect coins");
                 if(Bank.depositAllExcept(Strings.COINS)){
                     Time.sleepUntil(()-> Inventory.containsOnly(Strings.COINS), SleepWrapper.longSleep7500());
                 }
@@ -69,6 +106,7 @@ public class BuyItemsNeeded extends Task {
         }
 
         if(Inventory.containsOnly(Strings.COINS)){
+            Log.info("Buying the needed items");
             GEWrapper.setBuySupplies(true);
         }
 
