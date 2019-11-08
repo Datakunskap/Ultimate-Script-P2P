@@ -8,7 +8,7 @@ import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 
-import java.time.Duration;
+import java.util.Set;
 
 public class BankWrapper {
 
@@ -66,7 +66,7 @@ public class BankWrapper {
         inventoryValue = newValue;
     }
 
-    private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, String... itemsToKeep) {
+    private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, Set<String> set,  String... itemsToKeep) {
         //Log.fine("Depositing Inventory");
         while (!openNearest() && Game.isLoggedIn()) {
             Time.sleep(1000);
@@ -92,33 +92,43 @@ public class BankWrapper {
 
         if (itemsToKeep != null && itemsToKeep.length > 0) {
             for (String i : itemsToKeep) {
-                Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
-                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)),
-                        2000, 8000);
+                Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
+                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
+            }
+        }
+
+        if (set != null && set.size() > 0) {
+            for (String i : set) {
+                Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
+                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
             }
         }
 
         updateBankValue();
     }
 
+    public static void openAndDepositAll(boolean keepAllCoins, Set<String> itemsToKeepSet) {
+        openAndDepositAll(keepAllCoins, itemsToKeepSet);
+    }
+
     public static void openAndDepositAll(boolean keepAllCoins, String... itemsToKeep) {
-        openAndDepositAll(keepAllCoins, 0, itemsToKeep);
+        openAndDepositAll(keepAllCoins, 0, null, itemsToKeep);
     }
 
     public static void openAndDepositAll(int numCoinsToKeep, String... itemsToKeep) {
-        openAndDepositAll(false, numCoinsToKeep, itemsToKeep);
+        openAndDepositAll(false, numCoinsToKeep, null, itemsToKeep);
     }
 
     public static void openAndDepositAll(boolean keepAllCoins) {
-        openAndDepositAll(keepAllCoins, 0);
+        openAndDepositAll(keepAllCoins, 0, null);
     }
 
     public static void openAndDepositAll(int numCoinsToKeep) {
-        openAndDepositAll(false, numCoinsToKeep);
+        openAndDepositAll(false, numCoinsToKeep, null);
     }
 
     public static void openAndDepositAll(String... itemsToKeep) {
-        openAndDepositAll(false, 0, itemsToKeep);
+        openAndDepositAll(false, 0, null, itemsToKeep);
     }
 
     public static boolean openNearest() {

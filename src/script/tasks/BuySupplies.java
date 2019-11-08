@@ -70,7 +70,7 @@ public class BuySupplies extends Task {
         }
 
         if (!checkedBank) {
-            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet().toArray(new String[0]));
+            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
             checkedBank = true;
@@ -129,60 +129,9 @@ public class BuySupplies extends Task {
     }
 
     private int getQuantity(String item) {
-        if (SUPPLIES.get(item) > 0) {
+        if (SUPPLIES.get(item) > 0)
             return SUPPLIES.get(item);
-        } else {
-            if (item.equalsIgnoreCase("Lumbridge teleport"))
-                return 10;
-            if (item.equalsIgnoreCase("Staff of air"))
-                return 1;
-            if (item.equalsIgnoreCase("Staff of fire"))
-                return 1;
-            if (item.equalsIgnoreCase("Amulet of glory(6)"))
-                return 5;
-            if (item.equalsIgnoreCase("Ring of wealth (5)"))
-                return 2;
-            if (item.equalsIgnoreCase("Mind rune"))
-                return 1000;
-            if (item.equalsIgnoreCase("Air rune"))
-                return 1000;
-            if (item.equalsIgnoreCase("Water rune"))
-                return 200;
-            if (item.equalsIgnoreCase("Earth rune"))
-                return 200;
-            if (item.equalsIgnoreCase("Fire rune"))
-                return 300;
-            if (item.equalsIgnoreCase("Tuna"))
-                return 100;
-            if (item.equalsIgnoreCase("Stamina potion(4)"))
-                return 10;
-            if (item.equalsIgnoreCase("Cheese"))
-                return 2;
-            if (item.equalsIgnoreCase("Leather gloves"))
-                return 1;
-            if (item.equalsIgnoreCase("Falador teleport"))
-                return 5;
-            if (item.equalsIgnoreCase("Games necklace(8)"))
-                return 1;
-            if (item.equalsIgnoreCase("Rope"))
-                return 2;
-            if (item.equalsIgnoreCase("Adamant scimitar"))
-                return 1;
-            if (item.equalsIgnoreCase("Ring of recoil"))
-                return 1;
-            if (item.equalsIgnoreCase("Bucket"))
-                return 1;
-            if (item.equalsIgnoreCase("Rune essence"))
-                return 50;
-            if (item.equalsIgnoreCase("Varrock teleport"))
-                return 5;
-            if (item.equalsIgnoreCase("Silver sickle"))
-                return 1;
-            if (item.equalsIgnoreCase("Dragon bones"))
-                return 300;
-            if (item.equalsIgnoreCase("Burning amulet(5)"))
-                return 5;
-        }
+
         return 1;
     }
 
