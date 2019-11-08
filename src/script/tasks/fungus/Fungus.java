@@ -34,12 +34,17 @@ public class Fungus extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.NATURE_SPIRIT.getVarpValue() == 85
+        return Quest.NATURE_SPIRIT.getVarpValue() >= 75
                 && Skills.getLevel(Skill.PRAYER) >= 50;
     }
 
     @Override
     public int execute() {
+
+        if(!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()){
+            Log.info("idk");
+            Movement.walkTo(BankLocation.CLAN_WARS.getPosition());
+        }
 
         if (inMortania()) {
             if (inSalveGravyardArea()) {
@@ -109,7 +114,7 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(enterTheSwamp::isVisible, 30_000);
+                    Time.sleepUntil(() -> AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
                     if (dontAskMeThisAgain.isVisible() && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
@@ -134,7 +139,7 @@ public class Fungus extends Task {
                 }
             }
         }
-        if (gate == null) {
+        if (AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) && gate == null) {
             Log.info("Can't find gate");
         }
     }
