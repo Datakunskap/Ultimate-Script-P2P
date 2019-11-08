@@ -115,21 +115,21 @@ public class Fungus extends Task {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
                     Time.sleepUntil(() -> AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
-                    if (dontAskMeThisAgain.isVisible() && dontAskMeThisAgain.getMaterialId() == 941) {
+                    if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
                             Log.info("Clicked enterTheSwamp");
                             Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
                         }
                     }
-                    if (enterTheSwamp.getMaterialId() == 942 && enterTheSwamp.isVisible()) {
+                    if (enterTheSwamp.getMaterialId() == 942 && enterTheSwamp != null) {
                         Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
                         if (enterTheSwamp.interact("Yes")) {
                             Log.info("Clicked enterTheSwamp");
                             Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
                         }
                     }
-                    if (!dontAskMeThisAgain.isVisible() && enterTheSwamp.isVisible()) {
+                    if (dontAskMeThisAgain == null && enterTheSwamp != null) {
                         Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
                         if (enterTheSwamp.interact("Yes")) {
                             Log.info("Clicked enterTheSwamp");
@@ -138,9 +138,6 @@ public class Fungus extends Task {
                     }
                 }
             }
-        }
-        if (AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) && gate == null) {
-            Log.info("Can't find gate");
         }
     }
 
