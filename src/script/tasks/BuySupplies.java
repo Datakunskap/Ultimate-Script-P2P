@@ -18,44 +18,29 @@ import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
 public class BuySupplies extends Task {
 
-    private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
-            "Lumbridge teleport",
-            "Staff of air",
-            "Staff of fire",
-            "Amulet of glory(6)",
-            "Ring of wealth (5)",
-            "Air rune",
-            "Mind rune",
-            "Water rune",
-            "Fire rune",
-            "Earth rune",
-            "Tuna",
-            "Stamina potion(4)",
-            "Cheese",
-            "Leather gloves",
-            "Falador teleport",
-            "Games necklace(8)",
-            "Rope",
-            "Adamant scimitar",
-            "Ring of recoil",
-            "Bucket",
-            "Rune essence",
-            "Varrock teleport",
-            "Silver sickle",
-            "Dragon bones",
-            "Burning amulet(5)"
-    };
-
+    private final HashMap<String, Integer> SUPPLIES;
     private Iterator<String> itemsIterator;
     private HashSet<String> items;
     private String itemToBuy;
     private boolean checkedBank;
     private int coinsToSpend;
+
+    public BuySupplies(final HashMap<String, Integer> SUPPLIES) {
+        this.SUPPLIES = SUPPLIES;
+    }
+
+    public BuySupplies(final String[] SUPPLIES) {
+        this.SUPPLIES = new HashMap<>();
+        for (String s : SUPPLIES) {
+            this.SUPPLIES.put(s, -1);
+        }
+    }
 
     @Override
     public boolean validate() {
@@ -63,11 +48,11 @@ public class BuySupplies extends Task {
             return true;
 
         if (GEWrapper.isBuySupplies()
-                && !GEWrapper.hasSupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION) && itemsIterator == null) {
+                && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
             items = new HashSet<>();
-            items.addAll(Arrays.asList(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION));
+            items.addAll(Arrays.asList(SUPPLIES.keySet().toArray(new String[0])));
 
             itemsIterator = items.iterator();
             itemToBuy = itemsIterator.next();
@@ -162,56 +147,60 @@ public class BuySupplies extends Task {
     }
 
     private int getQuantity(String item) {
-        if (item.equalsIgnoreCase("Lumbridge teleport"))
-            return 10;
-        if (item.equalsIgnoreCase("Staff of air"))
-            return 1;
-        if (item.equalsIgnoreCase("Staff of fire"))
-            return 1;
-        if (item.equalsIgnoreCase("Amulet of glory(6)"))
-            return 5;
-        if (item.equalsIgnoreCase("Ring of wealth (5)"))
-            return 2;
-        if (item.equalsIgnoreCase("Mind rune"))
-            return 1000;
-        if (item.equalsIgnoreCase("Air rune"))
-            return 1000;
-        if (item.equalsIgnoreCase("Water rune"))
-            return 200;
-        if (item.equalsIgnoreCase("Earth rune"))
-            return 200;
-        if (item.equalsIgnoreCase("Fire rune"))
-            return 300;
-        if (item.equalsIgnoreCase("Tuna"))
-            return 100;
-        if (item.equalsIgnoreCase("Stamina potion(4)"))
-            return 10;
-        if (item.equalsIgnoreCase("Cheese"))
-            return 2;
-        if (item.equalsIgnoreCase("Leather gloves"))
-            return 1;
-        if (item.equalsIgnoreCase("Falador teleport"))
-            return 5;
-        if (item.equalsIgnoreCase("Games necklace(8)"))
-            return 1;
-        if (item.equalsIgnoreCase("Rope"))
-            return 2;
-        if (item.equalsIgnoreCase("Adamant scimitar"))
-            return 1;
-        if (item.equalsIgnoreCase("Ring of recoil"))
-            return 1;
-        if (item.equalsIgnoreCase("Bucket"))
-            return 1;
-        if (item.equalsIgnoreCase("Rune essence"))
-            return 50;
-        if (item.equalsIgnoreCase("Varrock teleport"))
-            return 5;
-        if (item.equalsIgnoreCase("Silver sickle"))
-            return 1;
-        if (item.equalsIgnoreCase("Dragon bones"))
-            return 300;
-        if (item.equalsIgnoreCase("Burning amulet"))
-            return 5;
+        if (SUPPLIES.get(item) > 0) {
+            return SUPPLIES.get(item);
+        } else {
+            if (item.equalsIgnoreCase("Lumbridge teleport"))
+                return 10;
+            if (item.equalsIgnoreCase("Staff of air"))
+                return 1;
+            if (item.equalsIgnoreCase("Staff of fire"))
+                return 1;
+            if (item.equalsIgnoreCase("Amulet of glory(6)"))
+                return 5;
+            if (item.equalsIgnoreCase("Ring of wealth (5)"))
+                return 2;
+            if (item.equalsIgnoreCase("Mind rune"))
+                return 1000;
+            if (item.equalsIgnoreCase("Air rune"))
+                return 1000;
+            if (item.equalsIgnoreCase("Water rune"))
+                return 200;
+            if (item.equalsIgnoreCase("Earth rune"))
+                return 200;
+            if (item.equalsIgnoreCase("Fire rune"))
+                return 300;
+            if (item.equalsIgnoreCase("Tuna"))
+                return 100;
+            if (item.equalsIgnoreCase("Stamina potion(4)"))
+                return 10;
+            if (item.equalsIgnoreCase("Cheese"))
+                return 2;
+            if (item.equalsIgnoreCase("Leather gloves"))
+                return 1;
+            if (item.equalsIgnoreCase("Falador teleport"))
+                return 5;
+            if (item.equalsIgnoreCase("Games necklace(8)"))
+                return 1;
+            if (item.equalsIgnoreCase("Rope"))
+                return 2;
+            if (item.equalsIgnoreCase("Adamant scimitar"))
+                return 1;
+            if (item.equalsIgnoreCase("Ring of recoil"))
+                return 1;
+            if (item.equalsIgnoreCase("Bucket"))
+                return 1;
+            if (item.equalsIgnoreCase("Rune essence"))
+                return 50;
+            if (item.equalsIgnoreCase("Varrock teleport"))
+                return 5;
+            if (item.equalsIgnoreCase("Silver sickle"))
+                return 1;
+            if (item.equalsIgnoreCase("Dragon bones"))
+                return 300;
+            if (item.equalsIgnoreCase("Burning amulet"))
+                return 5;
+        }
         return 1;
     }
 

@@ -2,6 +2,8 @@ package script.wrappers;
 
 import org.rspeer.runetek.api.commons.math.Random;
 
+import java.util.HashMap;
+
 public class SleepWrapper {
 
     public static int shortSleep350() {
@@ -16,4 +18,10 @@ public class SleepWrapper {
         return Random.mid(4999,9999);
     }
 
+    public static void mapTutorial() {
+        HashMap<String, Integer> map = new HashMap();
+        map.put("Staff of fire", 1);
+        int quantity = map.get("Staff of fire");
+
+    }
 }
