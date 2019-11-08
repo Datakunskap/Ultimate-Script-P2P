@@ -87,8 +87,8 @@ public class BankWrapper {
             Time.sleepUntil(() -> Inventory.contains(995), 5000);
         }
 
-        if (itemsToKeep != null && itemsToKeep.length > Inventory.getFreeSlots()
-                || set != null && set.size() > Inventory.getFreeSlots()) {
+        if ((itemsToKeep != null && itemsToKeep.length > Inventory.getFreeSlots())
+                || (set != null && set.size() > Inventory.getFreeSlots())) {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.NOTE) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
                 Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, 5000);
