@@ -14,7 +14,6 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.*;
 
 import java.util.Arrays;
@@ -71,7 +70,7 @@ public class BuySupplies extends Task {
     public int execute() {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), WalkingWrapper::shouldBreakWalkLoop);
+            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), WalkingWrapper::shouldBreakOnTarget);
             Movement.toggleRun(true);
             return SleepWrapper.shortSleep600();
         }

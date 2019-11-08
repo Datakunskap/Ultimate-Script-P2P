@@ -16,10 +16,10 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.WalkingWrapper;
 
 import java.util.HashSet;
 
@@ -64,7 +64,8 @@ public class SellGE extends Task {
         Player me = Players.getLocal();
 
         if (!GEWrapper.GE_AREA_LARGE.contains(me)) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), WalkingWrapper::shouldBreakWalkLoop);
+            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
+                    -> WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy());
             Movement.toggleRun(true);
             return SleepWrapper.shortSleep600();
         }

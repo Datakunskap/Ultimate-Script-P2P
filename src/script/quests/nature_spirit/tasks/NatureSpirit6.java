@@ -2,7 +2,6 @@ package script.quests.nature_spirit.tasks;
 
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -13,6 +12,7 @@ import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit6 extends Task {
 
@@ -29,7 +29,7 @@ public class NatureSpirit6 extends Task {
         }
 
         if (Location.ROTTING_LOG_POSITION.distance() > 20) {
-            Movement.walkTo(Location.ROTTING_LOG_POSITION, () -> WalkingWrapper.shouldBreakWalkLoop()
+            Movement.walkTo(Location.ROTTING_LOG_POSITION, () -> WalkingWrapper.shouldBreakOnTarget()
                     || (Location.ROTTING_LOG_POSITION.distance() <= 20) && SceneObjects.getNearest("Rotting log") != null && SceneObjects.getNearest("Rotting log").distance() < 4);
         }
 

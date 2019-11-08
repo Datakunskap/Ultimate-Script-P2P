@@ -11,7 +11,7 @@ import org.rspeer.script.task.Task;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
+import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit10 extends Task {
     @Override
@@ -46,7 +46,7 @@ public class NatureSpirit10 extends Task {
             }
         }
 
-        Movement.walkTo(BankLocation.getNearest().getPosition(), WalkingWrapper::shouldBreakWalkLoop);
+        Movement.walkTo(BankLocation.getNearest().getPosition(), WalkingWrapper::shouldBreakOnTarget);
         Movement.toggleRun(true);
 
         return NatureSpirit.getLoopReturn();

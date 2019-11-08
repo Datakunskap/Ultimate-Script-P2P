@@ -4,12 +4,14 @@ import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
@@ -18,9 +20,9 @@ import org.rspeer.ui.Log;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.BankWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit0 extends Task {
 
@@ -36,7 +38,18 @@ public class NatureSpirit0 extends Task {
     public int execute() {
         if (!hasSupplies) {
             if (!Inventory.contains("Silver sickle")) {
-                BankWrapper.openAndDepositAll(false, "Silver sickle", "Ghostspeak amulet");
+                Position bank = BankLocation.getNearest(b
+                        -> Movement.isWalkable(b.getPosition().randomize(3))).getPosition();
+                if (bank != null) {
+                    Movement.walkTo(bank, WalkingWrapper::shouldBreakOnRunenergy);
+                } else {
+                    bank = BankLocation.GRAND_EXCHANGE.getPosition();
+                    Movement.walkTo(bank, WalkingWrapper::shouldBreakOnRunenergy);
+                }
+                if (bank.distance() < 4) {
+                    BankWrapper.openAndDepositAll("Silver sickle", "Ghostspeak amulet");
+                }
+                Movement.toggleRun(true);
             } else {
                 hasSupplies = true;
             }
@@ -56,7 +69,7 @@ public class NatureSpirit0 extends Task {
         }
 
         if (!Location.DUNGEON_AREA.contains(Players.getLocal()) && Location.ENTRANCE.distance() > 3) {
-            Movement.walkTo(Location.ENTRANCE, WalkingWrapper::shouldBreakWalkLoop);
+            Movement.walkTo(Location.ENTRANCE, WalkingWrapper::shouldBreakOnTarget);
             if (Location.ENTRANCE.distance() > 3 && !Movement.isRunEnabled()) {
                 Movement.toggleRun(true);
             }

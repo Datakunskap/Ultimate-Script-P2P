@@ -3,7 +3,6 @@ package script.quests.nature_spirit.tasks;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -13,6 +12,7 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit5 extends Task {
     @Override
@@ -39,7 +39,7 @@ public class NatureSpirit5 extends Task {
             }
 
             if (Location.DREZEL_POSITION.distance() > 3) {
-                Movement.walkTo(Location.DREZEL_POSITION, WalkingWrapper::shouldBreakWalkLoop);
+                Movement.walkTo(Location.DREZEL_POSITION, WalkingWrapper::shouldBreakOnTarget);
             }
 
             Npc drezel = Npcs.getNearest("Drezel");

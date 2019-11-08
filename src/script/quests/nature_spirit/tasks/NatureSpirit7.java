@@ -69,7 +69,7 @@ public class NatureSpirit7 extends Task {
             }
 
             if (Location.ROTTING_LOG_POSITION.distance() > 1) {
-                Movement.walkTo(Location.ROTTING_LOG_POSITION, WalkingWrapper::shouldBreakWalkLoop);
+                Movement.walkTo(Location.ROTTING_LOG_POSITION, script.wrappers.WalkingWrapper::shouldBreakOnTarget);
             }
 
             SceneObject log = SceneObjects.getNearest("Rotting log");
