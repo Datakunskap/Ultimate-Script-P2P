@@ -1,5 +1,7 @@
 package script.quests.nature_spirit.tasks;
 
+import org.rspeer.runetek.api.component.tab.Equipment;
+import org.rspeer.runetek.api.component.tab.Inventory;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
@@ -24,6 +26,11 @@ public class NatureSpirit2 extends Task {
         Npc filliman = Npcs.getNearest("Filliman Tarlock");
         SceneObject grotto = SceneObjects.getNearest("Grotto");
         SceneObject bridge = SceneObjects.getNearest("Bridge");
+
+        if (Inventory.contains("Ghostspeak amulet")) {
+            Inventory.getFirst("Ghostspeak amulet").interact(a -> true);
+            Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+        }
 
         if (!Dialog.isOpen() && filliman == null && grotto != null && grotto.interact(a -> true)) {
             if (!Time.sleepUntil(Dialog::isOpen, 5000)) {

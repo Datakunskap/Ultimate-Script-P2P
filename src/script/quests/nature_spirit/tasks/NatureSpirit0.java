@@ -8,6 +8,7 @@ import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
+import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
@@ -47,13 +48,18 @@ public class NatureSpirit0 extends Task {
                     Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 }
                 if (bank.getPosition().distance() < 4) {
-                    BankWrapper.openAndDepositAll("Silver sickle", "Ghostspeak amulet");
+                    BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet");
                 }
                 Movement.toggleRun(true);
             } else {
                 hasSupplies = true;
             }
             return SleepWrapper.shortSleep600();
+        }
+
+        if (Inventory.contains("Ghostspeak amulet")) {
+            Inventory.getFirst("Ghostspeak amulet").interact(a -> true);
+            Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
         }
 
         if (Dialog.isOpen()) {
