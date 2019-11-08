@@ -88,7 +88,7 @@ public class PriestInPeril_35 extends Task {
             if(DREZEL_POSITION.distance() > 10){
                 Movement.walkTo(DREZEL_POSITION, WalkingWrapper::shouldBreakOnRunenergy);
             }
-            if(DREZEL_POSITION.distance() <= 10){
+            if(DREZEL_POSITION.distance() <= 5){
                 Npc drezel = Npcs.getNearest("Drezel");
                 if(!Dialog.isOpen()){
                     if(drezel.interact("Talk-to")){
