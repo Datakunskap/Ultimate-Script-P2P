@@ -291,6 +291,7 @@ public class Fungus extends Task {
                     if (Bank.depositAllExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
                         Time.sleepUntil(() -> Inventory.containsOnly(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport")), 5000);
                         BankWrapper.updateBankValue();
+                        BankWrapper.updateInventoryValue();
                     }
                 }
             }
