@@ -28,13 +28,6 @@ public class SellGE extends Task {
     private int gpStart;
     private Set<String> itemsToKeep;
 
-    // Items to keep will be in bank after
-    public SellGE() {
-        if (SupplyMapWrapper.getCurrentSupplyMap() != null) {
-            this.itemsToKeep = SupplyMapWrapper.getCurrentSupplyMap().keySet();
-        }
-    }
-
     @Override
     public boolean validate() {
         if (!GEWrapper.isSellItems())
@@ -70,6 +63,9 @@ public class SellGE extends Task {
         }
 
         if (itemsToSell == null) {
+            if (SupplyMapWrapper.getCurrentSupplyMap() != null) {
+                itemsToKeep = SupplyMapWrapper.getCurrentSupplyMap().keySet();
+            }
 
             BankWrapper.openAndDepositAll(true);
             // Items to keep will be in bank after
