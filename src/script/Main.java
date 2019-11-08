@@ -39,6 +39,7 @@ public class Main extends TaskScript implements RenderListener {
         setStartingItemsMap();
         setRestlessGhostItemsMap();
         setWitchesHouseItemsMap();
+        setNatureSpiritItemsMap();
 
         submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
                 new GetStartersGold(),
