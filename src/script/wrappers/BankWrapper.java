@@ -55,12 +55,13 @@ public class BankWrapper {
         int newValue = PriceCheckService.getInventoryValue(includeTradeRestricted);
 
         if (inventoryValue == -1) {
-            startValueTimer = StopWatch.start();
+            startingValue += newValue;
+            //startValueTimer = StopWatch.start();
         }
-        if (startValueTimer != null && startValueTimer.exceeds(Duration.ofSeconds(10))) {
+        /*if (startValueTimer != null && startValueTimer.exceeds(Duration.ofSeconds(10))) {
             startingValue += newValue;
             startValueTimer = null;
-        }
+        }*/
 
         inventoryValue = newValue;
     }
