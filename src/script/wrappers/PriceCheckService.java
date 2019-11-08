@@ -34,7 +34,7 @@ public class PriceCheckService {
     private static ScheduledThreadPoolExecutor executor = ExecutorUtil.newScheduledExecutorPool(1, Throwable::printStackTrace);
     private static ScheduledFuture<?> task;
 
-    public static int getInventoryValue(boolean includeTradeRestricted) {
+    public static int getInventoryValue() {
         int total = Inventory.getCount(true, "Coins");
         Item[] invItems;
 
@@ -43,7 +43,7 @@ public class PriceCheckService {
         return getItemPrices(total, invItems);
     }
 
-    public static int getBankValue(boolean includeTradeRestricted) {
+    public static int getBankValue() {
         int total = Bank.getCount("Coins");
         Item[] bankItems;
 

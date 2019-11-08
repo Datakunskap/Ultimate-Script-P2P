@@ -2,7 +2,6 @@ package script.wrappers;
 
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
-import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
@@ -15,8 +14,6 @@ public class BankWrapper {
     private static int bankValue = -1;
     private static int inventoryValue = -1;
     private static int startingValue;
-    private static boolean tradeRestricted = true;
-    private static StopWatch startValueTimer;
 
     public static int getTotalValue() {
         return bankValue + inventoryValue;
@@ -34,14 +31,8 @@ public class BankWrapper {
         return (getTotalValue() - (startingValue > 0 ? startingValue : getTotalValue()));
     }
 
-    public static boolean isTradeRestricted() {
-        return tradeRestricted;
-    }
-
-
     public static void updateBankValue() {
-        boolean includeTradeRestricted = !isTradeRestricted();
-        int newValue = PriceCheckService.getBankValue(includeTradeRestricted);
+        int newValue = PriceCheckService.getBankValue();
 
         if (bankValue == -1) {
             startingValue += newValue;
@@ -51,8 +42,7 @@ public class BankWrapper {
     }
 
     public static void updateInventoryValue() {
-        boolean includeTradeRestricted = !isTradeRestricted();
-        int newValue = PriceCheckService.getInventoryValue(includeTradeRestricted);
+        int newValue = PriceCheckService.getInventoryValue();
 
         if (inventoryValue == -1) {
             startingValue += newValue;

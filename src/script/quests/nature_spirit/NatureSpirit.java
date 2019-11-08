@@ -42,7 +42,7 @@ public class NatureSpirit {
     };
 
     public static int getLoopReturn() {
-        return Random.low(600, 1600);
+        return Random.low(650, 1600);
     }
 
     public static boolean useItemOnObject(String itemName, String objectName) {

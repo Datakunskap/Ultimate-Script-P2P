@@ -41,7 +41,7 @@ public class NatureSpirit0 extends Task {
         if (drezel == null || !drezel.isPositionInteractable()) {
             Movement.walkTo(Location.DREZEL_POSITION);
         }
-        else if (!Dialog.isOpen()){
+        else if (!Dialog.isOpen()) {
             drezel.interact("Talk-to");
         }
 

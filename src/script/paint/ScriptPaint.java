@@ -35,17 +35,15 @@ public final class ScriptPaint implements RenderListener {
         stats.put("Mort Myre Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));
         stats.put("Runtime", new PaintStatistic(() -> context.getRuntime().toElapsedString()));
         stats.put("Inventory Value", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getInventoryValue())
-                + (BankWrapper.isTradeRestricted() ? " (Trade Restricted)" : "")));
+                -> formatNumber.format(BankWrapper.getInventoryValue())));
+        stats.put("Bank Value", new PaintStatistic(()
+                -> formatNumber.format(BankWrapper.getBankValue())));
         stats.put("Total Value", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getTotalValue())
-                + (BankWrapper.isTradeRestricted() ? " (Trade Restricted)" : "")));
+                -> formatNumber.format(BankWrapper.getTotalValue())));
         stats.put("Value Gained", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getTotalValueGained())
-                + (BankWrapper.isTradeRestricted() ? " (Trade Restricted)" : "")));
+                -> formatNumber.format(BankWrapper.getTotalValueGained())));
         stats.put("Value / H", new PaintStatistic(()
-                -> format((long) context.getRuntime().getHourlyRate(BankWrapper.getTotalValueGained()))
-                + (BankWrapper.isTradeRestricted() ? " (Trade Restricted)" : "")));
+                -> format((long) context.getRuntime().getHourlyRate(BankWrapper.getTotalValueGained()))));
         stats.put("Amount Muled", new PaintStatistic(()
                 -> formatNumber.format(0)));
     }
