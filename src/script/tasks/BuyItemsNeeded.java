@@ -20,35 +20,6 @@ import script.wrappers.SleepWrapper;
 
 public class BuyItemsNeeded extends Task {
 
-    public static boolean boughtItems = false;
-    private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
-            "Lumbridge teleport",
-            "Staff of air",
-            "Staff of fire",
-            "Amulet of glory(6)",
-            "Ring of wealth (5)",
-            "Air rune",
-            "Mind rune",
-            "Water rune",
-            "Earth rune",
-            "Tuna",
-            "Stamina potion(4)",
-            "Cheese",
-            "Leather gloves",
-            "Falador teleport",
-            "Games necklace(8)",
-            "Rope",
-            "Adamant scimitar",
-            "Ring of recoil",
-            "Bucket",
-            "Rune essence",
-            "Varrock teleport",
-            "Silver sickle",
-            "Dragon bones",
-            "Burning amulet"
-    };
-
-
     @Override
     public boolean validate() {
         return Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
