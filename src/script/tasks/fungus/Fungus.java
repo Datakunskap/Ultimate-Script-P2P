@@ -109,7 +109,7 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> enterTheSwamp.isVisible(), 30_000);
+                    Time.sleepUntil(enterTheSwamp::isVisible, 30_000);
                     if (dontAskMeThisAgain.isVisible() && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
