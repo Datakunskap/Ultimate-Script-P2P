@@ -1,22 +1,21 @@
 package script.quests.nature_spirit.tasks;
 
 import org.rspeer.runetek.adapter.scene.SceneObject;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
-import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit10 extends Task {
     @Override
     public boolean validate() {
-        return Quest.NATURE_SPIRIT.getVarpValue() == 75;
+        return Quest.NATURE_SPIRIT.getVarpValue() == 75 &&
+                (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())
+                        || (SceneObjects.getNearest(3525) != null && SceneObjects.getNearest(3525).containsAction("Exit")));
     }
 
     @Override
@@ -45,9 +44,6 @@ public class NatureSpirit10 extends Task {
                 Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
             }
         }
-
-        Movement.walkTo(BankLocation.getNearest().getPosition(), WalkingWrapper::shouldBreakOnTarget);
-        Movement.toggleRun(true);
 
         return NatureSpirit.getLoopReturn();
     }
