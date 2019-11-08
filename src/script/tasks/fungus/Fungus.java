@@ -23,6 +23,7 @@ import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.data.Quest;
+import script.wrappers.BankWrapper;
 
 @ScriptMeta(developer = "Streagrem", name = "AntiPker", desc = "AntiPker")
 public class Fungus extends Task {
@@ -162,6 +163,7 @@ public class Fungus extends Task {
             int fungiAmountBefore = Inventory.getCount("Mort myre funus");
             if (fungi.interact("Pick")) {
                 Time.sleepUntil(() -> fungiAmountBefore != Inventory.getCount("Mort myre fungus"), 5000);
+                BankWrapper.updateInventoryValue();
             }
         }
     }
@@ -174,6 +176,7 @@ public class Fungus extends Task {
                 int fungiAmountBefore = Inventory.getCount("Mort myre funus");
                 if (fungi.interact("Pick")) {
                     Time.sleepUntil(() -> fungiAmountBefore != Inventory.getCount("Mort myre fungus"), 5000);
+                    BankWrapper.updateInventoryValue();
                 }
             }
         }
@@ -287,6 +290,7 @@ public class Fungus extends Task {
                     Log.info("Deposting everythign expect teleports");
                     if (Bank.depositAllExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
                         Time.sleepUntil(() -> Inventory.containsOnly(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport")), 5000);
+                        BankWrapper.updateBankValue();
                     }
                 }
             }

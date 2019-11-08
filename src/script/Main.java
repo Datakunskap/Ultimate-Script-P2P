@@ -1,7 +1,14 @@
 package script;
 
+import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.commons.StopWatch;
+import org.rspeer.runetek.api.movement.position.Position;
+import org.rspeer.runetek.api.scene.Projection;
+import org.rspeer.runetek.event.listeners.RenderListener;
+import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.TaskScript;
+import script.paint.ScriptPaint;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.priest_in_peril.PriestInPeril;
 import script.quests.the_restless_ghost.TheRestlessGhost;
@@ -14,10 +21,18 @@ import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 
+import java.awt.*;
 import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
-public class Main extends TaskScript {
+public class Main extends TaskScript implements RenderListener {
+
+    private ScriptPaint paint;
+    private StopWatch runtime;
+
+    public StopWatch getRuntime() {
+        return runtime;
+    }
 
     private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
             "Lumbridge teleport",
@@ -49,6 +64,8 @@ public class Main extends TaskScript {
 
     @Override
     public void onStart() {
+        runtime = StopWatch.start();
+        paint = new ScriptPaint(this);
 
         submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
                 new GetStartersGold(),
@@ -64,5 +81,16 @@ public class Main extends TaskScript {
         submit(PriestInPeril.TASKS);
         submit(NatureSpirit.TASKS);
 
+    }
+
+    @Override
+    public void notify(RenderEvent e) {
+        try {
+            if (runtime != null) {
+                paint.notify(e);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

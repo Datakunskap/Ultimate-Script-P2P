@@ -18,10 +18,4 @@ public class SleepWrapper {
         return Random.mid(4999,9999);
     }
 
-    public static void mapTutorial() {
-        HashMap<String, Integer> map = new HashMap();
-        map.put("Staff of fire", 1);
-        int quantity = map.get("Staff of fire");
-
-    }
 }
