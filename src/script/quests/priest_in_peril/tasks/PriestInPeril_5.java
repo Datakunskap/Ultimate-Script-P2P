@@ -9,6 +9,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.input.menu.ActionOpcodes;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -133,9 +134,9 @@ public class PriestInPeril_5 extends Task {
                 }
                 if (WELL_POSITION.distance() < 15) {
                     if (!checked3493) {
-                        SceneObject monument = SceneObjects.getNearest(3493);
+                        SceneObject monument3 = SceneObjects.getNearest(3493);
                         if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
+                            if (monument3.interact("Study")) {
                                 Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
                             }
                         }
@@ -143,123 +144,174 @@ public class PriestInPeril_5 extends Task {
                             if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
                                 Interfaces.getComponent(272, 1, 11).click();
                                 Log.info("Setting 3493 to true");
+                                Time.sleep(2000);
                                 checked3493 = true;
-                            }if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3493)) ;
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
                             }
 
                         }
+
                     }
                     if (checked3493 && !checked3494) {
-                        SceneObject monument = SceneObjects.getNearest(3494);
+                        SceneObject monument4 = SceneObjects.getNearest(3494);
                         if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
+                            if (monument4.interact("Study")) {
                                 Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
                             }
                         }
                         if (Interfaces.isOpen(272)) {
                             if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
                                 Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
                                 checked3494 = true;
                             }
                             if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
-                            }
-                        }
-                    }
-                    if (checked3494 && !checked3495) {
-                        SceneObject monument = SceneObjects.getNearest(3495);
-                        if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
-                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
-                            }
-                        }
-                        if (Interfaces.isOpen(272)) {
-                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
-                                Interfaces.getComponent(272, 1, 11).click();
-                                checked3495 = true;
-                            }
-                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
-                            }
-                        }
-                    }
-                    if (checked3495 && !checked3496) {
-                        SceneObject monument = SceneObjects.getNearest(3496);
-                        if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
-                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
-                            }
-                        }
-                        if (Interfaces.isOpen(272)) {
-                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
-                                Interfaces.getComponent(272, 1, 11).click();
-                                checked3496 = true;
-                            }
-                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
-                            }
-                        }
-                    }
-                    if (checked3496 && !checked3497) {
-                        SceneObject monument = SceneObjects.getNearest(3497);
-                        if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
-                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
-                            }
-                        }
-                        if (Interfaces.isOpen(272)) {
-                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
-                                Interfaces.getComponent(272, 1, 11).click();
-                                checked3497 = true;
-                            }
-                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
-                            }
-                        }
-                    }
-                    if (checked3497 && !checked3498) {
-                        SceneObject monument = SceneObjects.getNearest(3498);
-                        if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
-                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
-                            }
-                        }
-                        if (Interfaces.isOpen(272)) {
-                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
-                                Interfaces.getComponent(272, 1, 11).click();
-                                checked3498 = true;
-                            }
-                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) ;
-                            }
-                        }
-                    }
-                    if (checked3498 && !checked3499) {
-                        SceneObject monument = SceneObjects.getNearest(3499);
-                        if (!Interfaces.isOpen(272)) {
-                            if (monument.interact("Study")) {
-                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
-                            }
-                        }
-                        if (Interfaces.isOpen(272)) {
-                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
-                                Interfaces.getComponent(272, 1, 11).click();
-                                checked3499 = true;
-                            }
-                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
-                                Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
-                                if (Inventory.use(goldenKey, monument)) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3494)) ;
                                     Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
                                 }
                             }
                         }
+
+                    }
+                    if (checked3494 && !checked3495) {
+                        SceneObject monument5 = SceneObjects.getNearest(3495);
+                        if (!Interfaces.isOpen(272)) {
+                            if (monument5.interact("Study")) {
+                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
+                            }
+                        }
+                        if (Interfaces.isOpen(272)) {
+                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
+                                Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
+                                checked3495 = true;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3495)) ;
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
+                            }
+                        }
+
+                    }
+                    if (checked3495 && !checked3496) {
+                        SceneObject monument6 = SceneObjects.getNearest(3496);
+                        if (!Interfaces.isOpen(272)) {
+                            if (monument6.interact("Study")) {
+                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
+                            }
+                        }
+                        if (Interfaces.isOpen(272)) {
+                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
+                                Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
+                                checked3496 = true;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3496)) ;
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
+                            }
+                        }
+
+                    }
+                    if (checked3496 && !checked3497) {
+                        SceneObject monument7 = SceneObjects.getNearest(3497);
+                        if (!Interfaces.isOpen(272)) {
+                            if (monument7.interact("Study")) {
+                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
+                            }
+                        }
+                        if (Interfaces.isOpen(272)) {
+                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
+                                Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
+                                checked3497 = true;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3497)) ;
+                                    Log.info("Used key on monument");
+                                    Time.sleep(2000);
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
+                            }
+                        }
+
+                    }
+                    if (checked3497 && !checked3498) {
+                        SceneObject monument8 = SceneObjects.getNearest(3498);
+                        if (!Interfaces.isOpen(272)) {
+                            if (monument8.interact("Study")) {
+                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
+                            }
+                        }
+                        if (Interfaces.isOpen(272)) {
+                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
+                                Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
+                                checked3498 = true;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3498)) ;
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
+                            }
+                        }
+
+                    }
+                    if (checked3498 && !checked3499) {
+                        SceneObject monument9 = SceneObjects.getNearest(3499);
+                        if (!Interfaces.isOpen(272)) {
+                            if (monument9.interact("Study")) {
+                                Time.sleepUntil(() -> Interfaces.isOpen(272), 10000);
+                            }
+                        }
+                        if (Interfaces.isOpen(272)) {
+                            if (Interfaces.getComponent(272, 8).getItemId() != 2945) {
+                                Interfaces.getComponent(272, 1, 11).click();
+                                Time.sleep(2000);
+                                checked3499 = true;
+                            }
+                            if (Interfaces.getComponent(272, 8).getItemId() == 2945) {
+                                if (Interfaces.getComponent(272, 1, 11).click()) {
+                                    Time.sleepUntil(() -> Interfaces.getComponent(272, 1) == null, 5000);
+                                    Time.sleep(2000);
+                                    Predicate<Item> goldenKey = i -> i.getName().equals("Golden key");
+                                    if (useItemOnObject("Golden key", 3499)) ;
+                                    Time.sleepUntil(() -> Inventory.contains("Iron key"), 10000);
+                                }
+                            }
+                        }
+
+
                     }
                 }
             }
@@ -341,6 +393,29 @@ public class PriestInPeril_5 extends Task {
 
         return lowRandom();
 
+    }
+
+    public static boolean useItemOnObject(String itemName, String objectName) {
+        return useItemOnObject(itemName, SceneObjects.getNearest(objectName).getId());
+    }
+
+    public static boolean useItemOnObject(String itemName, Position objectPosition) {
+        return useItemOnObject(itemName, SceneObjects.getFirstAt(objectPosition).getId());
+    }
+
+    public static boolean useItemOnObject(String itemName, int objectID) {
+        Item item = Inventory.getFirst(a -> a.getName().equalsIgnoreCase(itemName));
+        if (item != null && (item.interact("Use") || item.interact(ActionOpcodes.ITEM_ACTION_0))) {
+            Time.sleepUntil(Inventory::isItemSelected, 5000);
+            Time.sleep(300, 600);
+            SceneObject object = SceneObjects.getNearest(objectID);
+            if (object != null && (object.interact(ActionOpcodes.ITEM_ON_OBJECT) || object.click())) {
+                Time.sleepUntil(() -> Players.getLocal().isAnimating() && !Inventory.isItemSelected(), 5000);
+                Time.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 5000);
+                return true;
+            }
+        }
+        return false;
     }
 
     public int lowRandom() {

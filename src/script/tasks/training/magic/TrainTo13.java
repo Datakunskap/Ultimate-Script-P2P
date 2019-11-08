@@ -14,10 +14,8 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.data.Strings;
 import script.wrappers.SleepWrapper;
 
-import java.util.function.Predicate;
 
 public class TrainTo13 extends Task {
 

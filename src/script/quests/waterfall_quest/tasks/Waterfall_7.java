@@ -34,32 +34,31 @@ public class Waterfall_7 extends Task {
     @Override
     public int execute() {
 
-                if(SceneObjects.getNearest(2014) != null){
-                    if(!Dialog.isOpen()) {
-                        Inventory.getFirst(296).interact("Use");
-                        RandomSleep();
-                        SceneObjects.getNearest(2014).interact(ITEM_ON_OBJECT);
-                        Time.sleep(2000);
-                    }
-                    if(Dialog.isOpen()){
-                        Dialog.processContinue();
-                    }
-                }
+        if (SceneObjects.getNearest(2014) != null) {
+            if (!Dialog.isOpen()) {
+                Inventory.getFirst(296).interact("Use");
+                RandomSleep();
+                SceneObjects.getNearest(2014).interact(ITEM_ON_OBJECT);
+                Time.sleep(2000);
+            }
+            if (Dialog.isOpen()) {
+                Dialog.processContinue();
+            }
+        }
 
         return 400;
     }
 
 
-
-    private void WithdrawItem(String Name, int amount){
-        if(Bank.contains(Name)){
+    private void WithdrawItem(String Name, int amount) {
+        if (Bank.contains(Name)) {
             Bank.withdraw(Name, amount);
             Time.sleepUntil(() -> Inventory.contains(Name), Random.mid(2500, 5850));
             Time.sleep(250);
         }
     }
 
-    public void DoBanking(){
+    public void DoBanking() {
         if (BankLocation.getNearest().getPosition().distance() > 3) {
             Movement.walkToRandomized(BankLocation.getNearest().getPosition());
         }
@@ -87,31 +86,31 @@ public class Waterfall_7 extends Task {
         }
     }
 
-    public String getComponentOptions(int Option){
+    public String getComponentOptions(int Option) {
         String Text = "Null";
-        if(Interfaces.getComponent(219, 1, Option) != null){
+        if (Interfaces.getComponent(219, 1, Option) != null) {
             Text = Interfaces.getComponent(219, 1, Option).getText();
         }
         return Text;
     }
 
-    public String getDialogOptions(){
+    public String getDialogOptions() {
         String Text = "Null";
-        if(Interfaces.getComponent(219, 1, 0) != null){
+        if (Interfaces.getComponent(219, 1, 0) != null) {
             Text = Interfaces.getComponent(219, 1, 0).getText();
         }
         return Text;
     }
 
-    public String getDialog(){
+    public String getDialog() {
         String Text = "Null";
-        if(Interfaces.getComponent(263, 1, 0) != null){
+        if (Interfaces.getComponent(263, 1, 0) != null) {
             Text = Interfaces.getComponent(263, 1, 0).getText();
         }
         return Text;
     }
 
-    public void RandomSleep(){
+    public void RandomSleep() {
         Time.sleep(Random.nextInt(250, 550));
     }
 }
