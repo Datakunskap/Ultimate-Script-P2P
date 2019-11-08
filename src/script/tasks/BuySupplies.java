@@ -15,6 +15,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
+import script.wrappers.PriceCheckService;
 import script.wrappers.SleepWrapper;
 
 import java.util.Arrays;
@@ -89,6 +90,7 @@ public class BuySupplies extends Task {
                 itemsIterator = null;
                 items = BankWrapper.removeItemsInBank(items);
                 itemsIterator = items.iterator();
+                itemToBuy = itemsIterator.next();
             }
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
@@ -160,10 +162,19 @@ public class BuySupplies extends Task {
     }
 
     private int getPrice(String item) {
-        if (item.equalsIgnoreCase("Dragon bones")) {
-            return 3500;
+        int price;
+
+        try {
+            price = PriceCheckService.getPrice(item).getBuyAverage();
+        } catch (Exception e) {
+            return coinsToSpend;
         }
-        return coinsToSpend / getQuantity(item);
+
+        if (price <= 0 || price > coinsToSpend) {
+            return coinsToSpend;
+        }
+
+        return price;
     }
 
 }
