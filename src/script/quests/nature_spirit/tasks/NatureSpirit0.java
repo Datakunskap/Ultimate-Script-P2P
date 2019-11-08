@@ -1,10 +1,14 @@
 package script.quests.nature_spirit.tasks;
 
+import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
@@ -25,15 +29,24 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public int execute() {
+        InterfaceComponent foodComp = Interfaces.getComponent(11, 2);
+
+        if (foodComp != null && foodComp.isVisible() && foodComp.getText().contains("hands you some food.")) {
+            Time.sleep(1000);
+            Dialog.processContinue();
+            Game.getClient().fireScriptEvent(299, 1, 1);
+            Keyboard.pressEnter();
+            Time.sleep(1000);
+        }
 
         if (Dialog.isOpen()) {
+            if (Dialog.canContinue())
+                Dialog.processContinue();
+
             Dialog.process("Is there anything else interesting to do around here?",
                     "Well, what is it, I may be able to help?",
                     "Yes, I'll go and look for him.",
                     "Yes, I'm sure.");
-
-            if (Dialog.canContinue())
-                Dialog.processContinue();
 
             return NatureSpirit.getLoopReturn();
         }

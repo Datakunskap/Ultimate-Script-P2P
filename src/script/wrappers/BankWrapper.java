@@ -1,12 +1,11 @@
 package script.wrappers;
 
 import org.rspeer.runetek.api.Game;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
-import org.rspeer.runetek.api.movement.Movement;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class BankWrapper {
@@ -82,15 +81,19 @@ public class BankWrapper {
 
         if (itemsToKeep != null && itemsToKeep.length > 0) {
             for (String i : itemsToKeep) {
-                Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
-                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
+                if (Bank.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase()))) {
+                    Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
+                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
+                }
             }
         }
 
         if (set != null && set.size() > 0) {
             for (String i : set) {
-                Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
-                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
+                if (Bank.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase()))) {
+                    Bank.withdrawAll(x -> x.getName().toLowerCase().equals(i.toLowerCase()));
+                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase())), 6000);
+                }
             }
         }
 
@@ -125,6 +128,16 @@ public class BankWrapper {
         if (Bank.isOpen()) {
             return true;
         }
-        return Movement.walkTo(BankLocation.getNearest().getPosition());
+        return Bank.open();
+    }
+
+    public static void removeItemsInBank(HashSet<String> itemsToBuy) {
+        if (itemsToBuy != null && itemsToBuy.size() > 0) {
+            for (String i : itemsToBuy) {
+                if (Bank.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase()))) {
+                    itemsToBuy.remove(i);
+                }
+            }
+        }
     }
 }
