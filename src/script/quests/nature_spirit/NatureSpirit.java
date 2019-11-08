@@ -12,13 +12,22 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import script.quests.nature_spirit.tasks.*;
+import script.tasks.BuySupplies;
+
+import java.util.HashMap;
 
 
 @ScriptMeta(name = "Nature Spirit", desc = "Nature Spirit", developer = "DrScatman")
 public class NatureSpirit {
 
+    private static HashMap<String, Integer> supplies;
+
+    public static void setSupplyMap(HashMap<String, Integer> supplyMap) {
+        supplies = supplyMap;
+    }
+
     public static final Task[] TASKS = {
-                new BuySupplies(),
+                new BuySupplies(supplies),
                 new NatureSpirit0(),
                 new NatureSpirit1(),
                 new NatureSpirit2(),
@@ -46,7 +55,7 @@ public class NatureSpirit {
 
     public static boolean useItemOnObject(String itemName, int objectID) {
         Item item = Inventory.getFirst(a -> a.getName().equalsIgnoreCase(itemName));
-        if (item != null && (item.click())) {
+        if (item != null && (item.interact("Use") || item.interact(ActionOpcodes.ITEM_ACTION_0) || item.click())) {
             Time.sleepUntil(Inventory::isItemSelected, 5000);
             Time.sleep(300, 600);
             SceneObject object = SceneObjects.getNearest(objectID);

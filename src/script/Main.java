@@ -31,7 +31,61 @@ public class Main extends TaskScript implements RenderListener {
         return runtime;
     }
 
-    private void populateStartingItemsMap() {
+    @Override
+    public void onStart() {
+        runtime = StopWatch.start();
+        paint = new ScriptPaint(this);
+
+        setStartingItemsMap();
+        setRestlessGhostItemsMap();
+        setWitchesHouseItemsMap();
+        setNatureSpiritItemsMap();
+
+        submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
+                new GetStartersGold(),
+                new BuyItemsNeeded(),
+                new TrainTo13()
+        );
+
+        submit(TheRestlessGhost.TASKS);
+        submit(WitchesHouse.TASKS);
+        submit(WaterfallQuest.TASKS);
+        submit(PriestInPeril.TASKS);
+        submit(NatureSpirit.TASKS);
+
+        submit(new TrainTo50(),
+                new Fungus()
+        );
+
+    }
+
+    private void setRestlessGhostItemsMap() {
+        HashMap<String, Integer> map = new HashMap<>();
+        TheRestlessGhost.setSupplyMap(map);
+    }
+
+    private void setWitchesHouseItemsMap() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Amulet of glory(6)", 1);
+        map.put("Staff of air", 1);
+        map.put("Ring of wealth (5)", 1);
+        map.put("Cheese", 2);
+        map.put("Mind rune", 100);
+        map.put("Fire rune", 300);
+        map.put("Falador teleport", 5);
+        map.put("Leather gloves", 1);
+        map.put("Tuna", 10);
+        WitchesHouse.setSupplyMap(map);
+    }
+
+    private void setNatureSpiritItemsMap() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Silver sickle", 1);
+        map.put("Ghostspeak amulet", 1);
+        NatureSpirit.setSupplyMap(map);
+    }
+
+    private void setStartingItemsMap() {
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new HashMap<>();
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Lumbridge teleport", 10);
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Staff of air", 1);
@@ -58,30 +112,6 @@ public class Main extends TaskScript implements RenderListener {
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Silver sickle", 1);
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Dragon bones", 300);
         ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Burning amulet(5)", 5);
-    }
-
-    @Override
-    public void onStart() {
-        runtime = StopWatch.start();
-        paint = new ScriptPaint(this);
-        populateStartingItemsMap();
-
-        submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
-                new GetStartersGold(),
-                new BuyItemsNeeded(),
-                new TrainTo13()
-        );
-
-        submit(TheRestlessGhost.TASKS);
-        submit(WitchesHouse.TASKS);
-        submit(WaterfallQuest.TASKS);
-        submit(PriestInPeril.TASKS);
-        submit(NatureSpirit.TASKS);
-
-        submit(new TrainTo50(),
-                new Fungus()
-        );
-
     }
 
     @Override
