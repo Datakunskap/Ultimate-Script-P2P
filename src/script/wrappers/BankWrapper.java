@@ -131,13 +131,18 @@ public class BankWrapper {
         return Bank.open();
     }
 
-    public static void removeItemsInBank(HashSet<String> itemsToBuy) {
+    public static HashSet<String> removeItemsInBank(HashSet<String> itemsToBuy) {
+        HashSet<String> set = new HashSet<>();
         if (itemsToBuy != null && itemsToBuy.size() > 0) {
+
+            set = new HashSet<>(itemsToBuy);
+
             for (String i : itemsToBuy) {
                 if (Bank.contains(x -> x.getName().toLowerCase().equals(i.toLowerCase()))) {
-                    itemsToBuy.remove(i);
+                    set.remove(i);
                 }
             }
         }
+        return set;
     }
 }

@@ -86,7 +86,9 @@ public class BuySupplies extends Task {
                 BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
             } else {
                 BankWrapper.openAndDepositAll(true);
-                BankWrapper.removeItemsInBank(items);
+                itemsIterator = null;
+                items = BankWrapper.removeItemsInBank(items);
+                itemsIterator = items.iterator();
             }
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
