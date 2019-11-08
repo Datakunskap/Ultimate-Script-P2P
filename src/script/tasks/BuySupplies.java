@@ -34,7 +34,9 @@ public class BuySupplies extends Task {
 
     public BuySupplies(final HashMap<String, Integer> SUPPLIES, boolean keepItems) {
         this.SUPPLIES = SUPPLIES;
-        GEWrapper.setBuySupplies(true);
+        if (keepItems) {
+            GEWrapper.setBuySupplies(true);
+        }
     }
 
     public BuySupplies(final String[] SUPPLIES, boolean keepItems) {
@@ -42,7 +44,9 @@ public class BuySupplies extends Task {
         for (String s : SUPPLIES) {
             this.SUPPLIES.put(s, -1);
         }
-        GEWrapper.setBuySupplies(true);
+        if (keepItems) {
+            GEWrapper.setBuySupplies(true);
+        }
     }
 
     @Override
