@@ -2,7 +2,6 @@ package script.quests.waterfall_quest;
 
 import org.rspeer.script.task.Task;
 import script.quests.waterfall_quest.tasks.*;
-import script.tasks.BuySupplies;
 
 import java.util.HashMap;
 
@@ -15,7 +14,6 @@ public class WaterfallQuest {
     }
 
     public static final Task[] TASKS = {
-            new BuySupplies(supplies),
             new Waterfall_Preparation(),
             new Waterfall_0(),
             new Waterfall_1(),
