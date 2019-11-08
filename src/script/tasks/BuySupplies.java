@@ -78,7 +78,12 @@ public class BuySupplies extends Task {
 
         if (!checkedBank) {
             Log.info("Checking Bank");
-            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
+            if (keepItems) {
+                BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
+            } else {
+                BankWrapper.openAndDepositAll(true);
+                BankWrapper.removeItemsInBank(items);
+            }
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
             checkedBank = true;
