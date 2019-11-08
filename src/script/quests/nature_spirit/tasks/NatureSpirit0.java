@@ -19,7 +19,8 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.NATURE_SPIRIT.getVarpValue() == 0;
+        return Quest.NATURE_SPIRIT.getVarpValue() == 0
+                && Quest.PRIEST_IN_PERIL.getVarpValue() == 61;
     }
 
     @Override

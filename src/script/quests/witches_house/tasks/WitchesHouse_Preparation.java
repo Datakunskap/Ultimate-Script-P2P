@@ -57,6 +57,8 @@ public class WitchesHouse_Preparation extends Task {
     @Override
     public int execute() {
 
+        Log.info("WithcHouse prep");
+
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
@@ -80,7 +82,8 @@ public class WitchesHouse_Preparation extends Task {
         }
 
         if (!readyToStartWitchesHouse) {
-            if (Equipment.contains(GEAR)
+            if (Equipment.contains(glory)
+                    && Equipment.contains(STAFF_OF_AIR)
                     && Inventory.getCount(CHEESE) == 2
                     && Inventory.getCount(true, MIND_RUNE) == 100
                     && Inventory.getCount(true, FIRE_RUNE) == 300

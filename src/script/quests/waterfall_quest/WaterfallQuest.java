@@ -15,7 +15,6 @@ public class WaterfallQuest {
     }
 
     public static final Task[] TASKS = {
-            new BuySupplies(supplies),
             new Waterfall_Preparation(),
             new Waterfall_0(),
             new Waterfall_1(),

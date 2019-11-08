@@ -108,8 +108,8 @@ public class Main extends TaskScript implements RenderListener {
         map.put("Air rune", 1000);
         map.put("Mind rune", 1000);
         map.put("Water rune", 200);
-        map.put("Fire rune", 200);
-        map.put("Earth rune", 300);
+        map.put("Fire rune", 300);
+        map.put("Earth rune", 200);
         map.put("Tuna", 100);
         map.put("Stamina potion(4)", 10);
         map.put("Cheese", 2);

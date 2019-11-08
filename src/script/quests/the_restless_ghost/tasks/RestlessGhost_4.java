@@ -53,13 +53,13 @@ public class RestlessGhost_4 extends Task {
         SceneObject ladder = SceneObjects.getFirstAt(new Position(3103, 9576, 0));
         SceneObject coffinClosed = SceneObjects.getNearest(2145);
         SceneObject coffinOpen = SceneObjects.getNearest(15061);
-        if(ladder == null){
+        if (ladder == null) {
             Log.info("1");
         }
-        if(coffinClosed == null){
+        if (coffinClosed == null) {
             Log.info("2");
         }
-        if(coffinOpen == null){
+        if (coffinOpen == null) {
             Log.info("3");
         }
         if (Movement.getRunEnergy() > 20 && !Movement.isRunEnabled()) { //Turn on run if it's off with over 20 energy
@@ -79,7 +79,8 @@ public class RestlessGhost_4 extends Task {
                 Time.sleepUntil(() -> (local.isMoving()), 10000);
                 Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
                 coffinClosed.interact("Open");
-            } else if (coffinOpen != null) {
+            }
+            if ((coffinOpen != null)) {
                 Movement.walkTo(coffinOpen);
                 Time.sleepUntil(() -> (local.isMoving()), 10000);
                 Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
