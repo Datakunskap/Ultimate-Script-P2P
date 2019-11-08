@@ -58,7 +58,6 @@ public class Main extends TaskScript implements RenderListener {
         submit(new TrainTo50(),
                 new Fungus()
         );
-
     }
 
     private void setRestlessGhostItemsMap() {

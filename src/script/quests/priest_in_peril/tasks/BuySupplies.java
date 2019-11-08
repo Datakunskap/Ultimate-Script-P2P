@@ -36,6 +36,7 @@ public class BuySupplies extends Task {
 
     public BuySupplies(final HashMap<String, Integer> SUPPLIES) {
         this.SUPPLIES = SUPPLIES;
+        GEWrapper.setBuySupplies(true);
     }
 
     @Override
