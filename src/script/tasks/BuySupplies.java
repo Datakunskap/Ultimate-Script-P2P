@@ -59,9 +59,6 @@ public class BuySupplies extends Task {
             return true;
         }
 
-        if (Game.isLoggedIn() && Players.getLocal() != null) {
-            GEWrapper.setBuySupplies(false);
-        }
         return false;
     }
 
@@ -184,7 +181,7 @@ public class BuySupplies extends Task {
                 return 1;
             if (item.equalsIgnoreCase("Dragon bones"))
                 return 300;
-            if (item.equalsIgnoreCase("Burning amulet"))
+            if (item.equalsIgnoreCase("Burning amulet(5)"))
                 return 5;
         }
         return 1;
