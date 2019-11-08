@@ -99,32 +99,33 @@ public class Main extends TaskScript implements RenderListener {
     }
 
     private void setStartingItemsMap() {
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new HashMap<>();
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Lumbridge teleport", 10);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Staff of air", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Staff of fire", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Amulet of glory(6)", 5);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Ring of wealth (5)", 2);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Air rune", 1000);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Mind rune", 1000);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Water rune", 200);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Fire rune", 200);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Earth rune", 300);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Tuna", 100);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Stamina potion(4)", 10);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Cheese", 2);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Leather gloves", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Falador teleport", 5);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Games necklace(8)", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Rope", 2);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Adamant scimitar", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Ring of recoil", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Bucket", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Rune essence", 50);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Varrock teleport", 5);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Silver sickle", 1);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Dragon bones", 300);
-        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION.put("Burning amulet(5)", 5);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Lumbridge teleport", 10);
+        map.put("Staff of air", 1);
+        map.put("Staff of fire", 1);
+        map.put("Amulet of glory(6)", 5);
+        map.put("Ring of wealth (5)", 2);
+        map.put("Air rune", 1000);
+        map.put("Mind rune", 1000);
+        map.put("Water rune", 200);
+        map.put("Fire rune", 200);
+        map.put("Earth rune", 300);
+        map.put("Tuna", 100);
+        map.put("Stamina potion(4)", 10);
+        map.put("Cheese", 2);
+        map.put("Leather gloves", 1);
+        map.put("Falador teleport", 5);
+        map.put("Games necklace(8)", 1);
+        map.put("Rope", 2);
+        map.put("Adamant scimitar", 1);
+        map.put("Ring of recoil", 1);
+        map.put("Bucket", 1);
+        map.put("Rune essence", 50);
+        map.put("Varrock teleport", 5);
+        map.put("Silver sickle", 1);
+        map.put("Dragon bones", 300);
+        map.put("Burning amulet(5)", 5);
+        ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = map;
     }
 
     @Override
