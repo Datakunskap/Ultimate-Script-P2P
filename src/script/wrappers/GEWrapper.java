@@ -38,6 +38,16 @@ public class GEWrapper {
     private static final String GE_NPC_NAME = "Grand Exchange Clerk";
     private static boolean buySupplies;
 
+    private static boolean sellItems;
+
+    public static void setSellItems(boolean sellItems) {
+        GEWrapper.sellItems = sellItems;
+    }
+
+    public static boolean isSellItems() {
+        return sellItems;
+    }
+
     public static void setBuySupplies(boolean buySupplies) {
         GEWrapper.buySupplies = buySupplies;
     }

@@ -43,7 +43,7 @@ public class Main extends TaskScript implements RenderListener {
         setPriestInPerilItemsMap();
         setNatureSpiritItemsMap();
 
-        submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION, false),
+        submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION, true),
                 new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13()

@@ -2,12 +2,14 @@ package script.wrappers;
 
 import org.rspeer.runetek.api.commons.math.Random;
 
-import java.util.HashMap;
-
 public class SleepWrapper {
 
     public static int shortSleep350() {
         return Random.mid(299,399);
+    }
+
+    public static int shortSleep600() {
+        return Random.mid(399, 799);
     }
 
     public static int mediumSleep1500() {

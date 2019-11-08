@@ -18,6 +18,7 @@ import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
+import script.wrappers.GEWrapper;
 
 public class NatureSpirit0 extends Task {
 
@@ -29,6 +30,8 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public int execute() {
+        GEWrapper.setBuySupplies(true);
+
         InterfaceComponent foodComp = Interfaces.getComponent(11, 2);
 
         if (foodComp != null && foodComp.isVisible() && foodComp.getText().contains("hands you some food.")) {

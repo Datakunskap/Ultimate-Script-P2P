@@ -14,6 +14,7 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 
 
@@ -63,6 +64,8 @@ public class TrainTo13 extends Task {
             if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
                 Log.info("Setting boughtItem to true");
                 boughtItems = true;
+            } else {
+                GEWrapper.setBuySupplies(true);
             }
         }
         return boughtItems && Skills.getLevel(Skill.MAGIC) < 13;

@@ -5,6 +5,7 @@ import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
+import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
@@ -13,6 +14,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
 import script.wrappers.PriceCheckService;
@@ -35,28 +37,27 @@ public class BuySupplies extends Task {
 
     public BuySupplies(final HashMap<String, Integer> SUPPLIES, boolean keepItems) {
         this.SUPPLIES = SUPPLIES;
-        if (keepItems) {
-            GEWrapper.setBuySupplies(true);
-        }
+        this.keepItems = keepItems;
     }
 
     public BuySupplies(final String[] SUPPLIES, boolean keepItems) {
         this.SUPPLIES = new HashMap<>();
+        this.keepItems = keepItems;
+
         for (String s : SUPPLIES) {
             this.SUPPLIES.put(s, -1);
-        }
-        if (keepItems) {
-            GEWrapper.setBuySupplies(true);
         }
     }
 
     @Override
     public boolean validate() {
+        if (!GEWrapper.isBuySupplies() || !Game.isLoggedIn() || Players.getLocal() == null)
+            return false;
+
         if (itemsIterator != null || GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY))
             return true;
 
-        if (GEWrapper.isBuySupplies()
-                && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
+        if (!GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
             items = new HashSet<>();
@@ -67,8 +68,9 @@ public class BuySupplies extends Task {
             return true;
         }
 
-        if (Game.isLoggedIn() && Players.getLocal() != null) {
-            GEWrapper.setBuySupplies(false);
+        if (GEWrapper.isBuySupplies()) {
+            Log.fine("Done Restocking");
+            doneRestockingHelper();
         }
         return false;
     }
@@ -77,8 +79,9 @@ public class BuySupplies extends Task {
     public int execute() {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.mediumSleep1500();
+            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), WalkingWrapper::shouldBreakWalkLoop);
+            Movement.toggleRun(true);
+            return SleepWrapper.shortSleep600();
         }
 
         if (!checkedBank) {
@@ -88,9 +91,11 @@ public class BuySupplies extends Task {
             } else {
                 BankWrapper.openAndDepositAll(true);
                 itemsIterator = null;
-                items = BankWrapper.removeItemsInBank(items);
-                itemsIterator = items.iterator();
-                itemToBuy = itemsIterator.next();
+                items = new HashSet<>(BankWrapper.getItemsNeeded(SUPPLIES));
+                if (items.size() > 0) {
+                    itemsIterator = items.iterator();
+                    itemToBuy = itemsIterator.next();
+                }
             }
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
@@ -102,14 +107,14 @@ public class BuySupplies extends Task {
         if (!GrandExchange.isOpen()) {
             Bank.close();
             GEWrapper.openGE();
-            return SleepWrapper.mediumSleep1500();
+            return SleepWrapper.shortSleep600();
         }
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {
             if (stillNeedsItem(itemToBuy)) {
                 if (GEWrapper.buy(itemToBuy, getQuantity(itemToBuy), getPrice(itemToBuy), false)) {
                     Log.info("Buying: " + getQuantity(itemToBuy) + " " + itemToBuy);
-                    if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy)) != null, 8000)) {
+                    if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 8000)) {
                         if (itemsIterator.hasNext()) {
                             itemToBuy = itemsIterator.next();
                         } else {
@@ -138,16 +143,22 @@ public class BuySupplies extends Task {
 
         if (!GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && itemsIterator == null) {
             Log.fine("Done Restocking");
-            if (keepItems) {
-                BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
-            } else {
-                BankWrapper.openAndDepositAll();
-            }
-            GEWrapper.setBuySupplies(false);
-            GEWrapper.closeGE();
+            doneRestockingHelper();
         }
 
-        return SleepWrapper.mediumSleep1500();
+        return SleepWrapper.shortSleep600();
+    }
+
+    private void doneRestockingHelper() {
+        GEWrapper.setBuySupplies(false);
+        if (keepItems) {
+            BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
+        } else {
+            BankWrapper.openAndDepositAll();
+        }
+        Bank.close();
+        Interfaces.closeAll();
+        Time.sleepUntil(() -> !Bank.isOpen() && !GrandExchange.isOpen(), 5000);
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
@@ -169,6 +180,8 @@ public class BuySupplies extends Task {
         } catch (Exception e) {
             return coinsToSpend;
         }
+
+        price += ((int) (price * .50));
 
         if (price <= 0 || price > coinsToSpend) {
             return coinsToSpend;
