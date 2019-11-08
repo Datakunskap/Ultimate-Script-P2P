@@ -1,11 +1,9 @@
 package script.wrappers;
 
 import org.rspeer.runetek.api.Game;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
-import org.rspeer.runetek.api.movement.Movement;
 
 import java.util.Set;
 
@@ -125,6 +123,6 @@ public class BankWrapper {
         if (Bank.isOpen()) {
             return true;
         }
-        return Movement.walkTo(BankLocation.getNearest().getPosition());
+        return Bank.open();
     }
 }

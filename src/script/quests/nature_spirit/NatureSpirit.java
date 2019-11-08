@@ -12,6 +12,7 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import script.quests.nature_spirit.tasks.*;
+import script.tasks.BuySupplies;
 
 import java.util.HashMap;
 
@@ -26,6 +27,7 @@ public class NatureSpirit {
     }
 
     public static final Task[] TASKS = {
+                new BuySupplies(supplies, true),
                 new NatureSpirit0(),
                 new NatureSpirit1(),
                 new NatureSpirit2(),

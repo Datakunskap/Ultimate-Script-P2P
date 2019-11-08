@@ -1,5 +1,6 @@
 package script.tasks;
 
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
@@ -29,16 +30,19 @@ public class BuySupplies extends Task {
     private String itemToBuy;
     private boolean checkedBank;
     private int coinsToSpend;
+    private boolean keepItems;
 
-    public BuySupplies(final HashMap<String, Integer> SUPPLIES) {
+    public BuySupplies(final HashMap<String, Integer> SUPPLIES, boolean keepItems) {
         this.SUPPLIES = SUPPLIES;
+        GEWrapper.setBuySupplies(true);
     }
 
-    public BuySupplies(final String[] SUPPLIES) {
+    public BuySupplies(final String[] SUPPLIES, boolean keepItems) {
         this.SUPPLIES = new HashMap<>();
         for (String s : SUPPLIES) {
             this.SUPPLIES.put(s, -1);
         }
+        GEWrapper.setBuySupplies(true);
     }
 
     @Override
@@ -58,6 +62,9 @@ public class BuySupplies extends Task {
             return true;
         }
 
+        if (Game.isLoggedIn() && Players.getLocal() != null) {
+            GEWrapper.setBuySupplies(false);
+        }
         return false;
     }
 
@@ -70,6 +77,7 @@ public class BuySupplies extends Task {
         }
 
         if (!checkedBank) {
+            Log.info("Checking Bank");
             BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
@@ -117,6 +125,11 @@ public class BuySupplies extends Task {
 
         if (!GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && itemsIterator == null) {
             Log.fine("Done Restocking");
+            if (keepItems) {
+                BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
+            } else {
+                BankWrapper.openAndDepositAll();
+            }
             GEWrapper.setBuySupplies(false);
             GEWrapper.closeGE();
         }
