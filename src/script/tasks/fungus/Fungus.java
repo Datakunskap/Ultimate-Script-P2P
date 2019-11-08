@@ -24,6 +24,8 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.data.Quest;
 import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 @ScriptMeta(developer = "Streagrem", name = "AntiPker", desc = "AntiPker")
 public class Fungus extends Task {
@@ -242,6 +244,7 @@ public class Fungus extends Task {
                         if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                             //restock
                             Log.info("I need to restock ring of duelings");
+                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                         }
                     }
                     if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
@@ -251,8 +254,8 @@ public class Fungus extends Task {
                             }
                         }
                         if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
-                            //restock
                             Log.info("I need to restock salve graveyard teleports");
+                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                         }
                     }
                 }
@@ -275,6 +278,7 @@ public class Fungus extends Task {
                             if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                                 //restock
                                 Log.info("I need to restock ring of duelings");
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             }
                         }
                         if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
@@ -286,6 +290,7 @@ public class Fungus extends Task {
                             if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
                                 //restock
                                 Log.info("I need to restock salve graveyard teleports");
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             }
                         }
                     }

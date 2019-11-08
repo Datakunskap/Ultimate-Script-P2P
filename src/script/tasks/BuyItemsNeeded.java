@@ -76,7 +76,7 @@ public class BuyItemsNeeded extends Task {
 
         if(Inventory.containsOnly(Strings.COINS)){
             Log.info("Buying the needed items");
-            GEWrapper.setBuySupplies(true, SupplyMapWrapper.getStartingItemsMap());
+            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getStartingItemsMap());
         }
 
         return SleepWrapper.shortSleep350();

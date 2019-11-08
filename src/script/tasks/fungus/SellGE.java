@@ -16,12 +16,9 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
-import script.wrappers.SleepWrapper;
-import script.wrappers.WalkingWrapper;
+import script.wrappers.*;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public class SellGE extends Task {
 
@@ -29,11 +26,13 @@ public class SellGE extends Task {
     private InterfaceComponent restrictedMsg = Interfaces.getComponent(465, 25);
     private String status;
     private int gpStart;
-    private HashSet<String> itemsToKeep;
+    private Set<String> itemsToKeep;
 
     // Items to keep will be in bank after
-    public SellGE(HashSet<String> itemsToKeep) {
-        this.itemsToKeep = itemsToKeep;
+    public SellGE() {
+        if (SupplyMapWrapper.getCurrentSupplyMap() != null) {
+            this.itemsToKeep = SupplyMapWrapper.getCurrentSupplyMap().keySet();
+        }
     }
 
     @Override

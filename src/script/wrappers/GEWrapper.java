@@ -47,9 +47,12 @@ public class GEWrapper {
         return sellItems;
     }
 
-    public static void setBuySupplies(boolean buySupplies, HashMap<String, Integer> supplyMap) {
+    public static void setBuySupplies(boolean buySupplies, boolean sellItems, HashMap<String, Integer> supplyMap) {
         GEWrapper.buySupplies = buySupplies;
         SupplyMapWrapper.setSupplyMap(supplyMap);
+        if (sellItems) {
+            setSellItems(true);
+        }
     }
 
     public static boolean isBuySupplies() {

@@ -156,14 +156,16 @@ public class BankWrapper {
         return Bank.open();
     }
 
-    public static void withdrawSellableItems(HashSet<String> itemsToKeep) {
+    public static void withdrawSellableItems(Set<String> itemsToKeep) {
         if (!Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE)) {
             Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
             Time.sleep(800, 1250);
         }
 
         Item[] sellables = Bank.getItems(i -> i.isExchangeable()
-                && !itemsToKeep.contains(i.getName().toLowerCase()));
+                && !itemsToKeep.contains(i.getName().toLowerCase())
+                && PriceCheckService.getPrice(i.getId()) != null
+                && PriceCheckService.getPrice(i.getId()).getSellAverage() * i.getStackSize() > 5000);
 
         for (Item s : sellables) {
             Bank.withdrawAll(s.getName());

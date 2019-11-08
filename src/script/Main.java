@@ -17,6 +17,7 @@ import script.tasks.BuyItemsNeeded;
 import script.tasks.BuySupplies;
 import script.tasks.GetStartersGold;
 import script.tasks.fungus.Fungus;
+import script.tasks.fungus.SellGE;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.PriceCheckService;
@@ -53,6 +54,7 @@ public class Main extends TaskScript implements RenderListener {
         submit(NatureSpirit.TASKS);
 
         submit(new TrainTo50(),
+                new SellGE(),
                 new Fungus()
         );
 
