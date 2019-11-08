@@ -14,6 +14,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 
@@ -74,27 +75,13 @@ public class BuySupplies extends Task {
         }
 
         if (!checkedBank) {
-            while (!Bank.isOpen() && Game.isLoggedIn()) {
-                Bank.open();
-                Time.sleep(600, 1000);
-            }
-            Bank.withdrawAll("Coins");
-            Time.sleepUntil(() -> !Bank.contains("Coins"), 5000);
+            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet().toArray(new String[0]));
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
             checkedBank = true;
         }
 
         coinsToSpend = Inventory.getCount(true, "Coins");
-
-        // check GP
-        /*if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && stillNeedsItem(itemToBuy)) {
-            if (coinsToSpend < (getPrice(itemToBuy) * getQuantity(itemToBuy))) {
-                Log.severe("NOT ENOUGH GP  |  " + itemToBuy + " : " + (getPrice(itemToBuy) * getQuantity(itemToBuy)));
-                itemsIterator = null;
-                return SleepWrapper.shortSleep350();
-            }
-        }*/
 
         if (!GrandExchange.isOpen()) {
             Bank.close();
