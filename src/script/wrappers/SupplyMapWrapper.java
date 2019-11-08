@@ -45,7 +45,6 @@ public class SupplyMapWrapper {
     public static HashMap<String, Integer> getNatureSpiritItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
-        map.put("Ghostspeak amulet", 1);
         return map;
     }
 

@@ -65,7 +65,8 @@ public class TrainTo13 extends Task {
             if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
                 Log.info("Setting boughtItem to true");
                 boughtItems = true;
-            } else {
+            }
+            else if (Skills.getLevel(Skill.MAGIC) == 1) {
                 GEWrapper.setBuySupplies(true, SupplyMapWrapper.getStartingItemsMap());
             }
         }

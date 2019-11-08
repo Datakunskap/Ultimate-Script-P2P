@@ -142,7 +142,7 @@ public class BuySupplies extends Task {
     }
 
     private void doneRestockingHelper() {
-        GEWrapper.setBuySupplies(false);
+        GEWrapper.setBuySupplies(false, SUPPLIES);
         if (keepItems) {
             BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
         } else {

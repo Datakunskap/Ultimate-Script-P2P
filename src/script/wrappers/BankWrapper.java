@@ -5,6 +5,7 @@ import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.movement.Movement;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,7 +64,10 @@ public class BankWrapper {
     private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, Set<String> set,  String... itemsToKeep) {
         //Log.fine("Depositing Inventory");
         while (!openNearest() && Game.isLoggedIn()) {
-            Time.sleep(1000);
+            if (WalkingWrapper.shouldBreakOnRunenergy()) {
+                Movement.toggleRun(true);
+            }
+            Time.sleep(600, 1600);
         }
 
         Bank.depositInventory();

@@ -5,6 +5,7 @@ import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.TaskScript;
+import org.rspeer.ui.Log;
 import script.paint.ScriptPaint;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.priest_in_peril.PriestInPeril;
@@ -33,6 +34,7 @@ public class Main extends TaskScript implements RenderListener {
 
     @Override
     public void onStart() {
+        Log.fine("Script Started");
         runtime = StopWatch.start();
         paint = new ScriptPaint(this);
 

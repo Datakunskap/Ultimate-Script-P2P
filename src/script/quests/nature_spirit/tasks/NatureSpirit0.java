@@ -19,13 +19,12 @@ import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
-import script.wrappers.GEWrapper;
+import script.wrappers.BankWrapper;
 import script.wrappers.SleepWrapper;
-import script.wrappers.SupplyMapWrapper;
 
 public class NatureSpirit0 extends Task {
 
-    private boolean boughtSupplies;
+    private boolean hasSupplies;
 
     @Override
     public boolean validate() {
@@ -35,9 +34,13 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public int execute() {
-        if (!boughtSupplies) {
-            boughtSupplies = true;
-            GEWrapper.setBuySupplies(true, SupplyMapWrapper.getNatureSpiritItemsMap());
+        if (!hasSupplies) {
+            if (!Inventory.contains("Silver sickle")) {
+                BankWrapper.openAndDepositAll(false, "Silver sickle", "Ghostspeak amulet");
+            } else {
+                hasSupplies = true;
+            }
+            return SleepWrapper.shortSleep600();
         }
 
         if (Dialog.isOpen()) {

@@ -52,10 +52,6 @@ public class GEWrapper {
         SupplyMapWrapper.setSupplyMap(supplyMap);
     }
 
-    public static void setBuySupplies(boolean buySupplies) {
-        GEWrapper.buySupplies = buySupplies;
-    }
-
     public static boolean isBuySupplies() {
         return buySupplies;
     }

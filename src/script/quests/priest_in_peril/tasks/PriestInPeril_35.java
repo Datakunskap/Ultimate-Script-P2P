@@ -27,7 +27,8 @@ public class PriestInPeril_35 extends Task {
 
     @Override
     public boolean validate() {
-        return WATERFALL.getVarpValue() == 10 && PRIEST_IN_PERIL.getVarpValue() == 35;
+        return WATERFALL.getVarpValue() == 10 &&
+                (PRIEST_IN_PERIL.getVarpValue() == 34 || PRIEST_IN_PERIL.getVarpValue() == 35);
     }
 
     @Override
