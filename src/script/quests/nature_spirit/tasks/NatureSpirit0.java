@@ -11,7 +11,6 @@ import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
-import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
@@ -38,15 +37,14 @@ public class NatureSpirit0 extends Task {
     public int execute() {
         if (!hasSupplies) {
             if (!Inventory.contains("Silver sickle")) {
-                Position bank = BankLocation.getNearest(b
-                        -> Movement.isWalkable(b.getPosition().randomize(3))).getPosition();
+                BankLocation bank = BankLocation.getNearest(b -> Movement.isWalkable(b.getPosition()));
                 if (bank != null) {
-                    Movement.walkTo(bank, WalkingWrapper::shouldBreakOnRunenergy);
+                    Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 } else {
-                    bank = BankLocation.GRAND_EXCHANGE.getPosition();
-                    Movement.walkTo(bank, WalkingWrapper::shouldBreakOnRunenergy);
+                    bank = BankLocation.GRAND_EXCHANGE;
+                    Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 }
-                if (bank.distance() < 4) {
+                if (bank.getPosition().distance() < 4) {
                     BankWrapper.openAndDepositAll("Silver sickle", "Ghostspeak amulet");
                 }
                 Movement.toggleRun(true);

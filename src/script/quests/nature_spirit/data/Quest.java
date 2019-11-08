@@ -2,6 +2,7 @@ package script.quests.nature_spirit.data;
 
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Varps;
+import org.rspeer.runetek.api.scene.Players;
 
 public enum Quest {
 
@@ -22,7 +23,7 @@ public enum Quest {
     }
 
     public int getVarpValue() {
-        return Game.isLoggedIn() ? Varps.get(varpId) : -1;
+        return Game.isLoggedIn() && Players.getLocal() != null ? Varps.get(varpId) : -1;
     }
 
     @Override
