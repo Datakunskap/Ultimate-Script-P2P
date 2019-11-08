@@ -39,6 +39,8 @@ public class Main extends TaskScript implements RenderListener {
         setStartingItemsMap();
         setRestlessGhostItemsMap();
         setWitchesHouseItemsMap();
+        setWaterfallItemsMap();
+        setPriestInPerilItemsMap();
         setNatureSpiritItemsMap();
 
         submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
@@ -76,6 +78,18 @@ public class Main extends TaskScript implements RenderListener {
         map.put("Leather gloves", 1);
         map.put("Tuna", 10);
         WitchesHouse.setSupplyMap(map);
+    }
+
+    private void setWaterfallItemsMap() {
+        //TODO: Add items
+        HashMap<String, Integer> map = new HashMap<>();
+        WaterfallQuest.setSupplyMap(map);
+    }
+
+    private void setPriestInPerilItemsMap() {
+        //TODO: Add items
+        HashMap<String, Integer> map = new HashMap<>();
+        PriestInPeril.setSupplyMap(map);
     }
 
     private void setNatureSpiritItemsMap() {
