@@ -70,9 +70,7 @@ public class Main extends TaskScript implements RenderListener {
         submit(new BuySupplies(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION),
                 new GetStartersGold(),
                 new BuyItemsNeeded(),
-                new TrainTo13(),
-                new TrainTo50(),
-                new Fungus()
+                new TrainTo13()
         );
 
         submit(TheRestlessGhost.TASKS);
@@ -80,6 +78,10 @@ public class Main extends TaskScript implements RenderListener {
         submit(WaterfallQuest.TASKS);
         submit(PriestInPeril.TASKS);
         submit(NatureSpirit.TASKS);
+
+        submit(new TrainTo50(),
+                new Fungus()
+        );
 
     }
 

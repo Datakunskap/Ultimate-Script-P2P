@@ -164,7 +164,7 @@ public class Fungus extends Task {
             Log.info("Picking fungi");
             int fungiAmountBefore = Inventory.getCount("Mort myre funus");
             if (fungi.interact("Pick")) {
-                Time.sleepUntil(() -> fungiAmountBefore != Inventory.getCount("Mort myre fungus"), 5000);
+                Time.sleepUntil(() -> fungiAmountBefore < Inventory.getCount("Mort myre fungus"), 5000);
                 BankWrapper.updateInventoryValue();
             }
         }
@@ -177,7 +177,7 @@ public class Fungus extends Task {
                 Log.info("Picking fungi");
                 int fungiAmountBefore = Inventory.getCount("Mort myre funus");
                 if (fungi.interact("Pick")) {
-                    Time.sleepUntil(() -> fungiAmountBefore != Inventory.getCount("Mort myre fungus"), 5000);
+                    Time.sleepUntil(() -> fungiAmountBefore < Inventory.getCount("Mort myre fungus"), 5000);
                     BankWrapper.updateInventoryValue();
                 }
             }

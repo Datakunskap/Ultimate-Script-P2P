@@ -1,5 +1,6 @@
 package script.quests.the_restless_ghost.tasks;
 
+
 import org.rspeer.runetek.adapter.Interactable;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
@@ -12,12 +13,12 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
 import static script.quests.the_restless_ghost.data.Quest.THE_RESTLESS_GHOST;
 
 
 public class RestlessGhost_4 extends Task {
-    private final Player local = Players.getLocal();
 
     @Override
     public boolean validate() {
@@ -45,9 +46,22 @@ public class RestlessGhost_4 extends Task {
 
     @Override
     public int execute() {
+
+        Player local = Players.getLocal();
+
+        Log.info("hello");
         SceneObject ladder = SceneObjects.getFirstAt(new Position(3103, 9576, 0));
         SceneObject coffinClosed = SceneObjects.getNearest(2145);
         SceneObject coffinOpen = SceneObjects.getNearest(15061);
+        if(ladder == null){
+            Log.info("1");
+        }
+        if(coffinClosed == null){
+            Log.info("1");
+        }
+        if(coffinOpen == null){
+            Log.info("1");
+        }
         if (Movement.getRunEnergy() > 20 && !Movement.isRunEnabled()) { //Turn on run if it's off with over 20 energy
             Movement.toggleRun(true);
 
@@ -55,8 +69,8 @@ public class RestlessGhost_4 extends Task {
         if (Inventory.contains(553)) {
             if (ladder != null) {
                 if (Movement.walkToRandomized(ladder)) {
-                    if(ladder.interact("Climb-Up")){
-                        Time.sleepUntil(()-> ladder == null, 5000);
+                    if (ladder.interact("Climb-Up")) {
+                        Time.sleepUntil(() -> ladder == null, 5000);
                     }
                 }
             }
@@ -71,12 +85,11 @@ public class RestlessGhost_4 extends Task {
                 Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
                 useItemOn("Ghost's Skull", coffinOpen);
 
-            } else {
-                if (ladder == null) {
-                    Movement.walkTo(new Position(3249, 3192, 0));
-                    Time.sleepUntil(() -> (local.isMoving()), 10000);
-                    Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
-                }
+            }
+            if (ladder == null && coffinClosed == null && coffinOpen == null) {
+                Movement.walkTo(new Position(3249, 3192, 0));
+                Time.sleepUntil(() -> (local.isMoving()), 10000);
+                Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
             }
         }
 
