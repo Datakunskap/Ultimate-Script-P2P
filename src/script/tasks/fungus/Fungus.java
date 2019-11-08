@@ -33,7 +33,7 @@ public class Fungus extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.NATURE_SPIRIT.getVarpValue() == 75
+        return Quest.NATURE_SPIRIT.getVarpValue() == 85
                 && Skills.getLevel(Skill.PRAYER) >= 50;
     }
 
