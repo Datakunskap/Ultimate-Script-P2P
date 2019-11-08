@@ -114,7 +114,7 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
+                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
                     if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
@@ -227,7 +227,6 @@ public class Fungus extends Task {
         }
         if (BankLocation.CLAN_WARS.getPosition().distance() <= 50) {
             if (!Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.getName().contains("Salve graveyard teleport"))) {
-                Log.info("lolololo");
                 if (!Bank.isOpen()) {
                     if (Bank.open()) {
                         Time.sleepUntil(() -> Bank.isOpen(), 20000);
@@ -259,7 +258,6 @@ public class Fungus extends Task {
                 }
             }
             if (Inventory.containsAnyExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
-                Log.info("lalala");
                 if (!Bank.isOpen()) {
                     Log.info("Opening the bank");
                     if (Bank.open()) {

@@ -76,7 +76,7 @@ public class PriestInPeril_35 extends Task {
                         if(Bank.withdraw("Stamina potion(4)", 1)){
                             Time.sleepUntil(()-> Inventory.contains("Stamina potion(4)"), 5000);
                         }
-                        if(Bank.withdraw("Rune essence", 25)){
+                        if(Bank.withdraw("Rune essence", 26)){
                             Time.sleepUntil(()-> Inventory.contains("Rune essence"), 5000);
                         }
                     }
