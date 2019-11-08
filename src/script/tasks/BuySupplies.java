@@ -67,7 +67,7 @@ public class BuySupplies extends Task {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
             Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.shortSleep350();
+            return SleepWrapper.mediumSleep1500();
         }
 
         if (!checkedBank) {
@@ -82,7 +82,7 @@ public class BuySupplies extends Task {
         if (!GrandExchange.isOpen()) {
             Bank.close();
             GEWrapper.openGE();
-            return SleepWrapper.shortSleep350();
+            return SleepWrapper.mediumSleep1500();
         }
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {
@@ -122,7 +122,7 @@ public class BuySupplies extends Task {
             GEWrapper.closeGE();
         }
 
-        return SleepWrapper.shortSleep350();
+        return SleepWrapper.mediumSleep1500();
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
@@ -188,6 +188,9 @@ public class BuySupplies extends Task {
     }
 
     private int getPrice(String item) {
+        if (item.equalsIgnoreCase("Dragon bones")) {
+            return 3500;
+        }
         return coinsToSpend / getQuantity(item);
     }
 

@@ -14,6 +14,10 @@ public class SleepWrapper {
         return Random.mid(999,1999);
     }
 
+    public static int mediumSleep1000() {
+        return Random.mid(500,1500);
+    }
+
     public static int longSleep7500() {
         return Random.mid(4999,9999);
     }
