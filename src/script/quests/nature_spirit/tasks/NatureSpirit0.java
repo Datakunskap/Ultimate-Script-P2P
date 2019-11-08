@@ -25,6 +25,19 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public int execute() {
+
+        if (Dialog.isOpen()) {
+            Dialog.process("Is there anything else interesting to do around here?",
+                    "Well, what is it, I may be able to help?",
+                    "Yes, I'll go and look for him.",
+                    "Yes, I'm sure.");
+
+            if (Dialog.canContinue())
+                Dialog.processContinue();
+
+            return NatureSpirit.getLoopReturn();
+        }
+
         if (!Location.DUNGEON_AREA.contains(Players.getLocal()) && Location.ENTRANCE.distance() > 3) {
             Movement.walkTo(Location.ENTRANCE, WalkingWrapper::shouldBreakWalkLoop);
             if (Location.ENTRANCE.distance() > 3 && !Movement.isRunEnabled()) {
@@ -44,16 +57,6 @@ public class NatureSpirit0 extends Task {
         }
         else if (!Dialog.isOpen()) {
             drezel.interact("Talk-to");
-        }
-
-        if (Dialog.isOpen()) {
-            Dialog.process("Is there anything else interesting to do around here?",
-                            "Well, what is it, I may be able to help?",
-                            "Yes, I'll go and look for him.",
-                            "Yes, I'm sure.");
-
-            if (Dialog.canContinue())
-                Dialog.processContinue();
         }
 
         return NatureSpirit.getLoopReturn();
