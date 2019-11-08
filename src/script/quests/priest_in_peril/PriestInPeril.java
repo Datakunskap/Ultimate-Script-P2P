@@ -3,9 +3,18 @@ package script.quests.priest_in_peril;
 import org.rspeer.script.task.Task;
 import script.quests.priest_in_peril.tasks.*;
 
+import java.util.HashMap;
+
 public class PriestInPeril {
 
+    private static HashMap<String, Integer> supplies;
+
+    public static void setSupplyMap(HashMap<String, Integer> supplyMap) {
+        supplies = supplyMap;
+    }
+
     public static final Task[] TASKS = {
+            new BuySupplies(supplies),
             new PriestInPeril_Preparation(),
             new PriestInPeril_0(),
             new PriestInPeril_1(),

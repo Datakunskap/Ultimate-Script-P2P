@@ -1,3 +1,4 @@
+/*
 package script.quests.nature_spirit.tasks;
 
 import org.rspeer.runetek.adapter.scene.SceneObject;
@@ -154,3 +155,4 @@ public class BuySupplies extends Task {
     }
 
 }
+*/

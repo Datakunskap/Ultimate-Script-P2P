@@ -108,7 +108,7 @@ public class BankWrapper {
     }
 
     public static void openAndDepositAll(boolean keepAllCoins, Set<String> itemsToKeepSet) {
-        openAndDepositAll(keepAllCoins, itemsToKeepSet);
+        openAndDepositAll(keepAllCoins, 0, itemsToKeepSet);
     }
 
     public static void openAndDepositAll(boolean keepAllCoins, String... itemsToKeep) {
