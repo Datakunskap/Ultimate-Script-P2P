@@ -16,6 +16,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 
 public class TrainTo13 extends Task {
@@ -65,7 +66,7 @@ public class TrainTo13 extends Task {
                 Log.info("Setting boughtItem to true");
                 boughtItems = true;
             } else {
-                GEWrapper.setBuySupplies(true);
+                GEWrapper.setBuySupplies(true, SupplyMapWrapper.getStartingItemsMap());
             }
         }
         return boughtItems && Skills.getLevel(Skill.MAGIC) < 13;

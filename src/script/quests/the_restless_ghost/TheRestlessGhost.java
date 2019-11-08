@@ -3,15 +3,7 @@ package script.quests.the_restless_ghost;
 import org.rspeer.script.task.Task;
 import script.quests.the_restless_ghost.tasks.*;
 
-import java.util.HashMap;
-
 public class TheRestlessGhost {
-
-    private static HashMap<String, Integer> supplies;
-
-    public static void setSupplyMap(HashMap<String, Integer> supplyMap) {
-        supplies = supplyMap;
-    }
 
     public static final Task[] TASKS = {
             new RestlessGhost_0(),

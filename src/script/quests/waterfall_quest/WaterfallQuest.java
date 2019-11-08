@@ -3,15 +3,7 @@ package script.quests.waterfall_quest;
 import org.rspeer.script.task.Task;
 import script.quests.waterfall_quest.tasks.*;
 
-import java.util.HashMap;
-
 public class WaterfallQuest {
-
-    private static HashMap<String, Integer> supplies;
-
-    public static void setSupplyMap(HashMap<String, Integer> supplyMap) {
-        supplies = supplyMap;
-    }
 
     public static final Task[] TASKS = {
             new Waterfall_Preparation(),

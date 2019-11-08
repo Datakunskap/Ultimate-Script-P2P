@@ -17,6 +17,7 @@ import script.data.IDs;
 import script.data.Strings;
 import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 public class BuyItemsNeeded extends Task {
 
@@ -75,7 +76,7 @@ public class BuyItemsNeeded extends Task {
 
         if(Inventory.containsOnly(Strings.COINS)){
             Log.info("Buying the needed items");
-            GEWrapper.setBuySupplies(true);
+            GEWrapper.setBuySupplies(true, SupplyMapWrapper.getStartingItemsMap());
         }
 
         return SleepWrapper.shortSleep350();

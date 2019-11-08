@@ -15,10 +15,7 @@ import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
-import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
-import script.wrappers.PriceCheckService;
-import script.wrappers.SleepWrapper;
+import script.wrappers.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,18 +32,13 @@ public class BuySupplies extends Task {
     private int coinsToSpend;
     private boolean keepItems;
 
-    public BuySupplies(final HashMap<String, Integer> SUPPLIES, boolean keepItems) {
-        this.SUPPLIES = SUPPLIES;
+    public BuySupplies(boolean keepItems) {
+        SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
         this.keepItems = keepItems;
     }
 
-    public BuySupplies(final String[] SUPPLIES, boolean keepItems) {
-        this.SUPPLIES = new HashMap<>();
-        this.keepItems = keepItems;
-
-        for (String s : SUPPLIES) {
-            this.SUPPLIES.put(s, -1);
-        }
+    public BuySupplies() {
+        SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
     }
 
     @Override
@@ -57,7 +49,7 @@ public class BuySupplies extends Task {
         if (itemsIterator != null || GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY))
             return true;
 
-        if (!GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
+        if (SUPPLIES != null && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
             items = new HashSet<>();

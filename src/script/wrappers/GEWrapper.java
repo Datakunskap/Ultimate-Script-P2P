@@ -37,7 +37,6 @@ public class GEWrapper {
     private static final String EXCHANGE_ACTION = "Exchange";
     private static final String GE_NPC_NAME = "Grand Exchange Clerk";
     private static boolean buySupplies;
-
     private static boolean sellItems;
 
     public static void setSellItems(boolean sellItems) {
@@ -46,6 +45,11 @@ public class GEWrapper {
 
     public static boolean isSellItems() {
         return sellItems;
+    }
+
+    public static void setBuySupplies(boolean buySupplies, HashMap<String, Integer> supplyMap) {
+        GEWrapper.buySupplies = buySupplies;
+        SupplyMapWrapper.setSupplyMap(supplyMap);
     }
 
     public static void setBuySupplies(boolean buySupplies) {
@@ -176,4 +180,5 @@ public class GEWrapper {
         return (GrandExchange.isOpen() || GrandExchangeSetup.isOpen()) &&
                 (GrandExchange.getOffers(offerType).length > 0 || GrandExchange.getFirstActive() != null);
     }
+
 }

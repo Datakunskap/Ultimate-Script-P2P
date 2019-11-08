@@ -14,13 +14,18 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.GEWrapper;
+import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 public class NatureSpirit0 extends Task {
+
+    private boolean boughtSupplies;
 
     @Override
     public boolean validate() {
@@ -30,16 +35,9 @@ public class NatureSpirit0 extends Task {
 
     @Override
     public int execute() {
-        GEWrapper.setBuySupplies(true);
-
-        InterfaceComponent foodComp = Interfaces.getComponent(11, 2);
-
-        if (foodComp != null && foodComp.isVisible() && foodComp.getText().contains("hands you some food.")) {
-            Time.sleep(1000);
-            Dialog.processContinue();
-            Game.getClient().fireScriptEvent(299, 1, 1);
-            Keyboard.pressEnter();
-            Time.sleep(1000);
+        if (!boughtSupplies) {
+            boughtSupplies = true;
+            GEWrapper.setBuySupplies(true, SupplyMapWrapper.getNatureSpiritItemsMap());
         }
 
         if (Dialog.isOpen()) {
@@ -67,6 +65,15 @@ public class NatureSpirit0 extends Task {
         }
 
         Npc drezel = Npcs.getNearest("Drezel");
+        InterfaceComponent foodComp = Interfaces.getComponent(11, 2);
+
+        if (foodComp != null && foodComp.isVisible() && foodComp.getText().contains("hands you some food.")) {
+            Log.info("Handling food component");
+            Dialog.processContinue();
+            Game.getClient().fireScriptEvent(299, 1, 1);
+            Keyboard.pressEnter();
+            return SleepWrapper.shortSleep600();
+        }
 
         if (drezel == null || !drezel.isPositionInteractable()) {
             Movement.walkTo(Location.DREZEL_POSITION);
