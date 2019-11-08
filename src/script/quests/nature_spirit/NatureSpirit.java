@@ -5,6 +5,6 @@ import script.quests.nature_spirit.tasks.BuySupplies;
 
 public class NatureSpirit {
 
-    public static final Task[] TASKS = {new BuySupplies()};
+    public static final Task[] TASKS = {};
 
 }
