@@ -55,9 +55,7 @@ public class Waterfall_5 extends Task {
                 Movement.walkTo(KeyArea.getCenter(), WalkingWrapper::shouldBreakOnTarget);
                 RandomSleep();
                 RandomSleep();
-
             }
-
 
             if (KeyArea.contains(Players.getLocal())) {
                 SceneObject Bookcases = SceneObjects.newQuery().within(KeyArea).nameContains("Crate").reachable().actions("Search").ids(1999).results().random();

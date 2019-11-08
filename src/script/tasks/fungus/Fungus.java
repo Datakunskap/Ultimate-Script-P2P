@@ -189,7 +189,7 @@ public class Fungus extends Task {
     }
 
     public void useSalveGraveyardTeleport(){
-        Time.sleep(500,750);
+        Time.sleep(1000,1299);
         Item salveGraveyardTeleport = Inventory.getFirst("Salve Graveyard Teleport");
         if (salveGraveyardTeleport != null) {
             Log.info("Using a tab to teleport to salve graveyard teleport");

@@ -1,6 +1,5 @@
 package script.wrappers;
 
-import org.rspeer.networking.dax.walker.engine.definitions.WalkCondition;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -24,8 +23,8 @@ public class WalkingWrapper {
     }
 
     public static boolean shouldBreakOnRunenergy() {
-        return Movement.getRunEnergy() < 20
-                && !Movement.isStaminaEnhancementActive();
+        return Movement.getRunEnergy() < 5
+                || !Movement.isStaminaEnhancementActive();
     }
 
     public static void walkToNatureGrotto() {
