@@ -1,10 +1,5 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Quest;
-import nature_spirit.wrappers.BankWrapper;
-import nature_spirit.wrappers.GEWrapper;
-import nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -21,6 +16,11 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
+import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -72,7 +72,7 @@ public class BuySupplies extends Task {
             if (bridge != null && bridge.containsAction("Jump") && bridge.interact(a -> true)) {
                 Time.sleepUntil(() -> !Players.getLocal().isAnimating(), 5000);
             }
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!checkedBank) {
@@ -89,14 +89,14 @@ public class BuySupplies extends Task {
             if (coinsToSpend < (getPrice(itemToBuy) * getQuantity(itemToBuy))) {
                 Log.severe("NOT ENOUGH GP  |  " + itemToBuy + " : " + (getPrice(itemToBuy) * getQuantity(itemToBuy)));
                 itemsIterator = null;
-                return Main.getLoopReturn();
+                return NatureSpirit.getLoopReturn();
             }
         }
 
         if (!GrandExchange.isOpen()) {
             Bank.close();
             GEWrapper.openGE();
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {

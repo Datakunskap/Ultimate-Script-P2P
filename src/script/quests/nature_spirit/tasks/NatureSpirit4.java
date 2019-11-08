@@ -1,7 +1,7 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Quest;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Quest;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -27,7 +27,7 @@ public class NatureSpirit4 extends Task {
     public int execute() {
         if (Dialog.isOpen()) {
             Dialog.processContinue();
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         SceneObject tree = SceneObjects.getNearest("Grotto tree");
@@ -53,6 +53,6 @@ public class NatureSpirit4 extends Task {
             }
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

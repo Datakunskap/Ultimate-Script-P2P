@@ -1,9 +1,9 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Location;
-import nature_spirit.data.Quest;
-import nature_spirit.wrappers.WalkingWrapper;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -32,7 +32,7 @@ public class NatureSpirit8 extends Task {
             if (Dialog.isViewingChatOptions()) {
                 Dialog.process("I think I've solved the puzzle!");
             }
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
@@ -41,12 +41,12 @@ public class NatureSpirit8 extends Task {
 
         if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
 
-            if (Main.useItemOnObject("Mort myre fungus", 3527)) {
+            if (NatureSpirit.useItemOnObject("Mort myre fungus", 3527)) {
                 Time.sleep(1600, 2200);
                 Log.info("Placed Fungus");
             }
 
-            if (Main.useItemOnObject("A used spell", 3529)) {
+            if (NatureSpirit.useItemOnObject("A used spell", 3529)) {
                 Time.sleep(1600, 2200);
                 Log.info("Placed Spell");
             }
@@ -75,6 +75,6 @@ public class NatureSpirit8 extends Task {
             }
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

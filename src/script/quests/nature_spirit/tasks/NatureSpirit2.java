@@ -1,8 +1,8 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Location;
-import nature_spirit.data.Quest;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -47,6 +47,6 @@ public class NatureSpirit2 extends Task {
             Dialog.process("I'm wearing an amulet of ghost speak!");
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

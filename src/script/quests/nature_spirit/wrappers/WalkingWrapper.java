@@ -1,6 +1,5 @@
 package script.quests.nature_spirit.wrappers;
 
-import nature_spirit.data.Location;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -11,6 +10,7 @@ import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
+import script.quests.nature_spirit.data.Location;
 
 public class WalkingWrapper {
 

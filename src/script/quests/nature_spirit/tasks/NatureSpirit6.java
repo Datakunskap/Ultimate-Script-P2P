@@ -1,8 +1,8 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Location;
-import nature_spirit.wrappers.WalkingWrapper;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -41,6 +41,6 @@ public class NatureSpirit6 extends Task {
             Time.sleepUntil(() -> !Players.getLocal().isAnimating(), 5000);
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

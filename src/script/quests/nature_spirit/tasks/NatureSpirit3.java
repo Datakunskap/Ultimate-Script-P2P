@@ -1,9 +1,9 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Location;
-import nature_spirit.data.Quest;
-import nature_spirit.wrappers.WalkingWrapper;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.SceneObject;
@@ -32,7 +32,7 @@ public class NatureSpirit3 extends Task {
         if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
             WalkingWrapper.walkToNatureGrotto();
             Movement.toggleRun(true);
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!Inventory.contains("Mirror")) {
@@ -55,7 +55,7 @@ public class NatureSpirit3 extends Task {
             if (Dialog.isViewingChatOptions())
                 Dialog.process("Ok, thanks.");
 
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!Dialog.isOpen() && Inventory.contains("Mirror")) {
@@ -80,6 +80,6 @@ public class NatureSpirit3 extends Task {
             }
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

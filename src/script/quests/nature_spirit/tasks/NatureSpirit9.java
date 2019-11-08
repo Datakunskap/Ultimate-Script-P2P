@@ -1,9 +1,9 @@
 package script.quests.nature_spirit.tasks;
 
-import nature_spirit.Main;
-import nature_spirit.data.Location;
-import nature_spirit.data.Quest;
-import nature_spirit.wrappers.WalkingWrapper;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
@@ -28,7 +28,7 @@ public class NatureSpirit9 extends Task {
             if (Dialog.isViewingChatOptions()) {
                 Dialog.process("Ok, thanks.");
             }
-            return Main.getLoopReturn();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
@@ -44,6 +44,6 @@ public class NatureSpirit9 extends Task {
             }
         }
 
-        return Main.getLoopReturn();
+        return NatureSpirit.getLoopReturn();
     }
 }

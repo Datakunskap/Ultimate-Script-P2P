@@ -1,37 +1,24 @@
 package script.quests.nature_spirit;
 
-import nature_spirit.data.Location;
-import nature_spirit.tasks.*;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.menu.ActionOpcodes;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
-import org.rspeer.runetek.event.listeners.DeathListener;
-import org.rspeer.runetek.event.types.DeathEvent;
-import org.rspeer.runetek.providers.subclass.GameCanvas;
 import org.rspeer.script.ScriptMeta;
-import org.rspeer.script.task.TaskScript;
-import org.rspeer.ui.Log;
+import org.rspeer.script.task.Task;
+import script.quests.nature_spirit.tasks.*;
 
 
 @ScriptMeta(name = "Nature Spirit", desc = "Nature Spirit", developer = "DrScatman")
-public class Main extends TaskScript implements DeathListener {
+public class NatureSpirit {
 
-    @Override
-    public void onStart() {
-        Log.fine("Starting Nature Spirit");
-
-        if (!GameCanvas.isInputEnabled()) {
-            GameCanvas.setInputEnabled(true);
-        }
-
-        submit(new BuySupplies(),
+    public static final Task[] TASKS = {
+                new BuySupplies(),
                 new NatureSpirit0(),
                 new NatureSpirit1(),
                 new NatureSpirit2(),
@@ -43,13 +30,7 @@ public class Main extends TaskScript implements DeathListener {
                 new NatureSpirit8(),
                 new NatureSpirit9(),
                 new NatureSpirit10()
-        );
-    }
-
-    @Override
-    public void onStop() {
-        Log.severe("Script Stopped");
-    }
+    };
 
     public static int getLoopReturn() {
         return Random.low(600, 1600);
@@ -76,11 +57,5 @@ public class Main extends TaskScript implements DeathListener {
             }
         }
         return false;
-    }
-
-    @Override
-    public void notify(DeathEvent deathEvent) {
-        if (deathEvent.getSource().equals(Players.getLocal()))
-            Movement.walkTo(Location.ENTRANCE);
     }
 }
