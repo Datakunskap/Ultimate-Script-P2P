@@ -10,6 +10,7 @@ import script.quests.witches_house.WitchesHouse;
 import script.tasks.BuyItemsNeeded;
 import script.tasks.BuySupplies;
 import script.tasks.GetStartersGold;
+import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 
@@ -53,7 +54,8 @@ public class Main extends TaskScript {
                 new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13(),
-                new TrainTo50()
+                new TrainTo50(),
+                new Fungus()
         );
 
         submit(TheRestlessGhost.TASKS);
