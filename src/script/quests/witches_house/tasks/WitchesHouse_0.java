@@ -1,7 +1,6 @@
 package script.quests.witches_house.tasks;
 
 import org.rspeer.runetek.adapter.scene.Npc;
-import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
@@ -10,7 +9,6 @@ import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
-import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 
 import static script.quests.witches_house.data.Quest.THE_RESTLESS_GHOST;
@@ -30,8 +28,6 @@ public class WitchesHouse_0 extends Task {
 
     @Override
     public int execute() {
-
-        Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
             Dialog.processContinue();

@@ -84,7 +84,7 @@ public class WitchesHouse_Preparation extends Task {
                     && Inventory.getCount(CHEESE) == 2
                     && Inventory.getCount(true, MIND_RUNE) == 100
                     && Inventory.getCount(true, FIRE_RUNE) == 300
-                    && Inventory.getCount(true, FALADOR_TELEPORT) == 5
+                    && Inventory.getCount(true, FALADOR_TELEPORT) >= 3
                     && Inventory.getCount(TUNA) == 10
                     && Inventory.getCount(LEATHER_GLOVES) == 1) {
                 Log.info("Setting readyToStartWitchesHouse to true");

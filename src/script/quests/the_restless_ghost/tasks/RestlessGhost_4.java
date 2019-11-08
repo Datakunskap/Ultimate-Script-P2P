@@ -57,10 +57,10 @@ public class RestlessGhost_4 extends Task {
             Log.info("1");
         }
         if(coffinClosed == null){
-            Log.info("1");
+            Log.info("2");
         }
         if(coffinOpen == null){
-            Log.info("1");
+            Log.info("3");
         }
         if (Movement.getRunEnergy() > 20 && !Movement.isRunEnabled()) { //Turn on run if it's off with over 20 energy
             Movement.toggleRun(true);

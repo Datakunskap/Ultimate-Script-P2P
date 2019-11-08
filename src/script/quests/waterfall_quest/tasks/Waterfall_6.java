@@ -18,7 +18,6 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.nature_spirit.data.Quest;
 
 import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_OBJECT;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
