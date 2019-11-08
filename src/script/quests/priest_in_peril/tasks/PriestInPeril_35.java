@@ -76,7 +76,7 @@ public class PriestInPeril_35 extends Task {
                         if(Bank.withdraw("Stamina potion(4)", 1)){
                             Time.sleepUntil(()-> Inventory.contains("Stamina potion(4)"), 5000);
                         }
-                        if(Bank.withdraw("Rune essence", 25)){
+                        if(Bank.withdraw("Rune essence", 26)){
                             Time.sleepUntil(()-> Inventory.contains("Rune essence"), 5000);
                         }
                     }
@@ -88,7 +88,7 @@ public class PriestInPeril_35 extends Task {
             if(DREZEL_POSITION.distance() > 10){
                 Movement.walkTo(DREZEL_POSITION, WalkingWrapper::shouldBreakOnRunenergy);
             }
-            if(DREZEL_POSITION.distance() <= 10){
+            if(DREZEL_POSITION.distance() <= 5){
                 Npc drezel = Npcs.getNearest("Drezel");
                 if(!Dialog.isOpen()){
                     if(drezel.interact("Talk-to")){

@@ -79,10 +79,10 @@ public class PriestInPeril_4 extends Task {
                         if (Bank.withdraw(EMPTY_BUCKET, 1)) {
                             Time.sleepUntil(() -> Inventory.contains(EMPTY_BUCKET), 5000);
                         }
-                        if (Bank.withdraw(TUNA, 1)) {
+                        if (Bank.withdraw(TUNA, 2)) {
                             Time.sleepUntil(() -> Inventory.contains(TUNA), 5000);
                         }
-                        if (Bank.withdraw(RUNE_ESSENCE, 25)) {
+                        if (Bank.withdraw(RUNE_ESSENCE, 24)) {
                             Time.sleepUntil(() -> Inventory.contains(RUNE_ESSENCE), 5000);
                         }
                     }

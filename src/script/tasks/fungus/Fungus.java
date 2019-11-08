@@ -41,7 +41,7 @@ public class Fungus extends Task {
     @Override
     public int execute() {
 
-        if(!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()){
+        if (!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()) {
             Log.info("idk");
             Movement.walkTo(BankLocation.CLAN_WARS.getPosition());
         }
@@ -80,32 +80,32 @@ public class Fungus extends Task {
         return Random.mid(299, 399);
     }
 
-    public boolean insideClanWars(){
+    public boolean insideClanWars() {
         return CLAN_WARS_INSIDE_TILE.distance() < 10;
     }
 
-    public boolean atMortMyreFungusLogs(){
+    public boolean atMortMyreFungusLogs() {
         return BLOOM_TILE.distance() <= 5;
     }
 
-    public boolean inMortania(){
+    public boolean inMortania() {
         return BLOOM_TILE.distance() > 5 && BLOOM_TILE.distance() < 100;
     }
 
-    public boolean inSalveGravyardArea(){
+    public boolean inSalveGravyardArea() {
         Player local = Players.getLocal();
         return AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local);
     }
 
-    public boolean atClanWars(){
+    public boolean atClanWars() {
         return BankLocation.CLAN_WARS.getPosition().distance() < 50;
     }
 
-    public boolean outOfPrayer(){
+    public boolean outOfPrayer() {
         return Skills.getCurrentLevel(Skill.PRAYER) == 0;
     }
 
-    public void handleGate(){
+    public void handleGate() {
         Player local = Players.getLocal();
         SceneObject gate = SceneObjects.getNearest("Gate");
         InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
@@ -114,7 +114,7 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
+                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
                     if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
@@ -122,11 +122,13 @@ public class Fungus extends Task {
                             Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
                         }
                     }
-                    if (enterTheSwamp.getMaterialId() == 942 && enterTheSwamp != null) {
-                        Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
-                        if (enterTheSwamp.interact("Yes")) {
-                            Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
+                    if (enterTheSwamp != null) {
+                        if (enterTheSwamp.getMaterialId() == 942) {
+                            Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
+                            if (enterTheSwamp.interact("Yes")) {
+                                Log.info("Clicked enterTheSwamp");
+                                Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
+                            }
                         }
                     }
                     if (dontAskMeThisAgain == null && enterTheSwamp != null) {
@@ -141,7 +143,7 @@ public class Fungus extends Task {
         }
     }
 
-    public void collecingFungi(){
+    public void collecingFungi() {
         SceneObject fungi = SceneObjects.getNearest(3509);
         if (fungi == null) {
             Log.info("There is no fungi to pick");
@@ -170,7 +172,7 @@ public class Fungus extends Task {
         }
     }
 
-    public void collectingLastFungi(){
+    public void collectingLastFungi() {
         SceneObject fungi = SceneObjects.getNearest(3509);
         if (fungi != null) {
             if (!Inventory.isFull()) {
@@ -188,8 +190,8 @@ public class Fungus extends Task {
         }
     }
 
-    public void useSalveGraveyardTeleport(){
-        Time.sleep(1000,1299);
+    public void useSalveGraveyardTeleport() {
+        Time.sleep(1000, 1299);
         Item salveGraveyardTeleport = Inventory.getFirst("Salve Graveyard Teleport");
         if (salveGraveyardTeleport != null) {
             Log.info("Using a tab to teleport to salve graveyard teleport");
@@ -225,7 +227,6 @@ public class Fungus extends Task {
         }
         if (BankLocation.CLAN_WARS.getPosition().distance() <= 50) {
             if (!Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.getName().contains("Salve graveyard teleport"))) {
-                Log.info("lolololo");
                 if (!Bank.isOpen()) {
                     if (Bank.open()) {
                         Time.sleepUntil(() -> Bank.isOpen(), 20000);
@@ -257,7 +258,6 @@ public class Fungus extends Task {
                 }
             }
             if (Inventory.containsAnyExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
-                Log.info("lalala");
                 if (!Bank.isOpen()) {
                     Log.info("Opening the bank");
                     if (Bank.open()) {
