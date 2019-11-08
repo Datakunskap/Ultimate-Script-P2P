@@ -39,8 +39,10 @@ public class NatureSpirit0 extends Task {
             if (!Inventory.contains("Silver sickle")) {
                 BankLocation bank = BankLocation.getNearest(b -> Movement.isWalkable(b.getPosition()));
                 if (bank != null) {
+                    Log.info("Getting Supplies From Nearest Bank");
                     Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 } else {
+                    Log.info("Getting Supplies From GE");
                     bank = BankLocation.GRAND_EXCHANGE;
                     Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 }
