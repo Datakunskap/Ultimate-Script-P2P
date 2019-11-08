@@ -3,7 +3,6 @@ package script.tasks;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
 import org.rspeer.runetek.api.component.tab.Equipment;
@@ -192,7 +191,7 @@ public class BuySupplies extends Task {
     }
 
     private int getPrice(String item) {
-        return coinsToSpend / items.size() / getQuantity(item);
+        return coinsToSpend / getQuantity(item);
     }
 
 }
