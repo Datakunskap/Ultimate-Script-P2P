@@ -21,15 +21,15 @@ public class BankWrapper {
     private static int amountMuled;
 
     public static int getTotalValue() {
-        return bankValue + inventoryValue;
+        return getBankValue() + getInventoryValue();
     }
 
     public static int getBankValue() {
-        return bankValue;
+        return Math.max(bankValue, 0);
     }
 
     public static int getInventoryValue() {
-        return inventoryValue;
+        return Math.max(inventoryValue, 0);
     }
 
     public static int getTotalValueGained() {

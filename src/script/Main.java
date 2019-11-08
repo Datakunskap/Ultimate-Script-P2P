@@ -3,6 +3,7 @@ package script;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.RenderEvent;
+import org.rspeer.runetek.providers.subclass.GameCanvas;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.TaskScript;
 import org.rspeer.ui.Log;
@@ -18,6 +19,7 @@ import script.tasks.GetStartersGold;
 import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
+import script.wrappers.PriceCheckService;
 
 import java.util.HashMap;
 
@@ -53,6 +55,16 @@ public class Main extends TaskScript implements RenderListener {
         submit(new TrainTo50(),
                 new Fungus()
         );
+
+        if (!GameCanvas.isInputEnabled()) {
+            GameCanvas.setInputEnabled(true);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        Log.severe("Script Stopped");
+        PriceCheckService.dispose();
     }
 
     @Override

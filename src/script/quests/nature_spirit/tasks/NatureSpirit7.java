@@ -100,9 +100,9 @@ public class NatureSpirit7 extends Task {
         }
 
         if (Inventory.contains("Mort myre fungus")) {
-            WalkingWrapper.walkToNatureGrotto();
-
-            if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+            if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                WalkingWrapper.walkToNatureGrotto();
+            } else {
                 WalkingWrapper.enterGrotto();
             }
         }

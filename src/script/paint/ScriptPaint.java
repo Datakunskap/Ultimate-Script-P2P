@@ -1,5 +1,6 @@
 package script.paint;
 
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.RenderEvent;
 import script.Main;
@@ -30,9 +31,9 @@ public final class ScriptPaint implements RenderListener {
 
     public ScriptPaint(Main context) {
         stats = new LinkedHashMap<>();
-        outline = new Color(70, 251, 239);
+        outline = new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255));
 
-        stats.put("Mort Myre Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));
+        stats.put("SS Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));
         stats.put("Runtime", new PaintStatistic(() -> context.getRuntime().toElapsedString()));
         stats.put("Task", new PaintStatistic(() -> context.getCurrent() != null ? context.getCurrent().getClass().getSimpleName() : "None"));
         stats.put("Inventory Value", new PaintStatistic(()
