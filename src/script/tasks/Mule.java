@@ -212,7 +212,7 @@ public class Mule extends Task {
                                 }
                                 Time.sleepUntil(() -> Trade.contains(true, i -> i.getId() == o.getId() && i.getStackSize() == o.getStackSize()), 2000, 8000);
                             }
-                            if (Inventory.isEmpty()) {
+                            if (Trade.contains(true, "Coins")) {
                                 Log.info("Trade entered & accepted");
                                 Trade.accept();
                                 Time.sleepUntil(() -> Trade.isOpen(true), 5000);

@@ -1,7 +1,6 @@
 package script;
 
 import org.rspeer.runetek.api.commons.StopWatch;
-import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.RenderEvent;
@@ -19,10 +18,8 @@ import script.tasks.*;
 import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
+import script.wrappers.BankWrapper;
 import script.wrappers.PriceCheckService;
-
-import java.awt.*;
-import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener {
@@ -72,6 +69,9 @@ public class Main extends TaskScript implements RenderListener {
     @Override
     public void onStop() {
         Log.severe("Script Stopped");
+        if (BankWrapper.isMuleing()) {
+            Mule.logoutMule();
+        }
         PriceCheckService.dispose();
     }
 
