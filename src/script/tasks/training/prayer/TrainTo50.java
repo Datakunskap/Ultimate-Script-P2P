@@ -78,6 +78,11 @@ public class TrainTo50 extends Task {
                         }
                     }
                     if (Bank.isOpen()) {
+                        if (Inventory.contains("Silver sickle (b)")) {
+                            if (Bank.depositAll("Silver sickle (b)")) {
+                                Time.sleepUntil(() -> !Inventory.contains("Silver sickle (b)"), SleepWrapper.longSleep7500());
+                            }
+                        }
                         if (Inventory.contains("Amulet of glory")) {
                             if (Bank.depositAll("Amulet of glory")) {
                                 Time.sleepUntil(() -> !Inventory.contains("Amulet of glory"), SleepWrapper.longSleep7500());

@@ -6,6 +6,7 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
@@ -19,8 +20,8 @@ import script.tasks.fungus.Fungus;
 
 public class WalkingWrapper {
 
-    public static void walkToPosition(Position position) {
-        Movement.walkTo(position,
+    public static boolean walkToPosition(Position position) {
+        return Movement.walkTo(position,
                 () -> {
                     if (shouldBreakOnTarget() || shouldBreakOnRunenergy() || (Fungus.inMortania() && Fungus.inSalveGravyardArea())) {
                         if (Fungus.inMortania() && Fungus.inSalveGravyardArea()) {
@@ -38,7 +39,7 @@ public class WalkingWrapper {
                         }
                     }
                     return false;
-                });
+                }) || position.distance() < 4;
     }
 
     public static boolean shouldBreakOnTarget() {
@@ -53,8 +54,8 @@ public class WalkingWrapper {
     }
 
     public static boolean shouldBreakOnRunenergy() {
-        return Movement.getRunEnergy() < 5
-                || !Movement.isStaminaEnhancementActive();
+        return (Movement.getRunEnergy() > Random.nextInt(5, 15) && !Movement.isRunEnabled())
+                /*|| Movement.isStaminaEnhancementActive()*/;
     }
 
     public static void handleGate() {

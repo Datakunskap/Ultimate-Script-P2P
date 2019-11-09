@@ -1,13 +1,16 @@
 package script.wrappers;
 
+import org.rspeer.RSPeer;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.script.Script;
+import org.rspeer.ui.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,17 +61,20 @@ public class BankWrapper {
         inventoryValue = newValue;
     }
 
+    HashSet<BankLocation> failedLocations;
+
     private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted, Set<String> set,  String... itemsToKeep) {
-        //Log.fine("Depositing Inventory");
-        while (!openNearest() && Game.isLoggedIn()) {
-            BankLocation bank = BankLocation.getNearest();
-            if (bank != null && bank.getPosition().distance() > 10 && Movement.isWalkable(bank.getPosition())) {
-                Movement.walkTo(bank.getPosition(), () -> WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy());
-                Movement.toggleRun(true);
+        Log.fine("Walking To Nearest Bank");
+        BankLocation bank = BankLocation.getNearest();
+        if (bank != null && WalkingWrapper.walkToPosition(bank.getPosition())) {
+            int tries = 10;
+            while (!openNearest() && Game.isLoggedIn() && tries > 0) {
+                Log.info("Opening Nearest Bank");
+                Time.sleep(SleepWrapper.mediumSleep1000());
+                tries--;
             }
-            if (Script.activeCount() < 1)
-                break;
-            Time.sleep(SleepWrapper.shortSleep350());
+        } else {
+            Log.severe("Failed Walking To Bank");
         }
 
         Bank.depositInventory();

@@ -98,7 +98,6 @@ public class PriceCheckService {
     }
 
     private static void purgeFailedPriceCache() {
-        Log.info("Purging failed price cache");
         failedItemPriceNames.clear();
     }
 
@@ -122,12 +121,14 @@ public class PriceCheckService {
     }
 
     public static void reload(String url) {
-        purgeFailedPriceCache();
         if (!isReloadEnabled && prices.size() > 0) {
             return;
         }
         if (task == null && isReloadEnabled) {
-            task = executor.scheduleAtFixedRate(PriceCheckService::reload, reloadMinutes, reloadMinutes, TimeUnit.MINUTES);
+            task = executor.scheduleAtFixedRate(() -> {
+                PriceCheckService.reload();
+                PriceCheckService.purgeFailedPriceCache();
+            }, reloadMinutes, reloadMinutes, TimeUnit.MINUTES);
         }
         try {
             HttpResponse<String> node = Unirest.get(url).asString();
@@ -226,7 +227,12 @@ public class PriceCheckService {
 
         final int size = jsonObject.entrySet().size();
         final Map.Entry<String, JsonElement> entry = ((Map.Entry<String, JsonElement>) jsonObject.entrySet().toArray()[size - 1]);
-
-        return Integer.parseInt(entry.getValue().getAsString());
+        final int price = Integer.parseInt(entry.getValue().getAsString());
+        if (price > 0) {
+            ItemPrice itemPrice = prices.get(id);
+            itemPrice.sellAverage = price;
+            prices.put(id, itemPrice);
+        }
+        return price;
     }
 }

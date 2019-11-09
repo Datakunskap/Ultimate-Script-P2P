@@ -7,6 +7,9 @@ import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.*;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
+import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
@@ -20,6 +23,7 @@ import java.util.TreeMap;
 
 public class Mule extends Task {
 
+    private final int muleKeep;
     private boolean trading;
     private int begWorld = -1;
     private static final String MULE_FILE_PATH = org.rspeer.script.Script.getDataDirectory() + "\\mule.txt";
@@ -32,11 +36,19 @@ public class Mule extends Task {
     private final int muleWorld;
     private final String muleName;
 
-    public Mule(int muleAmount, String muleName, Position mulePosition, int muleWorld) {
+    public Mule(int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
         this.muleAmount = muleAmount;
         this.muleName = muleName;
         this.mulePosition = mulePosition;
         this.muleWorld = muleWorld;
+        this.muleKeep = muleKeep;
+    }
+
+    @Override
+    public boolean validate() {
+        return Skills.getLevel(Skill.PRAYER) > 49
+                && (Inventory.getCount(true, "Coins") >= muleAmount || Bank.getCount("Coins") >= muleAmount);
+        //return (!GEWrapper.isSellItems() && BankWrapper.getTotalValue() >= muleAmount) || trading;
     }
 
     private void loginMule() {
@@ -81,11 +93,6 @@ public class Mule extends Task {
         } catch (IOException e) {
             Log.info("File not found");
         }
-    }
-
-    @Override
-    public boolean validate() {
-        return (!GEWrapper.isSellItems() && BankWrapper.getTotalValue() >= muleAmount) || trading;
     }
 
     @Override
@@ -195,7 +202,14 @@ public class Mule extends Task {
                             Item[] tradeItems = Inventory.getItems();
 
                             for (Item o : tradeItems) {
-                                Trade.offerAll(i -> i.getId() == o.getId());
+                                if (o.getId() == 995) {
+                                    Trade.offer("Coins", x -> x.contains("X"));
+                                    Time.sleepUntil(EnterInput::isOpen, 8000);
+                                    EnterInput.initiate(o.getStackSize() - muleKeep);
+                                    Keyboard.pressEnter();
+                                } else {
+                                    Trade.offerAll(i -> i.getId() == o.getId());
+                                }
                                 Time.sleepUntil(() -> Trade.contains(true, i -> i.getId() == o.getId() && i.getStackSize() == o.getStackSize()), 2000, 8000);
                             }
                             if (Inventory.isEmpty()) {

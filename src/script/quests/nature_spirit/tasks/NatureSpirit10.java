@@ -8,17 +8,19 @@ import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 
 public class NatureSpirit10 extends Task {
     @Override
     public boolean validate() {
         return Quest.NATURE_SPIRIT.getVarpValue() == 75
                 && Skills.getLevel(Skill.PRAYER) < 50
-                && (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())
-                        || (SceneObjects.getNearest(3525) != null && SceneObjects.getNearest(3525).containsAction("Exit")));
+                && (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
+                        || Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal()));
     }
 
     @Override
@@ -31,21 +33,10 @@ public class NatureSpirit10 extends Task {
             return NatureSpirit.getLoopReturn();
         }
 
-        if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+        if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
+                || Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
 
-            SceneObject grotto = SceneObjects.getNearest(3525);
-            if (grotto != null && grotto.interact("Exit")) {
-                Time.sleepUntil(() -> Players.getLocal().isAnimating(), 2000);
-                Time.sleepUntil(() -> !Players.getLocal().isAnimating(), 5000);
-            }
-        }
-
-        if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
-            SceneObject bridge = SceneObjects.getNearest("Bridge");
-
-            if (bridge != null && bridge.interact("Jump")) {
-                Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
-            }
+            WalkingWrapper.exitAndLeaveGrotto();
         }
 
         return NatureSpirit.getLoopReturn();
