@@ -1,6 +1,7 @@
 package script.quests.nature_spirit.wrappers;
 
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
+import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -21,20 +22,33 @@ public class WalkingWrapper {
         if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
             Log.fine("Walking To Nature Grotto");
             Movement.walkTo(Location.NATURE_GROTTO_BRIDGE_POSITION,
-                    () -> script.wrappers.WalkingWrapper.shouldBreakOnTarget() || (inMortania() && inSalveGravyardArea()));
-
-            if (inMortania() && inSalveGravyardArea()) {
-                Log.fine("Handling Gate");
-                handleGate();
-            } else {
-                Movement.toggleRun(true);
-            }
+                    () -> {
+                        if (script.wrappers.WalkingWrapper.shouldBreakOnTarget() || (inMortania() && inSalveGravyardArea())) {
+                            if (inMortania() && inSalveGravyardArea()) {
+                                Log.fine("Handling Gate");
+                                handleGate();
+                            } else {
+                                Movement.toggleRun(true);
+                                if (Players.getLocal().getHealthPercent() < 20) {
+                                    Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
+                                    if (food != null) {
+                                        food.interact("Eat");
+                                    }
+                                }
+                            }
+                        }
+                        return false;
+                    });
         } else {
-            SceneObject bridge = SceneObjects.getNearest("Bridge");
-            if (bridge != null && !Players.getLocal().isMoving() && bridge.interact("Jump")) {
-                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000)) {
-                    Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
-                }
+            crossBridgeToGrotto();
+        }
+    }
+
+    public static void crossBridgeToGrotto() {
+        SceneObject bridge = SceneObjects.getNearest("Bridge");
+        if (bridge != null && !Players.getLocal().isMoving() && bridge.interact(a -> true)) {
+            if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000)) {
+                Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
             }
         }
     }

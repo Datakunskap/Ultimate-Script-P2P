@@ -4,16 +4,15 @@ import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
-import org.rspeer.runetek.api.component.tab.EquipmentSlot;
-import org.rspeer.runetek.api.component.tab.Inventory;
-import org.rspeer.runetek.api.component.tab.Skill;
-import org.rspeer.runetek.api.component.tab.Skills;
+import org.rspeer.runetek.api.component.tab.*;
+import org.rspeer.runetek.api.input.menu.ActionOpcodes;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -22,10 +21,13 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.data.Locations;
+import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Quest;
-import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
-import script.wrappers.SupplyMapWrapper;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
+import script.wrappers.*;
+
+import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "AntiPker", desc = "AntiPker")
 public class Fungus extends Task {
@@ -42,6 +44,18 @@ public class Fungus extends Task {
 
     @Override
     public int execute() {
+        if (!Game.isLoggedIn() || Players.getLocal() == null)
+            return 2000;
+
+        if (!Equipment.contains("Silver sickle (b)")) {
+            if (Inventory.contains("Silver sickle (b)") && Inventory.getFirst("Silver sickle (b)").interact(a -> true)) {
+                Log.info("Sickle equipped");
+                Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
+            } else {
+                getSilverSickleB();
+                return SleepWrapper.shortSleep600();
+            }
+        }
 
         if (!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()) {
             Log.info("idk");
@@ -244,8 +258,11 @@ public class Fungus extends Task {
                         if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                             //restock
                             Log.info("I need to restock ring of duelings");
-                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
-                        }
+                            if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
+                                Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
+                                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
+                            }
+                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                        }
                     }
                     if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
                         if (Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
@@ -254,9 +271,13 @@ public class Fungus extends Task {
                             }
                         }
                         if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
+                            //restock
                             Log.info("I need to restock salve graveyard teleports");
-                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
-                        }
+                            if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
+                                Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
+                                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
+                            }
+                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                        }
                     }
                 }
             }
@@ -278,7 +299,11 @@ public class Fungus extends Task {
                             if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                                 //restock
                                 Log.info("I need to restock ring of duelings");
-                                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                                if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
+                                    Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
+                                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
+                                }
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             }
                         }
                         if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
@@ -290,8 +315,11 @@ public class Fungus extends Task {
                             if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
                                 //restock
                                 Log.info("I need to restock salve graveyard teleports");
-                                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
-                            }
+                                if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
+                                    Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
+                                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
+                                }
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                            }
                         }
                     }
                     Log.info("Deposting everythign expect teleports");
@@ -315,6 +343,44 @@ public class Fungus extends Task {
                 if (portal == null) {
                     Log.info("Can't find the portal");
                 }
+            }
+        }
+    }
+
+    private void getSilverSickleB() {
+        if (!Inventory.contains("Silver sickle") && !Inventory.contains("Silver sickle (b)")) {
+            Log.info("Checking bank for sickle");
+            BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+        }
+        if (!Inventory.contains("Silver sickle (b)")) {
+            if (Bank.isOpen() && Bank.contains("Silver sickle")) {
+                Bank.withdraw("Silver sickle", 1);
+                Time.sleepUntil(() -> Inventory.contains("Silver sickle"), 2000);
+            }
+            if (Inventory.contains("Silver sickle")) {
+                Log.info("Blessing sickle");
+                if (Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+                    NatureSpirit.useItemOnObject("Silver sickle", 3520);
+                    if (Time.sleepUntil(() -> Inventory.contains("Silver sickle (b)"), 8000)) {
+                        Log.fine("Sickle Blessed!");
+                        SceneObjects.getNearest(3525).interact("Exit");
+                        Time.sleepUntil(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
+                        SceneObjects.getNearest("Bridge").interact(a -> true);
+                        Time.sleepUntil(() -> !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), 6000);
+                    } else {
+                        Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
+                    }
+                }
+                else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                    WalkingWrapper.walkToNatureGrotto();
+                }
+                WalkingWrapper.enterGrotto();
+            } else {
+                Log.info("Buying sickle");
+                HashMap<String, Integer> map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
+                map.remove("Silver sickle (b)");
+                map.put("Silver sickle", 1);
+                GEWrapper.setBuySupplies(true, true, map);
             }
         }
     }

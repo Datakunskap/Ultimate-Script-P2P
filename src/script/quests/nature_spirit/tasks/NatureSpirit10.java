@@ -3,6 +3,8 @@ package script.quests.nature_spirit.tasks;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
@@ -13,8 +15,9 @@ import script.quests.nature_spirit.data.Quest;
 public class NatureSpirit10 extends Task {
     @Override
     public boolean validate() {
-        return Quest.NATURE_SPIRIT.getVarpValue() == 75 &&
-                (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())
+        return Quest.NATURE_SPIRIT.getVarpValue() == 75
+                && Skills.getLevel(Skill.PRAYER) < 50
+                && (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())
                         || (SceneObjects.getNearest(3525) != null && SceneObjects.getNearest(3525).containsAction("Exit")));
     }
 

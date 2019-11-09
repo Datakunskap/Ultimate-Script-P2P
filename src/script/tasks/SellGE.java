@@ -1,4 +1,4 @@
-package script.tasks.fungus;
+package script.tasks;
 
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
@@ -58,8 +58,17 @@ public class SellGE extends Task {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(me)) {
             Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
-                    -> WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy());
-            Movement.toggleRun(true);
+                    -> {
+                if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy()) {
+                    if (!Movement.isRunEnabled()) {
+                        Movement.toggleRun(true);
+                    }
+                }
+                if (GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+                    return true;
+                }
+                return false;
+            });
             return SleepWrapper.shortSleep600();
         }
 

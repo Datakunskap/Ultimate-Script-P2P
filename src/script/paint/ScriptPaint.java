@@ -47,7 +47,7 @@ public final class ScriptPaint implements RenderListener {
         stats.put("Value / H", new PaintStatistic(()
                 -> format((long) context.getRuntime().getHourlyRate(BankWrapper.getTotalValueGained()))));
         stats.put("Amount Muled", new PaintStatistic(()
-                -> formatNumber.format(0)));
+                -> formatNumber.format(BankWrapper.getAmountMuled())));
     }
 
     private static final NavigableMap<Long, String> suffixes = new TreeMap<>();

@@ -14,10 +14,10 @@ import script.quests.the_restless_ghost.TheRestlessGhost;
 import script.quests.waterfall_quest.WaterfallQuest;
 import script.quests.witches_house.WitchesHouse;
 import script.tasks.BuyItemsNeeded;
-import script.tasks.BuySupplies;
+import script.tasks.BuyGE;
 import script.tasks.GetStartersGold;
 import script.tasks.fungus.Fungus;
-import script.tasks.fungus.SellGE;
+import script.tasks.SellGE;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.PriceCheckService;
@@ -41,7 +41,8 @@ public class Main extends TaskScript implements RenderListener {
         runtime = StopWatch.start();
         paint = new ScriptPaint(this);
 
-        submit(new BuySupplies(true),
+        submit( new SellGE(),
+                new BuyGE(),
                 new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13()
@@ -54,7 +55,6 @@ public class Main extends TaskScript implements RenderListener {
         submit(NatureSpirit.TASKS);
 
         submit(new TrainTo50(),
-                new SellGE(),
                 new Fungus()
         );
 

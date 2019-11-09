@@ -2,10 +2,12 @@ package script.wrappers;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.script.Script;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,10 +66,14 @@ public class BankWrapper {
     private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted, Set<String> set,  String... itemsToKeep) {
         //Log.fine("Depositing Inventory");
         while (!openNearest() && Game.isLoggedIn()) {
-            if (WalkingWrapper.shouldBreakOnRunenergy()) {
+            BankLocation bank = BankLocation.getNearest();
+            if (bank != null && bank.getPosition().distance() > 10 && Movement.isWalkable(bank.getPosition())) {
+                Movement.walkTo(bank.getPosition(), () -> WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy());
                 Movement.toggleRun(true);
             }
-            Time.sleep(600, 1600);
+            if (Script.activeCount() < 1)
+                break;
+            Time.sleep(SleepWrapper.shortSleep350());
         }
 
         Bank.depositInventory();
@@ -97,7 +103,11 @@ public class BankWrapper {
         if (itemsToKeep != null && itemsToKeep.length > 0) {
             for (String i : itemsToKeep) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
-                    Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
+                    if (withdrawNoted) {
+                        Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
+                    } else {
+                        Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
+                    }
                     Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
                 }
             }
@@ -106,7 +116,11 @@ public class BankWrapper {
         if (set != null && set.size() > 0) {
             for (String i : set) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
-                    Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
+                    if (withdrawNoted) {
+                        Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
+                    } else {
+                        Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
+                    }
                     Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
                 }
             }
@@ -131,6 +145,10 @@ public class BankWrapper {
 
     public static void openAndDepositAll(boolean keepAllCoins, boolean withdrawNoted, String... itemsToKeep) {
         openAndDepositAll(keepAllCoins, 0, withdrawNoted, null, itemsToKeep);
+    }
+
+    public static void openAndDepositAll(boolean keepAllCoins, boolean withdrawNoted, Set<String> set) {
+        openAndDepositAll(keepAllCoins, 0, withdrawNoted, set);
     }
 
     public static void openAndDepositAll(int numCoinsToKeep, String... itemsToKeep) {
@@ -164,7 +182,8 @@ public class BankWrapper {
 
         Item[] sellables = Bank.getItems(i -> i.isExchangeable()
                 && !itemsToKeep.contains(i.getName())
-               /* && PriceCheckService.getPrice(i.getId()) != null
+                && i.getName().equalsIgnoreCase("Mort myre fungus")
+                /*&& PriceCheckService.getPrice(i.getId()) != null
                 && (PriceCheckService.getPrice(i.getId()).getSellAverage() * i.getStackSize() > 5000)*/);
 
         for (Item s : sellables) {
@@ -172,6 +191,7 @@ public class BankWrapper {
             Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 8000);
         }
 
+        PriceCheckService.purgeFailedPriceCache();
         updateBankValue();
         updateInventoryValue();
     }

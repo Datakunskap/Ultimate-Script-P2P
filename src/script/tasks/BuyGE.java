@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class BuySupplies extends Task {
+public class BuyGE extends Task {
 
     private HashMap<String, Integer> SUPPLIES;
     private Iterator<String> itemsIterator;
@@ -29,14 +29,8 @@ public class BuySupplies extends Task {
     private String itemToBuy;
     private boolean checkedBank;
     private int coinsToSpend;
-    private boolean keepItems;
 
-    public BuySupplies(boolean keepItems) {
-        SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
-        this.keepItems = keepItems;
-    }
-
-    public BuySupplies() {
+    public BuyGE() {
         SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
     }
 
@@ -45,13 +39,14 @@ public class BuySupplies extends Task {
         if (!GEWrapper.isBuySupplies() || !Game.isLoggedIn() || Players.getLocal() == null)
             return false;
 
+        SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
+
         if (itemsIterator != null || GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY))
             return true;
 
         if (SUPPLIES != null && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
-            SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
             items = new HashSet<>();
             items.addAll(Arrays.asList(SUPPLIES.keySet().toArray(new String[0])));
 
@@ -60,8 +55,7 @@ public class BuySupplies extends Task {
             return true;
         }
 
-        if (GEWrapper.isBuySupplies()) {
-            Log.fine("Done Restocking");
+        if (SUPPLIES != null && GEWrapper.isBuySupplies()) {
             doneRestockingHelper();
         }
         return false;
@@ -71,24 +65,24 @@ public class BuySupplies extends Task {
     public int execute() {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), WalkingWrapper::shouldBreakOnTarget);
-            Movement.toggleRun(true);
+            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
+                    -> {
+                if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy()) {
+                    if (!Movement.isRunEnabled()) {
+                        Movement.toggleRun(true);
+                    }
+                }
+                if (GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+                    return true;
+                }
+                return false;
+            });
             return SleepWrapper.shortSleep600();
         }
 
         if (!checkedBank) {
             Log.info("Checking Bank");
-            if (keepItems) {
-                BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
-            } else {
-                BankWrapper.openAndDepositAll(true);
-                itemsIterator = null;
-                items = new HashSet<>(BankWrapper.getItemsNeeded(SUPPLIES));
-                if (items.size() > 0) {
-                    itemsIterator = items.iterator();
-                    itemToBuy = itemsIterator.next();
-                }
-            }
+            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
             checkedBank = true;
@@ -134,7 +128,6 @@ public class BuySupplies extends Task {
         }
 
         if (!GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY) && itemsIterator == null) {
-            Log.fine("Done Restocking");
             doneRestockingHelper();
         }
 
@@ -142,15 +135,23 @@ public class BuySupplies extends Task {
     }
 
     private void doneRestockingHelper() {
+        Log.fine("Done Restocking");
         GEWrapper.setBuySupplies(false, false, SUPPLIES);
-        if (keepItems) {
+        if (SUPPLIES.size() > 10) {
             BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
         } else {
-            BankWrapper.openAndDepositAll();
+            BankWrapper.openAndDepositAll(false, false, SUPPLIES.keySet());
         }
+
+        if (Inventory.contains("Silver sickle (b)")) {
+            Inventory.getFirst("Silver sickle (b)").interact(a -> true);
+            Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
+        }
+
         Bank.close();
         Interfaces.closeAll();
         Time.sleepUntil(() -> !Bank.isOpen() && !GrandExchange.isOpen(), 5000);
+        checkedBank = false;
     }
 
     private boolean stillNeedsItem(String itemToBuy) {

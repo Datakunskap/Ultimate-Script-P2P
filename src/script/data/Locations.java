@@ -10,5 +10,5 @@ public class Locations {
     public static final Position NATURE_GROTTO_BRIDGE_POSITION = new Position(3440, 3327, 0);
     public static final Area NATURE_GROTTO_AREA = Area.rectangular(3447, 3331, 3433, 3344);
     public static final Position ROTTING_LOG_POSITION = new Position(3429, 3332, 0);
-
+    public static final Area INSIDE_GROTTO_AREA = Area.rectangular(3434, 9747, 3449, 9731);
 }

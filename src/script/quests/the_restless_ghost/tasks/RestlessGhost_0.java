@@ -18,6 +18,7 @@ import org.rspeer.ui.Log;
 import java.util.function.Predicate;
 
 import static script.quests.the_restless_ghost.data.Quest.THE_RESTLESS_GHOST;
+import static script.quests.witches_house.data.Quest.WITCHES_HOUSE;
 
 
 public class RestlessGhost_0 extends Task {
@@ -30,7 +31,9 @@ public class RestlessGhost_0 extends Task {
     @Override
     public boolean validate() {
         return Skills.getLevel(Skill.MAGIC) >= 13
-                && THE_RESTLESS_GHOST.getVarpValue() == 0;
+                && THE_RESTLESS_GHOST.getVarpValue() == 0
+                && WITCHES_HOUSE.getVarpValue() == 0
+                && Skills.getLevel(Skill.PRAYER) < 50;
     }
 
     @Override

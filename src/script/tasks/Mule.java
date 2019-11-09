@@ -1,4 +1,4 @@
-package script.tasks.fungus;
+package script.tasks;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -12,10 +12,7 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
-import script.wrappers.SleepWrapper;
-import script.wrappers.WalkingWrapper;
+import script.wrappers.*;
 
 import java.io.*;
 import java.util.NavigableMap;
@@ -96,8 +93,18 @@ public class Mule extends Task {
         BankWrapper.setMuleing(true);
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal()) && !banked) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition().randomize(4), WalkingWrapper::shouldBreakOnTarget);
-            Movement.toggleRun(true);
+            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
+                    -> {
+                if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy()) {
+                    if (!Movement.isRunEnabled()) {
+                        Movement.toggleRun(true);
+                    }
+                }
+                if (GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+                    return true;
+                }
+                return false;
+            });
             return SleepWrapper.shortSleep350();
         }
         if (GrandExchange.isOpen()) {
@@ -161,7 +168,6 @@ public class Mule extends Task {
         loginMule();
 
         if (mulePosition.distance() > 3) {
-
             Movement.walkTo(mulePosition.randomize(3), WalkingWrapper::shouldBreakOnTarget);
             Movement.toggleRun(true);
             return SleepWrapper.shortSleep600();
@@ -222,6 +228,7 @@ public class Mule extends Task {
                             Time.sleep(8000, 10000);
                             BankWrapper.setMuleing(false);
                             banked = false;
+                            BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getCurrentSupplyMap().keySet());
                         }
                         Time.sleep(700);
                     }
