@@ -42,9 +42,9 @@ public class Main extends TaskScript implements RenderListener {
         runtime = StopWatch.start();
         paint = new ScriptPaint(this);
 
-        submit( new SellGE(),
+        submit( new GetStartersGold(),
+                new SellGE(),
                 new BuyGE(),
-                new GetStartersGold(),
                 new BuyItemsNeeded(),
                 new TrainTo13()
         );
