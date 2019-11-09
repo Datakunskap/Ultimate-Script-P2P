@@ -61,9 +61,9 @@ public class PriceCheckService {
                 } catch (Exception ignored) { }
 
                 if (itemValue <= 0 && prices.get(item.getId()) != null) {
-                    itemValue = prices.get(item.getId()).getSellAverage();
+                    itemValue = prices.get(item.getId()).getSellAverage() * item.getStackSize();
                 }
-                /*if (itemValue <= 0 && !failedItemPriceNames.contains(item.getName())) {
+                if (itemValue <= 0 && !failedItemPriceNames.contains(item.getName())) {
                     reload(OSBUDDY_EXCHANGE_SUMMARY_URL);
                     try {
                         itemValue = PriceCheckService.getPrice(item.getId()).getSellAverage() * item.getStackSize();
@@ -72,7 +72,7 @@ public class PriceCheckService {
                         failedItemPriceNames.add(item.getName());
                         reload();
                     }
-                }*/
+                }
 
                 total += itemValue;
             }

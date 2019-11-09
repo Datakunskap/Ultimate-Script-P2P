@@ -81,6 +81,7 @@ public class Fungus extends Task {
                 collectingLastFungi();
             }
             if (Inventory.isFull()) {
+                PriceCheckService.purgeFailedPriceCache();
                 doBanking();
             }
         }
