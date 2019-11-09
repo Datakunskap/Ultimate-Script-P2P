@@ -279,6 +279,8 @@ public class Fungus extends Task {
                             }
                             GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                        }
                     }
+                    BankWrapper.updateBankValue();
+                    BankWrapper.updateInventoryValue();
                 }
             }
             if (Inventory.containsAnyExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
@@ -325,9 +327,9 @@ public class Fungus extends Task {
                     Log.info("Deposting everythign expect teleports");
                     if (Bank.depositAllExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
                         Time.sleepUntil(() -> Inventory.containsOnly(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport")), 5000);
-                        BankWrapper.updateBankValue();
-                        BankWrapper.updateInventoryValue();
                     }
+                    BankWrapper.updateBankValue();
+                    BankWrapper.updateInventoryValue();
                 }
             }
             if (Inventory.contains(x -> x.getName().contains("Ring of dueling("))
