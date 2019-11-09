@@ -10,6 +10,8 @@ import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Npcs;
@@ -31,6 +33,7 @@ public class NatureSpirit0 extends Task {
     @Override
     public boolean validate() {
         return Quest.NATURE_SPIRIT.getVarpValue() == 0
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && Quest.PRIEST_IN_PERIL.getVarpValue() == 61;
     }
 

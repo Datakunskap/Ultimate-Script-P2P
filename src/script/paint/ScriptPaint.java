@@ -91,7 +91,7 @@ public final class ScriptPaint implements RenderListener {
         stats.put(key, tracker);
     }
 
-    private Duration duration = Duration.ofSeconds(20);
+    private Duration duration = Duration.ofSeconds(5);
 
     @Override
     public void notify(RenderEvent e) {

@@ -3,11 +3,15 @@ package script.wrappers;
 import com.acuitybotting.common.utils.ExecutorUtil;
 import com.allatori.annotations.DoNotRename;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
@@ -24,12 +28,15 @@ public class PriceCheckService {
 
     private static final String OSBUDDY_EXCHANGE_SUMMARY_URL = "https://storage.googleapis.com/osb-exchange/summary.json";
     private static final String RSBUDDY_EXCHANGE_SUMMARY_URL = "https://rsbuddy.com/exchange/summary.json";
+    private static final String OLDSCHOOL_RUNESCAPE_API_URL = "http://services.runescape.com/m=itemdb_oldschool/api/";
     private static Gson g = new Gson();
     private static Map<String, Integer> itemNameMapping = new HashMap<>();
     private static Map<Integer, ItemPrice> prices = new HashMap<>();
     private static int reloadMinutes = 30;
     private static boolean isReloadEnabled = true;
     private static HashSet<String> failedItemPriceNames = new HashSet<>();
+    private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
+    private static final Gson GSON = new Gson().newBuilder().create();
 
     private static ScheduledThreadPoolExecutor executor = ExecutorUtil.newScheduledExecutorPool(1, Throwable::printStackTrace);
     private static ScheduledFuture<?> task;
@@ -71,7 +78,14 @@ public class PriceCheckService {
                     } catch (Exception ignored) { }
 
                     if (itemValue <= 0) {
-                        Log.severe("Failed Getting Item Price: " + item.getName());
+                        if (item.getName().equalsIgnoreCase("Mort myre fungus")) {
+                            try {
+                                itemValue = getAccurateRSPrice(item.getId()) * item.getStackSize();
+                            } catch (Exception ignored) { }
+                        }
+                        if (itemValue <= 0) {
+                            Log.severe("Failed Getting Item Price: " + item.getName());
+                        }
                         failedItemPriceNames.add(item.getName());
                         reload();
                     }
@@ -83,7 +97,8 @@ public class PriceCheckService {
         return total;
     }
 
-    public static void purgeFailedPriceCache() {
+    private static void purgeFailedPriceCache() {
+        Log.info("Purging failed price cache");
         failedItemPriceNames.clear();
     }
 
@@ -107,6 +122,7 @@ public class PriceCheckService {
     }
 
     public static void reload(String url) {
+        purgeFailedPriceCache();
         if (!isReloadEnabled && prices.size() > 0) {
             return;
         }
@@ -184,5 +200,33 @@ public class PriceCheckService {
         public int getOverallAverage() {
             return overallAverage;
         }
+    }
+
+    /**
+     * Fetches the price of an item from the RuneScape services graph.
+     *
+     * @param id the id of the item
+     * @return the price of the item; -1 if failed
+     */
+    @SuppressWarnings("unchecked")
+    public static int getAccurateRSPrice(int id) throws Exception {
+        final Request request = new Request.Builder()
+                .url(OLDSCHOOL_RUNESCAPE_API_URL + "graph/" + id + ".json")
+                .get()
+                .build();
+
+        final Response response = HTTP_CLIENT.newCall(request).execute();
+
+        if (!response.isSuccessful() || response.body() == null)
+            return -1;
+
+        final JsonObject jsonObject = GSON.fromJson(response.body().string(), JsonObject.class)
+                .getAsJsonObject("daily")
+                .getAsJsonObject();
+
+        final int size = jsonObject.entrySet().size();
+        final Map.Entry<String, JsonElement> entry = ((Map.Entry<String, JsonElement>) jsonObject.entrySet().toArray()[size - 1]);
+
+        return Integer.parseInt(entry.getValue().getAsString());
     }
 }

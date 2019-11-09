@@ -39,7 +39,7 @@ public class NatureSpirit5 extends Task {
             }
 
             if (Location.DREZEL_POSITION.distance() > 3) {
-                Movement.walkTo(Location.DREZEL_POSITION, WalkingWrapper::shouldBreakOnTarget);
+                WalkingWrapper.walkToPosition(Location.DREZEL_POSITION);
             }
 
             Npc drezel = Npcs.getNearest("Drezel");

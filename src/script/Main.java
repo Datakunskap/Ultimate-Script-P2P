@@ -80,8 +80,4 @@ public class Main extends TaskScript implements RenderListener {
             ex.printStackTrace();
         }
     }
-
-    public void setRandomPaintColor() {
-        paint.setOutline(new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255)));
-    }
 }

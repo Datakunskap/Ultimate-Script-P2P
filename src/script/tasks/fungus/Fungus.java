@@ -81,7 +81,6 @@ public class Fungus extends Task {
                 collectingLastFungi();
             }
             if (Inventory.isFull()) {
-                PriceCheckService.purgeFailedPriceCache();
                 doBanking();
             }
         }
@@ -105,11 +104,11 @@ public class Fungus extends Task {
         return BLOOM_TILE.distance() <= 5;
     }
 
-    public boolean inMortania() {
+    public static boolean inMortania() {
         return BLOOM_TILE.distance() > 5 && BLOOM_TILE.distance() < 100;
     }
 
-    public boolean inSalveGravyardArea() {
+    public static boolean inSalveGravyardArea() {
         Player local = Players.getLocal();
         return AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local);
     }
@@ -348,10 +347,15 @@ public class Fungus extends Task {
         }
     }
 
-    private void getSilverSickleB() {
+    public static void getSilverSickleB() {
         if (!Inventory.contains("Silver sickle") && !Inventory.contains("Silver sickle (b)")) {
             Log.info("Checking bank for sickle");
-            BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+            if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()) || Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+                WalkingWrapper.exitAndLeaveGrotto();
+                return;
+            } else {
+                BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+            }
         }
         if (!Inventory.contains("Silver sickle (b)")) {
             if (Bank.isOpen() && Bank.contains("Silver sickle")) {
@@ -364,10 +368,7 @@ public class Fungus extends Task {
                     NatureSpirit.useItemOnObject("Silver sickle", 3520);
                     if (Time.sleepUntil(() -> Inventory.contains("Silver sickle (b)"), 8000)) {
                         Log.fine("Sickle Blessed!");
-                        SceneObjects.getNearest(3525).interact("Exit");
-                        Time.sleepUntil(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
-                        SceneObjects.getNearest("Bridge").interact(a -> true);
-                        Time.sleepUntil(() -> !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), 6000);
+                        WalkingWrapper.exitAndLeaveGrotto();
                     } else {
                         Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
                     }

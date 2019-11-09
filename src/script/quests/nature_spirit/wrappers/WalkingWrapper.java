@@ -13,6 +13,7 @@ import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
+import script.data.Locations;
 import script.quests.nature_spirit.data.Location;
 import script.tasks.fungus.Fungus;
 
@@ -40,15 +41,29 @@ public class WalkingWrapper {
                         return false;
                     });
         } else {
-            crossBridgeToGrotto();
+            crossGrottoBridge(true);
         }
     }
 
-    public static void crossBridgeToGrotto() {
+    public static void exitAndLeaveGrotto() {
+        if (Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+            SceneObjects.getNearest(3525).interact("Exit");
+            Time.sleepUntil(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
+        }
+        if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+            crossGrottoBridge(false);
+        }
+    }
+
+    public static void crossGrottoBridge(boolean toGrotto) {
         SceneObject bridge = SceneObjects.getNearest("Bridge");
         if (bridge != null && !Players.getLocal().isMoving() && bridge.interact(a -> true)) {
-            if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000)) {
-                Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
+            if (toGrotto) {
+                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000)) {
+                    Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
+                }
+            } else {
+                Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
             }
         }
     }

@@ -186,7 +186,6 @@ public class BankWrapper {
             Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 8000);
         }
 
-        PriceCheckService.purgeFailedPriceCache();
         updateBankValue();
         updateInventoryValue();
     }

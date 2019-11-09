@@ -1,5 +1,7 @@
 package script.quests.nature_spirit.tasks;
 
+import org.rspeer.runetek.api.component.tab.Inventory;
+import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
@@ -10,6 +12,7 @@ import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.tasks.fungus.Fungus;
 
 public class NatureSpirit9 extends Task {
     @Override
@@ -20,6 +23,15 @@ public class NatureSpirit9 extends Task {
 
     @Override
     public int execute() {
+        if (!Inventory.contains("Silver sickle")) {
+            Fungus.getSilverSickleB();
+        }
+
+        if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
+                && !Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+            WalkingWrapper.walkToNatureGrotto();
+        }
+
         if (Dialog.isOpen()) {
             if (Dialog.canContinue()) {
                 Dialog.processContinue();

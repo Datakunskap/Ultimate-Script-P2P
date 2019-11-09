@@ -33,7 +33,19 @@ public class NatureSpirit7 extends Task {
             return NatureSpirit.getLoopReturn();
         }
 
-        if (!Inventory.contains(i -> i.getName().equalsIgnoreCase("Druidic spell"))
+        SceneObject fungiLog = SceneObjects.getNearest(3509);
+
+        if (fungiLog != null && !Inventory.contains("Mort myre fungus")) {
+            if (fungiLog.interact("Pick")) {
+                Time.sleepUntil(() -> Inventory.contains("Mort myre fungus"), 5000);
+            } else {
+                Log.severe("Cant Pick Fungi");
+            }
+            fungiLog = SceneObjects.getNearest(3509);
+            Time.sleep(300, 600);
+        }
+
+        if (fungiLog == null && !Inventory.contains(i -> i.getName().equalsIgnoreCase("Druidic spell"))
                 && !Inventory.contains("Mort myre fungus")) {
 
             if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
@@ -57,7 +69,7 @@ public class NatureSpirit7 extends Task {
             }
         }
 
-        if (Inventory.contains(i -> i.getName().equalsIgnoreCase("Druidic spell"))
+        if (fungiLog == null && Inventory.contains(i -> i.getName().equalsIgnoreCase("Druidic spell"))
                 && !Inventory.contains("Mort myre fungus")) {
 
             if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
@@ -69,7 +81,7 @@ public class NatureSpirit7 extends Task {
             }
 
             if (Location.ROTTING_LOG_POSITION.distance() > 1) {
-                Movement.walkTo(Location.ROTTING_LOG_POSITION, script.wrappers.WalkingWrapper::shouldBreakOnTarget);
+                script.wrappers.WalkingWrapper.walkToPosition(Location.ROTTING_LOG_POSITION);
             }
 
             SceneObject log = SceneObjects.getNearest("Rotting log");
@@ -81,21 +93,9 @@ public class NatureSpirit7 extends Task {
 
             if (log != null && log.distance() <= 1 && spell != null && spell.interact(ActionOpcodes.ITEM_ACTION_0)) {
 
-                Time.sleepUntil(() -> SceneObjects.getNearest(3509) != null && !Players.getLocal().isAnimating(), 6000);
+                Time.sleepUntil(() -> SceneObjects.getNearest(3509) != null, 6000);
                 Time.sleep(600, 800);
 
-            }
-
-            SceneObject fungiLog = SceneObjects.getNearest(3509);
-
-            while (fungiLog != null && !Inventory.contains("Mort myre fungus")) {
-                if (fungiLog.click()) {
-                    Time.sleepUntil(() -> Inventory.contains("Mort myre fungus"), 5000);
-                } else {
-                    Log.severe("Cant Pick Fungi");
-                }
-                fungiLog = SceneObjects.getNearest(3509);
-                Time.sleep(300, 600);
             }
         }
 
