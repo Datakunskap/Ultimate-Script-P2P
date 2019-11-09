@@ -23,7 +23,7 @@ import java.util.Iterator;
 
 public class BuySupplies extends Task {
 
-    private final HashMap<String, Integer> SUPPLIES;
+    private HashMap<String, Integer> SUPPLIES;
     private Iterator<String> itemsIterator;
     private HashSet<String> items;
     private String itemToBuy;
@@ -51,6 +51,7 @@ public class BuySupplies extends Task {
         if (SUPPLIES != null && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
+            SUPPLIES = SupplyMapWrapper.getCurrentSupplyMap();
             items = new HashSet<>();
             items.addAll(Arrays.asList(SUPPLIES.keySet().toArray(new String[0])));
 
