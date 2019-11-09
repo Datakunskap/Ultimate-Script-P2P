@@ -1,6 +1,7 @@
 package script;
 
 import org.rspeer.runetek.api.commons.StopWatch;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.runetek.providers.subclass.GameCanvas;
@@ -22,6 +23,7 @@ import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.PriceCheckService;
 
+import java.awt.*;
 import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
@@ -29,7 +31,6 @@ public class Main extends TaskScript implements RenderListener {
 
     private ScriptPaint paint;
     private StopWatch runtime;
-    private HashMap<String, Integer> ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION;
 
     public StopWatch getRuntime() {
         return runtime;
@@ -78,5 +79,9 @@ public class Main extends TaskScript implements RenderListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void setRandomPaintColor() {
+        paint.setOutline(new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255)));
     }
 }

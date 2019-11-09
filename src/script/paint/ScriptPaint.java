@@ -8,6 +8,7 @@ import script.wrappers.BankWrapper;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.*;
 
 public final class ScriptPaint implements RenderListener {
@@ -28,8 +29,10 @@ public final class ScriptPaint implements RenderListener {
     private final Map<String, PaintStatistic> stats;
 
     private Color outline;
+    private Main context;
 
     public ScriptPaint(Main context) {
+        this.context = context;
         stats = new LinkedHashMap<>();
         outline = new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255));
 
@@ -88,8 +91,14 @@ public final class ScriptPaint implements RenderListener {
         stats.put(key, tracker);
     }
 
+    private Duration duration = Duration.ofSeconds(20);
+
     @Override
     public void notify(RenderEvent e) {
+        if (context.getRuntime().exceeds(duration)) {
+            outline = new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255));
+            duration = context.getRuntime().getElapsed().plus(duration);
+        }
         Graphics2D g = (Graphics2D) e.getSource();
         Composite defaultComposite = g.getComposite();
 

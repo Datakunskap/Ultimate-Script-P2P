@@ -53,12 +53,7 @@ public class BankWrapper {
 
         if (inventoryValue == -1) {
             startingValue += newValue;
-            //startValueTimer = StopWatch.start();
         }
-        /*if (startValueTimer != null && startValueTimer.exceeds(Duration.ofSeconds(10))) {
-            startingValue += newValue;
-            startValueTimer = null;
-        }*/
 
         inventoryValue = newValue;
     }
