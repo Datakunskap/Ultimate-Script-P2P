@@ -182,14 +182,16 @@ public class BankWrapper {
         }
 
         Item[] sellables = Bank.getItems(i -> i.isExchangeable()
-                && !itemsToKeep.contains(i.getName())
-                && i.getName().equalsIgnoreCase("Mort myre fungus")
-                /*&& PriceCheckService.getPrice(i.getId()) != null
-                && (PriceCheckService.getPrice(i.getId()).getSellAverage() * i.getStackSize() > 5000)*/);
+                && !itemsToKeep.contains(i.getName()));
 
         for (Item s : sellables) {
-            Bank.withdrawAll(s.getName());
-            Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 8000);
+            if (s.getName().equalsIgnoreCase("Mort myre fungus")
+                    || (PriceCheckService.getPrice(s.getId()) != null
+                    && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000))) {
+
+                Bank.withdrawAll(s.getName());
+                Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 8000);
+            }
         }
 
         updateBankValue();
