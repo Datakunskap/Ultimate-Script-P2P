@@ -242,7 +242,7 @@ public class Mule extends Task {
                             Time.sleep(8000, 10000);
                             BankWrapper.setMuleing(false);
                             banked = false;
-                            BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getCurrentSupplyMap().keySet());
+                            BankWrapper.openAndDepositAll(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
                         }
                         Time.sleep(700);
                     }
