@@ -164,8 +164,8 @@ public class BankWrapper {
 
         Item[] sellables = Bank.getItems(i -> i.isExchangeable()
                 && !itemsToKeep.contains(i.getName())
-                && PriceCheckService.getPrice(i.getId()) != null
-                && PriceCheckService.getPrice(i.getId()).getSellAverage() * i.getStackSize() > 5000);
+               /* && PriceCheckService.getPrice(i.getId()) != null
+                && (PriceCheckService.getPrice(i.getId()).getSellAverage() * i.getStackSize() > 5000)*/);
 
         for (Item s : sellables) {
             Bank.withdrawAll(s.getName());

@@ -18,6 +18,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SellGE extends Task {
@@ -65,6 +66,8 @@ public class SellGE extends Task {
         if (itemsToSell == null) {
             if (SupplyMapWrapper.getCurrentSupplyMap() != null) {
                 itemsToKeep = SupplyMapWrapper.getCurrentSupplyMap().keySet();
+            } else {
+                itemsToKeep = new HashSet<>();
             }
 
             BankWrapper.openAndDepositAll(true);
