@@ -174,7 +174,7 @@ public class BuyGE extends Task {
             return coinsToSpend;
         }
 
-        price += ((int) (price * .50));
+        price += ((int) (price * .80));
 
         if (price <= 0 || price > coinsToSpend) {
             return coinsToSpend;
