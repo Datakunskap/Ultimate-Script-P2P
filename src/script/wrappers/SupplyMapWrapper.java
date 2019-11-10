@@ -21,7 +21,7 @@ public class SupplyMapWrapper {
     public static HashMap<String, Integer> getMortMyreFungusItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Ring of dueling(8)", 11);
-        map.put("Salve graveyard teleport", 33);
+        map.put("Salve graveyard teleport", 80);
         map.put("Silver sickle (b)", 1);
         supplyMap = new HashMap<>(map);
         return map;
