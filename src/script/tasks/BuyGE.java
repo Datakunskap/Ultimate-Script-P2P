@@ -9,7 +9,6 @@ import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.script.task.Task;
@@ -152,8 +151,15 @@ public class BuyGE extends Task {
     }
 
     private int getQuantity(String item) {
-        if (SUPPLIES.get(item) > 0)
+        int quantity = SUPPLIES.get(item);
+        int price = getPrice(item);
+
+        if (quantity > 0) {
+            if ((price * quantity) > coinsToSpend) {
+                return coinsToSpend / price;
+            }
             return SUPPLIES.get(item);
+        }
 
         return 1;
     }
