@@ -208,7 +208,7 @@ public class Fungus extends Task {
 
     public void useSalveGraveyardTeleport() {
         Time.sleep(1000, 1299);
-        Item salveGraveyardTeleport = Inventory.getFirst("Salve Graveyard Teleport");
+        Item salveGraveyardTeleport = Inventory.getFirst("Salve graveyard teleport");
         if (salveGraveyardTeleport != null) {
             Log.info("Using a tab to teleport to salve graveyard teleport");
             if (salveGraveyardTeleport.interact("Break")) {
@@ -262,22 +262,24 @@ public class Fungus extends Task {
                                 Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
                                 Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
                             }
-                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                        }
+                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                        }
                     }
                     if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
+                        if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
+                            //restock
+                        }
+                        Log.info("I need to restock salve graveyard teleports");
+                        if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
+                            Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
+                            Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
+                        }
+                        GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
                         if (Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
                             if (Bank.withdrawAll(x -> x.getName().contains("Salve graveyard teleport"))) {
                                 Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Salve graveyard teleport")), 5000);
                             }
                         }
-                        if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
-                            //restock
-                            Log.info("I need to restock salve graveyard teleports");
-                            if (Bank.contains(x -> x.getName().contains("Ring of wealth ("))) {
-                                Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
-                                Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
-                            }
-                            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                        }
                     }
                     BankWrapper.updateBankValue();
                     BankWrapper.updateInventoryValue();
@@ -321,7 +323,8 @@ public class Fungus extends Task {
                                     Bank.withdraw(x -> x.getName().contains("Ring of wealth ("), 1);
                                     Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of wealth (")), 5000);
                                 }
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());                            }
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                            }
                         }
                     }
                     Log.info("Deposting everythign expect teleports");
@@ -374,8 +377,7 @@ public class Fungus extends Task {
                     } else {
                         Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
                     }
-                }
-                else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                } else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                     WalkingWrapper.walkToNatureGrotto();
                 }
                 WalkingWrapper.enterGrotto();
