@@ -2,6 +2,7 @@ package script.tasks;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -18,6 +19,8 @@ import org.rspeer.ui.Log;
 import script.wrappers.*;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -26,9 +29,7 @@ public class Mule extends Task {
     private final int muleKeep;
     private boolean trading;
     private int begWorld = -1;
-    private static final String MULE_FILE_PATH = org.rspeer.script.Script.getDataDirectory() + "\\mule.txt";
     private boolean banked;
-    private String status;
     private boolean soldItems;
     private int gp;
     private final int muleAmount;
@@ -51,67 +52,12 @@ public class Mule extends Task {
         //return (!GEWrapper.isSellItems() && BankWrapper.getTotalValue() >= muleAmount) || trading;
     }
 
-    private void loginMule() {
-        String status1;
-        try {
-            File file = new File(MULE_FILE_PATH);
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            PrintWriter pw = new PrintWriter(file);
-            pw.println("mule");
-            pw.close();
-
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-
-            while (((status1 = br.readLine())) != null) {
-                Log.info(status1);
-            }
-
-            br.close();
-        } catch (IOException e) {
-            Log.info("File not found");
-        }
-
-    }
-
-    public static void logoutMule() {
-        try {
-            File file = new File(MULE_FILE_PATH);
-
-            if (!file.exists()) {
-                Log.info("Logout file not found");
-            }
-            PrintWriter pw = new PrintWriter(file);
-            pw.println("done");
-            pw.close();
-
-            Log.info("done");
-
-        } catch (IOException e) {
-            Log.info("File not found");
-        }
-    }
-
     @Override
     public int execute() {
         BankWrapper.setMuleing(true);
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal()) && !banked) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
-                    -> {
-                if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy()) {
-                    if (!Movement.isRunEnabled()) {
-                        Movement.toggleRun(true);
-                    }
-                }
-                if (GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-                    return true;
-                }
-                return false;
-            });
+            WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep350();
         }
         if (GrandExchange.isOpen()) {
@@ -172,7 +118,8 @@ public class Mule extends Task {
             Time.sleep(1000);
         }
 
-        loginMule();
+        //loginMule();
+        send("Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
 
         if (mulePosition.distance() > 3) {
             Movement.walkTo(mulePosition.randomize(3), WalkingWrapper::shouldBreakOnTarget);
@@ -230,8 +177,9 @@ public class Mule extends Task {
                             Time.sleep(3000);
                             Log.fine("Trade completed shutting down mule");
                             soldItems = false;
-                            logoutMule();
                             trading = false;
+                            send("Done:" + Players.getLocal().getName());
+
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
@@ -252,6 +200,49 @@ public class Mule extends Task {
         }
 
         return 500;
+    }
+
+    /**
+     * Send method
+     *
+     * @param message - TRADE = Activate login , DONE - Turn off login
+     */
+    private static void send(String message) {
+        try {
+            sendTradeRequest(message);
+        } catch (Exception e) {
+            Log.severe(e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends message to server from client (Slave)
+     *
+     * @param message - TRADE = Activate login , DONE - Turn off login
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
+     */
+    private static void sendTradeRequest(String message) throws IOException, InterruptedException, ClassNotFoundException {
+        //get the localhost IP address, if server is running on some other IP, you need to use that
+        InetAddress host = InetAddress.getLocalHost();
+        Socket socket = null;
+        ObjectOutputStream oos = null;
+        //establish socket connection to server
+        socket = new Socket(host, 9876);
+        //write to socket using ObjectOutputStream
+        oos = new ObjectOutputStream(socket.getOutputStream());
+        Log.fine("Sending request to Socket Server");
+        oos.writeObject(message);
+        //read the server response message
+        //close resources
+        oos.close();
+        Thread.sleep(500);
+    }
+
+    public static void logoutMule() {
+        send("Done:" + Players.getLocal().getName());
     }
 
     private static final NavigableMap<Long, String> suffixes = new TreeMap<>();

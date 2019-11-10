@@ -23,13 +23,13 @@ public class WalkingWrapper {
     public static boolean walkToPosition(Position position) {
         return Movement.walkTo(position,
                 () -> {
-                    if (shouldBreakOnTarget() || shouldBreakOnRunenergy() || (Fungus.inMortania() && Fungus.inSalveGravyardArea())) {
+                    if (shouldBreakOnTarget() || shouldEnableRun() || (Fungus.inMortania() && Fungus.inSalveGravyardArea())) {
                         if (Fungus.inMortania() && Fungus.inSalveGravyardArea()) {
                             Log.fine("Handling Gate");
                             handleGate();
                         } else {
                             Movement.toggleRun(true);
-                            if (Players.getLocal().getHealthPercent() < 20) {
+                            if (Players.getLocal().getHealthPercent() < 35) {
                                 Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
                                 if (food != null) {
                                     Log.fine("Eating");
@@ -40,6 +40,10 @@ public class WalkingWrapper {
                     }
                     return false;
                 }) || position.distance() < 4;
+    }
+
+    public static boolean shouldEnableRun() {
+        return (Movement.getRunEnergy() > Random.nextInt(5, 15) && !Movement.isRunEnabled());
     }
 
     public static boolean shouldBreakOnTarget() {
