@@ -2,7 +2,6 @@ package script.tasks;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
-import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -18,8 +17,8 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
 
-import java.io.*;
-import java.net.InetAddress;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NavigableMap;
 import java.util.TreeMap;
