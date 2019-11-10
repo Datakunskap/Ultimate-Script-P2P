@@ -1,6 +1,5 @@
 package script.tasks.fungus;
 
-import org.rspeer.RSPeer;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -25,7 +24,10 @@ import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
-import script.wrappers.*;
+import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
+import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 import java.util.HashMap;
 
