@@ -1,5 +1,6 @@
 package script.tasks.fungus;
 
+import org.rspeer.RSPeer;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
