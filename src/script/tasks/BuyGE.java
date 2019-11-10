@@ -87,8 +87,8 @@ public class BuyGE extends Task {
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {
             if (stillNeedsItem(itemToBuy)) {
-                if (GEWrapper.buy(itemToBuy, getQuantity(itemToBuy), getPrice(itemToBuy), false)) {
-                    Log.info("Buying: " + getQuantity(itemToBuy) + " " + itemToBuy);
+                if (GEWrapper.buy(itemToBuy, getQuantity(itemToBuy, true), getPrice(itemToBuy), false)) {
+                    Log.info("Buying: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
                     if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 8000)) {
                         if (itemsIterator.hasNext()) {
                             itemToBuy = itemsIterator.next();
@@ -98,7 +98,7 @@ public class BuyGE extends Task {
                     }
                 }
             } else {
-                Log.info("Already has: " + getQuantity(itemToBuy) + " " + itemToBuy);
+                Log.info("Already has: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
                 if (itemsIterator.hasNext()) {
                     itemToBuy = itemsIterator.next();
                 } else {
@@ -148,12 +148,15 @@ public class BuyGE extends Task {
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
-        return (!Inventory.contains(itemToBuy) || Inventory.getCount(true, itemToBuy) < getQuantity(itemToBuy)) && !Equipment.contains(itemToBuy);
+        return (!Inventory.contains(itemToBuy) || Inventory.getCount(true, itemToBuy) < getQuantity(itemToBuy, true)) && !Equipment.contains(itemToBuy);
     }
 
-    private int getQuantity(String item) {
+    private int getQuantity(String item, boolean checkEnough) {
         int quantity = SUPPLIES.get(item);
-        int price = getPrice(item);
+        int price = 0;
+        if (checkEnough) {
+            price = getPrice(item);
+        }
 
         if (quantity > 0) {
             if ((price * quantity) > coinsToSpend) {
@@ -171,16 +174,15 @@ public class BuyGE extends Task {
         try {
             price = PriceCheckService.getPrice(item).getBuyAverage();
         } catch (Exception e) {
-            return coinsToSpend / getQuantity(item);
+            return coinsToSpend / getQuantity(item, false);
         }
 
         price += ((int) (price * .80));
 
         if (price <= 0 || price > coinsToSpend) {
-            return coinsToSpend / getQuantity(item);
+            return coinsToSpend / getQuantity(item, false);
         }
 
         return price;
     }
-
 }
