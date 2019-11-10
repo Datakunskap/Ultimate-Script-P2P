@@ -8,9 +8,11 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
+import script.wrappers.WalkingWrapper;
 
 import static script.quests.waterfall_quest.data.Quest.PRIEST_IN_PERIL;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -18,6 +20,7 @@ import static script.quests.waterfall_quest.data.Quest.WATERFALL;
 public class PriestInPeril_60 extends Task {
 
     private static final String STAMINA_POTION = "Stamina potion(";
+    private static final Position DREZEL_POSITION = new Position(3439, 9897, 0);
 
     @Override
     public boolean validate() {
@@ -48,20 +51,24 @@ public class PriestInPeril_60 extends Task {
             }
         }
 
-        Npc drezel = Npcs.getNearest("Drezel");
-        if (drezel != null) {
-            if (!Dialog.isOpen()) {
-                if (drezel.interact("Talk-to")) {
-                    Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+        if (DREZEL_POSITION.distance() > 10) {
+            Movement.walkTo(DREZEL_POSITION, WalkingWrapper::shouldBreakOnRunenergy);
+        }
+        if (DREZEL_POSITION.distance() <= 5) {
+            Npc drezel = Npcs.getNearest("Drezel");
+            if (drezel != null) {
+                if (!Dialog.isOpen()) {
+                    if (drezel.interact("Talk-to")) {
+                        Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+                    }
                 }
-            }
-            if (Dialog.isOpen()) {
-                if (Dialog.canContinue()) {
-                    Dialog.processContinue();
+                if (Dialog.isOpen()) {
+                    if (Dialog.canContinue()) {
+                        Dialog.processContinue();
+                    }
                 }
             }
         }
-
 
 
         return lowRandom();
