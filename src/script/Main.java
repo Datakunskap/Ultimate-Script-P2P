@@ -21,6 +21,8 @@ import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.BankWrapper;
 import script.wrappers.PriceCheckService;
 
+import java.io.IOException;
+
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener {
 
@@ -72,7 +74,11 @@ public class Main extends TaskScript implements RenderListener {
     public void onStop() {
         Log.severe("Script Stopped");
         if (BankWrapper.isMuleing()) {
-            Mule.logoutMule(MULE_IP);
+            try {
+                Mule.logoutMule(MULE_IP);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         PriceCheckService.dispose();
     }

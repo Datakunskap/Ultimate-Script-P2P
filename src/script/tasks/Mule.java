@@ -228,8 +228,6 @@ public class Mule extends Task {
     private static void sendTradeRequest(String ip, String message) throws IOException, InterruptedException, ClassNotFoundException {
         //get the localhost IP address, if server is running on some other IP, you need to use that
         //InetAddress host = InetAddress.getLocalHost();
-        Socket socket = null;
-        ObjectOutputStream oos = null;
         //establish socket connection to server
         socket = new Socket(ip, 9876);
         //write to socket using ObjectOutputStream
@@ -242,8 +240,17 @@ public class Mule extends Task {
         Thread.sleep(500);
     }
 
-    public static void logoutMule(String ip) {
+    private static Socket socket;
+    private static ObjectOutputStream oos;
+
+    public static void logoutMule(String ip) throws IOException {
         send(ip, "Done:" + Players.getLocal().getName());
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
+        if (oos != null) {
+            oos.close();
+        }
     }
 
     private static final NavigableMap<Long, String> suffixes = new TreeMap<>();
