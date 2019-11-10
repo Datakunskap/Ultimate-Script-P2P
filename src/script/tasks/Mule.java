@@ -230,6 +230,7 @@ public class Mule extends Task {
         //InetAddress host = InetAddress.getLocalHost();
         //establish socket connection to server
         socket = new Socket(ip, 9876);
+        socket.setReuseAddress(true);
         //write to socket using ObjectOutputStream
         oos = new ObjectOutputStream(socket.getOutputStream());
         Log.fine("Sending request to Socket Server");
