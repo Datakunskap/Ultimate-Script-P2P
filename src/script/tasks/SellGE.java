@@ -3,17 +3,19 @@ package script.tasks;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
 import org.rspeer.runetek.api.component.Interfaces;
+import org.rspeer.runetek.api.component.WorldHopper;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
+import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
@@ -59,6 +61,11 @@ public class SellGE extends Task {
         if (!GEWrapper.GE_AREA_LARGE.contains(me)) {
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep600();
+        }
+
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            WorldHopper.randomHopInP2p();
         }
 
         if (itemsToSell == null) {
