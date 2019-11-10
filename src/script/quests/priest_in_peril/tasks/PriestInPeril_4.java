@@ -73,7 +73,7 @@ public class PriestInPeril_4 extends Task {
                         Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
                     }
                     if (Inventory.isEmpty()) {
-                        if (Bank.withdraw(VARROCK_TELEPORT, 1)) {
+                        if (Bank.withdraw(VARROCK_TELEPORT, 2)) {
                             Time.sleepUntil(() -> Inventory.contains(VARROCK_TELEPORT), 5000);
                         }
                         if (Bank.withdraw(EMPTY_BUCKET, 1)) {
