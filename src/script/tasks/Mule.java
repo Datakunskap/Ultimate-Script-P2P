@@ -36,13 +36,15 @@ public class Mule extends Task {
     private final Position mulePosition;
     private final int muleWorld;
     private final String muleName;
+    private final String muleIP;
 
-    public Mule(int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
+    public Mule(String muleIP, int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
         this.muleAmount = muleAmount;
         this.muleName = muleName;
         this.mulePosition = mulePosition;
         this.muleWorld = muleWorld;
         this.muleKeep = muleKeep;
+        this.muleIP = muleIP;
     }
 
     @Override
@@ -119,10 +121,10 @@ public class Mule extends Task {
         }
 
         //loginMule();
-        send("Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
+        send(muleIP, "Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
 
         if (mulePosition.distance() > 3) {
-            Movement.walkTo(mulePosition.randomize(3), WalkingWrapper::shouldBreakOnTarget);
+            WalkingWrapper.walkToPosition(mulePosition);
             Movement.toggleRun(true);
             return SleepWrapper.shortSleep600();
         }
@@ -178,7 +180,7 @@ public class Mule extends Task {
                             Log.fine("Trade completed shutting down mule");
                             soldItems = false;
                             trading = false;
-                            send("Done:" + Players.getLocal().getName());
+                            send(muleIP, "Done:" + Players.getLocal().getName());
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
@@ -207,9 +209,9 @@ public class Mule extends Task {
      *
      * @param message - TRADE = Activate login , DONE - Turn off login
      */
-    private static void send(String message) {
+    private static void send(String ip, String message) {
         try {
-            sendTradeRequest(message);
+            sendTradeRequest(ip, message);
         } catch (Exception e) {
             Log.severe(e);
             e.printStackTrace();
@@ -224,13 +226,13 @@ public class Mule extends Task {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    private static void sendTradeRequest(String message) throws IOException, InterruptedException, ClassNotFoundException {
+    private static void sendTradeRequest(String ip, String message) throws IOException, InterruptedException, ClassNotFoundException {
         //get the localhost IP address, if server is running on some other IP, you need to use that
-        InetAddress host = InetAddress.getLocalHost();
+        //InetAddress host = InetAddress.getLocalHost();
         Socket socket = null;
         ObjectOutputStream oos = null;
         //establish socket connection to server
-        socket = new Socket(host, 9876);
+        socket = new Socket(ip, 9876);
         //write to socket using ObjectOutputStream
         oos = new ObjectOutputStream(socket.getOutputStream());
         Log.fine("Sending request to Socket Server");
@@ -241,8 +243,8 @@ public class Mule extends Task {
         Thread.sleep(500);
     }
 
-    public static void logoutMule() {
-        send("Done:" + Players.getLocal().getName());
+    public static void logoutMule(String ip) {
+        send(ip, "Done:" + Players.getLocal().getName());
     }
 
     private static final NavigableMap<Long, String> suffixes = new TreeMap<>();

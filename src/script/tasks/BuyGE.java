@@ -1,5 +1,6 @@
 package script.tasks;
 
+import org.rspeer.runetek.api.Definitions;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;

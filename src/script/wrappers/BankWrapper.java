@@ -99,6 +99,11 @@ public class BankWrapper {
                 Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
                 Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, 5000);
             }
+        } else {
+            if (Bank.getWithdrawMode() != Bank.WithdrawMode.ITEM) {
+                Bank.setWithdrawMode(Bank.WithdrawMode.ITEM);
+                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, 5000);
+            }
         }
 
         if (itemsToKeep != null && itemsToKeep.length > 0) {
@@ -125,11 +130,6 @@ public class BankWrapper {
                     Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
                 }
             }
-        }
-
-        if (Bank.getWithdrawMode() != Bank.WithdrawMode.ITEM) {
-            Bank.setWithdrawMode(Bank.WithdrawMode.ITEM);
-            Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, 5000);
         }
 
         updateBankValue();
