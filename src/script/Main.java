@@ -24,8 +24,8 @@ import script.wrappers.PriceCheckService;
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener {
 
-    private static final String MULE_NAME = "Madman38snur";
-    private static final String MULE_IP = "66.146.232.97";
+    private static final String MULE_NAME = "ScatGrem";
+    private static final String MULE_IP = "10.181.66.95";
     private static final int MULE_AMOUNT = 0;
     private static final int MULE_WORLD = 393;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
