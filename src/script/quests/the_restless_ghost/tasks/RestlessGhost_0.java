@@ -33,7 +33,7 @@ public class RestlessGhost_0 extends Task {
         return Skills.getLevel(Skill.MAGIC) >= 13
                 && THE_RESTLESS_GHOST.getVarpValue() == 0
                 && WITCHES_HOUSE.getVarpValue() == 0
-                && Skills.getLevel(Skill.PRAYER) < 50;
+                && Skills.getLevel(Skill.PRAYER) == 1;
     }
 
     @Override
