@@ -65,18 +65,7 @@ public class BuyGE extends Task {
     public int execute() {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-            Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition(), ()
-                    -> {
-                if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldBreakOnRunenergy()) {
-                    if (!Movement.isRunEnabled()) {
-                        Movement.toggleRun(true);
-                    }
-                }
-                if (GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
-                    return true;
-                }
-                return false;
-            });
+            WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep600();
         }
 
