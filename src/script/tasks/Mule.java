@@ -233,7 +233,7 @@ public class Mule extends Task {
                             logoutMule();
                             trading = false;
                             BankWrapper.updateInventoryValue();
-                            BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + gp);
+                            BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
                             if (begWorld != -1) {
                                 WorldHopper.hopTo(begWorld);
