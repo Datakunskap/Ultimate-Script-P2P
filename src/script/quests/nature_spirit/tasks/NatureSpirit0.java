@@ -51,7 +51,7 @@ public class NatureSpirit0 extends Task {
                     Movement.walkTo(bank.getPosition(), WalkingWrapper::shouldBreakOnRunenergy);
                 }
                 if (bank.getPosition().distance() < 4) {
-                    BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet");
+                    BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet", "");
                 }
                 Movement.toggleRun(true);
             } else {
