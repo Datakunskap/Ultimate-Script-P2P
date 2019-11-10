@@ -141,6 +141,10 @@ public class BuyGE extends Task {
             BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
         } else {
             BankWrapper.openAndDepositAll(false, false, SUPPLIES.keySet());
+            if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
+                Bank.withdrawAll("Salve graveyard teleport");
+                Time.sleepUntil(() -> !Bank.contains("Salve graveyard teleport"), 8000);
+            }
         }
 
         if (Inventory.contains("Silver sickle (b)")) {
