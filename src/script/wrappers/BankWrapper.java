@@ -186,6 +186,7 @@ public class BankWrapper {
 
         for (Item s : sellables) {
             if (s.getName().equalsIgnoreCase("Mort myre fungus")
+                    || s.getName().contains("Dragon bones")
                     || (PriceCheckService.getPrice(s.getId()) != null
                     && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000))) {
 
