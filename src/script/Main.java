@@ -2,7 +2,10 @@ package script;
 
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.movement.position.Area;
+import org.rspeer.runetek.api.scene.Players;
+import org.rspeer.runetek.event.listeners.DeathListener;
 import org.rspeer.runetek.event.listeners.RenderListener;
+import org.rspeer.runetek.event.types.DeathEvent;
 import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.runetek.providers.subclass.GameCanvas;
 import org.rspeer.script.ScriptMeta;
@@ -19,12 +22,15 @@ import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
 import script.wrappers.PriceCheckService;
+import script.wrappers.SupplyMapWrapper;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
-public class Main extends TaskScript implements RenderListener {
+public class Main extends TaskScript implements RenderListener, DeathListener {
 
     private static final String MULE_NAME = "ScatGrem";
     private static final String MULE_IP = "10.181.66.95";
@@ -91,6 +97,17 @@ public class Main extends TaskScript implements RenderListener {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void notify(DeathEvent e) {
+        if (e.getSource().equals(Players.getLocal())) {
+            Log.severe("You Died");
+            HashMap<String, Integer> map = SupplyMapWrapper.getCurrentSupplyMap();
+            if (map != null && map.equals(SupplyMapWrapper.getNatureSpiritItemsMap())) {
+                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getCurrentSupplyMap());
+            }
         }
     }
 }

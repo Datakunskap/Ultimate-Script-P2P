@@ -1,18 +1,17 @@
 package script.quests.nature_spirit.tasks;
 
-import script.quests.nature_spirit.NatureSpirit;
-import script.quests.nature_spirit.data.Location;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.menu.ActionOpcodes;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
-import script.wrappers.WalkingWrapper;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.tasks.fungus.Fungus;
 
 public class NatureSpirit6 extends Task {
 
@@ -28,9 +27,10 @@ public class NatureSpirit6 extends Task {
                 Dialog.processContinue();
         }
 
-        if (Location.ROTTING_LOG_POSITION.distance() > 20) {
-            Movement.walkTo(Location.ROTTING_LOG_POSITION, () -> WalkingWrapper.shouldBreakOnTarget()
-                    || (Location.ROTTING_LOG_POSITION.distance() <= 20) && SceneObjects.getNearest("Rotting log") != null && SceneObjects.getNearest("Rotting log").distance() < 4);
+
+
+        if (Location.ROTTING_LOG_POSITION.distance() > 1) {
+            script.wrappers.WalkingWrapper.walkToPosition(Location.ROTTING_LOG_POSITION);
         }
 
         SceneObject log = SceneObjects.getNearest("Rotting log");

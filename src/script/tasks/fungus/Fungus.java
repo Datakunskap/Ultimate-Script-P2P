@@ -123,7 +123,7 @@ public class Fungus extends Task {
         return Skills.getCurrentLevel(Skill.PRAYER) == 0;
     }
 
-    public void handleGate() {
+    public static void handleGate() {
         Player local = Players.getLocal();
         SceneObject gate = SceneObjects.getNearest("Gate");
         InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);

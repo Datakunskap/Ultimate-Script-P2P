@@ -2,6 +2,7 @@ package script.quests.nature_spirit.tasks;
 
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
@@ -13,6 +14,7 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 
 public class NatureSpirit2 extends Task {
 
@@ -23,6 +25,10 @@ public class NatureSpirit2 extends Task {
 
     @Override
     public int execute() {
+        if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+            WalkingWrapper.walkToNatureGrotto();
+        }
+
         Npc filliman = Npcs.getNearest("Filliman Tarlock");
         SceneObject grotto = SceneObjects.getNearest("Grotto");
         SceneObject bridge = SceneObjects.getNearest("Bridge");

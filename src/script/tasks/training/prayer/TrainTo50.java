@@ -25,6 +25,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.priest_in_peril.data.Quest;
 import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 import java.util.function.Predicate;
 
@@ -52,6 +53,9 @@ public class TrainTo50 extends Task {
 
     @Override
     public int execute() {
+        if (SupplyMapWrapper.getCurrentSupplyMap() != null) {
+            SupplyMapWrapper.setSupplyMap(null);
+        }
 
         Log.info("Prayer training");
 

@@ -24,6 +24,7 @@ import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
 import script.wrappers.BankWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.SupplyMapWrapper;
 import script.wrappers.WalkingWrapper;
 
 public class NatureSpirit0 extends Task {
@@ -50,6 +51,7 @@ public class NatureSpirit0 extends Task {
                 Bank.withdraw("Tuna", 10);
             } else {
                 hasSupplies = true;
+                SupplyMapWrapper.setSupplyMap(SupplyMapWrapper.getNatureSpiritItemsMap());
             }
             return SleepWrapper.shortSleep600();
         }

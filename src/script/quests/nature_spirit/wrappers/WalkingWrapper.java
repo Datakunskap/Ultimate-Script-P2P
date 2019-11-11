@@ -1,12 +1,10 @@
 package script.quests.nature_spirit.wrappers;
 
-import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
@@ -34,7 +32,8 @@ public class WalkingWrapper {
                         if (script.wrappers.WalkingWrapper.shouldBreakOnTarget() || inSalveGravyardArea()) {
                             if (inSalveGravyardArea()) {
                                 Log.fine("Handling Gate");
-                                handleGate();
+                                Fungus.handleGate();
+                                return true;
                             } else {
                                 Movement.toggleRun(true);
                                 if (Players.getLocal().getHealthPercent() < 35) {
@@ -103,43 +102,5 @@ public class WalkingWrapper {
     private static boolean inSalveGravyardArea() {
         Player local = Players.getLocal();
         return Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local);
-    }
-
-    private static void handleGate() {
-        Player local = Players.getLocal();
-        SceneObject gate = SceneObjects.getNearest("Gate");
-        InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
-        InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
-        Log.info("Opening the gate");
-        if (gate != null) {
-            if (gate.containsAction("Open")) {
-                if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
-                    if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
-                        Log.info("dontAskMeThisAgain is visible");
-                        if (dontAskMeThisAgain.interact("Off/On")) {
-                            Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
-                        }
-                    }
-                    if (enterTheSwamp != null) {
-                        if (enterTheSwamp.getMaterialId() == 942) {
-                            Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
-                            if (enterTheSwamp.interact("Yes")) {
-                                Log.info("Clicked enterTheSwamp");
-                                Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
-                            }
-                        }
-                    }
-                    if (dontAskMeThisAgain == null && enterTheSwamp != null) {
-                        Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
-                        if (enterTheSwamp.interact("Yes")) {
-                            Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

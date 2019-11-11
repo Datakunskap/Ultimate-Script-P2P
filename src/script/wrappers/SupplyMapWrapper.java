@@ -23,7 +23,6 @@ public class SupplyMapWrapper {
         map.put("Ring of dueling(8)", 11);
         map.put("Salve graveyard teleport", 80);
         map.put("Silver sickle (b)", 1);
-        supplyMap = new HashMap<>(map);
         return map;
     }
 
@@ -37,21 +36,18 @@ public class SupplyMapWrapper {
         map.put("Falador teleport", 5);
         map.put("Tuna", 10);
         map.put("Leather gloves", 1);
-        supplyMap = new HashMap<>(map);
         return map;
     }
 
     public static HashMap<String, Integer> getWaterfallItemsMap() {
         //TODO: Add items
         HashMap<String, Integer> map = new HashMap<>();
-        supplyMap = new HashMap<>(map);
         return map;
     }
 
     public static HashMap<String, Integer> getPriestInPerilItemsMap() {
         //TODO: Add items
         HashMap<String, Integer> map = new HashMap<>();
-        supplyMap = new HashMap<>(map);
         return map;
     }
 
@@ -59,7 +55,7 @@ public class SupplyMapWrapper {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
         map.put("Salve graveyard teleport", 3);
-        supplyMap = new HashMap<>(map);
+        map.put("Tuna", 5);
         return map;
     }
 
@@ -91,7 +87,6 @@ public class SupplyMapWrapper {
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
         map.put("Salve graveyard teleport", 3);
-        supplyMap = new HashMap<>(map);
         return map;
     }
 }
