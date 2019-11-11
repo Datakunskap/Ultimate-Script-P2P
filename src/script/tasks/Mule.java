@@ -49,8 +49,8 @@ public class Mule extends Task {
 
     @Override
     public boolean validate() {
-        return Skills.getLevel(Skill.PRAYER) > 49
-                && (Inventory.getCount(true, "Coins") >= muleAmount || Bank.getCount("Coins") >= muleAmount);
+        return Skills.getLevel(Skill.PRAYER) > 49 && !GEWrapper.isSellItems()
+                && (Inventory.getCount(true, "Coins") >= muleAmount || Bank.getCount("Coins") >= muleAmount || trading);
         //return (!GEWrapper.isSellItems() && BankWrapper.getTotalValue() >= muleAmount) || trading;
     }
 
@@ -245,7 +245,6 @@ public class Mule extends Task {
         out.writeChars(message);
         //read the server response message
         //close resources
-        out.close();
         Thread.sleep(500);
     }
 

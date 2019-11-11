@@ -41,12 +41,12 @@ public class NatureSpirit0 extends Task {
     public int execute() {
         if (!hasSupplies) {
             if(Inventory.contains("Varrock teleport")){
-                if(Inventory.getFirst("Varrock teleport").interact("Break")){
+                if(Inventory.getFirst("Varrock teleport").interact("Break")) {
                     Time.sleepUntil(()-> !Inventory.contains("Varrock teleport"), 5000);
                 }
             }
             if (!Inventory.contains("Silver sickle")) {
-                BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet");
+                BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet", "Salve graveyard teleport");
                 Bank.withdraw("Tuna", 10);
             } else {
                 hasSupplies = true;

@@ -70,7 +70,6 @@ public class PriestInPeril_60 extends Task {
             }
         }
 
-
         return lowRandom();
     }
 

@@ -62,8 +62,8 @@ public class TrainTo13 extends Task {
 
     @Override
     public boolean validate() {
-        if(!boughtItems){
-            if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)){
+        if(!boughtItems) {
+            if(Inventory.containsAll(ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION)) {
                 Log.info("Setting boughtItem to true");
                 boughtItems = true;
             }

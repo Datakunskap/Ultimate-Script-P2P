@@ -28,7 +28,7 @@ public class Main extends TaskScript implements RenderListener {
 
     private static final String MULE_NAME = "ScatGrem";
     private static final String MULE_IP = "10.181.66.95";
-    private static final int MULE_AMOUNT = 0;
+    private static final int MULE_AMOUNT = 1_500_000;
     private static final int MULE_WORLD = 393;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
     private static final Area MULE_AREA = Area.rectangular(3176, 3470, 3179, 3468);

@@ -1,9 +1,5 @@
 package script.quests.nature_spirit.tasks;
 
-import script.quests.nature_spirit.NatureSpirit;
-import script.quests.nature_spirit.data.Location;
-import script.quests.nature_spirit.data.Quest;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
@@ -12,6 +8,10 @@ import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 
 public class NatureSpirit1 extends Task {
 
@@ -24,7 +24,6 @@ public class NatureSpirit1 extends Task {
     public int execute() {
         if (Location.DUNGEON_AREA.contains(Players.getLocal())) {
             SceneObject holyBarrier = SceneObjects.getNearest("Holy barrier");
-
             if (holyBarrier != null && holyBarrier.interact(a -> true)) {
                 Time.sleepUntil(() -> !Location.DUNGEON_AREA.contains(Players.getLocal()), 10_000);
             }

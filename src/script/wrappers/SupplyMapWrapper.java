@@ -58,6 +58,7 @@ public class SupplyMapWrapper {
     public static HashMap<String, Integer> getNatureSpiritItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
+        map.put("Salve graveyard teleport", 3);
         supplyMap = new HashMap<>(map);
         return map;
     }
@@ -89,6 +90,7 @@ public class SupplyMapWrapper {
         map.put("Silver sickle", 1);
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
+        map.put("Salve graveyard teleport", 3);
         supplyMap = new HashMap<>(map);
         return map;
     }

@@ -208,13 +208,13 @@ public class Fungus extends Task {
         }
     }
 
-    public void useSalveGraveyardTeleport() {
+    public static void useSalveGraveyardTeleport() {
         Time.sleep(1000, 1299);
         Item salveGraveyardTeleport = Inventory.getFirst("Salve graveyard teleport");
         if (salveGraveyardTeleport != null) {
             Log.info("Using a tab to teleport to salve graveyard teleport");
             if (salveGraveyardTeleport.interact("Break")) {
-                Time.sleepUntil(() -> BLOOM_TILE.distance() < 100, 5000);
+                Time.sleepUntil(() -> BLOOM_TILE.distance() < 100 && !Game.isLoadingRegion(), 5000);
             }
         }
     }
