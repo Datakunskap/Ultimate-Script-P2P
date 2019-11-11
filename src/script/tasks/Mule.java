@@ -17,8 +17,8 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -36,6 +36,7 @@ public class Mule extends Task {
     private final int muleWorld;
     private final String muleName;
     private final String muleIP;
+    private static final String CRLF = "\r\n";
 
     public Mule(String muleIP, int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
         this.muleAmount = muleAmount;
@@ -97,6 +98,10 @@ public class Mule extends Task {
             return SleepWrapper.shortSleep600();
         }
 
+        if (socket == null || !socket.isConnected()) {
+            send(muleIP, "Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
+        }
+
         if (Worlds.getCurrent() != muleWorld) {
             begWorld = Worlds.getCurrent();
             WorldHopper.hopTo(muleWorld);
@@ -118,9 +123,6 @@ public class Mule extends Task {
             Dialog.processContinue();
             Time.sleep(1000);
         }
-
-        //loginMule();
-        send(muleIP, "Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
 
         if (mulePosition.distance() > 3) {
             WalkingWrapper.walkToPosition(mulePosition);
@@ -179,7 +181,11 @@ public class Mule extends Task {
                             Log.fine("Trade completed shutting down mule");
                             soldItems = false;
                             trading = false;
-                            send(muleIP, "Done:" + Players.getLocal().getName());
+                            try {
+                                logoutMule(muleIP);
+                            } catch (IOException e) {
+                                Log.severe(e);
+                            }
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
@@ -229,28 +235,31 @@ public class Mule extends Task {
         //get the localhost IP address, if server is running on some other IP, you need to use that
         //InetAddress host = InetAddress.getLocalHost();
         //establish socket connection to server
-        socket = new Socket(ip, 9876);
-        socket.setReuseAddress(true);
+        if (socket == null || socket.isClosed()) {
+            socket = new Socket(ip, 9876);
+            socket.setReuseAddress(true);
+            socket.setKeepAlive(true);
+            out = new DataOutputStream(socket.getOutputStream());
+        }
         //write to socket using ObjectOutputStream
-        oos = new ObjectOutputStream(socket.getOutputStream());
         Log.fine("Sending request to Socket Server");
-        oos.writeObject(message);
+        out.writeChars(message);
         //read the server response message
         //close resources
-        oos.close();
+        out.close();
         Thread.sleep(500);
     }
 
     private static Socket socket;
-    private static ObjectOutputStream oos;
+    private static DataOutputStream out;
 
     public static void logoutMule(String ip) throws IOException {
-        send(ip, "Done:" + Players.getLocal().getName());
+        send(ip, "Done:");
+        if (out != null) {
+            out.close();
+        }
         if (socket != null && !socket.isClosed()) {
             socket.close();
-        }
-        if (oos != null) {
-            oos.close();
         }
     }
 
