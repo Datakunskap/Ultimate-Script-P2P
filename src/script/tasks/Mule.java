@@ -241,7 +241,6 @@ public class Mule extends Task {
             socket.setKeepAlive(true);
             out = new DataOutputStream(socket.getOutputStream());
         }
-        //write to socket using ObjectOutputStream
         Log.fine("Sending request to Socket Server");
         out.writeChars(message);
         //read the server response message
