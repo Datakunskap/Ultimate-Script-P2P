@@ -243,8 +243,10 @@ public class Mule extends Task {
         }
         Log.fine("Sending request to Socket Server");
         out.writeChars(message);
+        out.flush();
         //read the server response message
         //close resources
+        out.close();
         Thread.sleep(500);
     }
 
