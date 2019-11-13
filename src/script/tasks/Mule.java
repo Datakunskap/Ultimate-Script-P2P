@@ -13,18 +13,18 @@ import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
+import org.rspeer.script.Script;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
+import java.io.*;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class Mule extends Task {
 
+    private static final String MULE_FILE_PATH = Script.getDataDirectory() + "\\mule.txt";
     private final int muleKeep;
     private boolean trading;
     private int begWorld = -1;
@@ -35,16 +35,14 @@ public class Mule extends Task {
     private final Position mulePosition;
     private final int muleWorld;
     private final String muleName;
-    private final String muleIP;
     private static final String CRLF = "\r\n";
 
-    public Mule(String muleIP, int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
+    public Mule(int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
         this.muleAmount = muleAmount;
         this.muleName = muleName;
         this.mulePosition = mulePosition;
         this.muleWorld = muleWorld;
         this.muleKeep = muleKeep;
-        this.muleIP = muleIP;
     }
 
     @Override
@@ -98,9 +96,7 @@ public class Mule extends Task {
             return SleepWrapper.shortSleep600();
         }
 
-        if (socket == null || !socket.isConnected()) {
-            send(muleIP, "Trade:" + Players.getLocal().getName() + ":" + Worlds.getCurrent() + ":" + 0);
-        }
+        loginMule();
 
         if (Worlds.getCurrent() != muleWorld) {
             begWorld = Worlds.getCurrent();
@@ -181,11 +177,7 @@ public class Mule extends Task {
                             Log.fine("Trade completed shutting down mule");
                             soldItems = false;
                             trading = false;
-                            try {
-                                logoutMule(muleIP);
-                            } catch (IOException e) {
-                                Log.severe(e);
-                            }
+                            logoutMule();
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
@@ -209,57 +201,46 @@ public class Mule extends Task {
         return 500;
     }
 
-    /**
-     * Send method
-     *
-     * @param message - TRADE = Activate login , DONE - Turn off login
-     */
-    private static void send(String ip, String message) {
+    private void loginMule() {
         try {
-            sendTradeRequest(ip, message);
-        } catch (Exception e) {
-            Log.severe(e);
-            e.printStackTrace();
+            File file = new File(MULE_FILE_PATH);
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            PrintWriter pw = new PrintWriter(file);
+            pw.println("mule");
+            pw.close();
+
+            String status1;
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+
+            while (((status1 = br.readLine())) != null) {
+                Log.info(status1);
+            }
+
+            br.close();
+        } catch (IOException e) {
+            Log.info("File not found");
         }
     }
 
-    /**
-     * Sends message to server from client (Slave)
-     *
-     * @param message - TRADE = Activate login , DONE - Turn off login
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws ClassNotFoundException
-     */
-    private static void sendTradeRequest(String ip, String message) throws IOException, InterruptedException, ClassNotFoundException {
-        //get the localhost IP address, if server is running on some other IP, you need to use that
-        //InetAddress host = InetAddress.getLocalHost();
-        //establish socket connection to server
-        if (socket == null || socket.isClosed()) {
-            socket = new Socket(ip, 9876);
-            socket.setReuseAddress(true);
-            socket.setKeepAlive(true);
-            out = new DataOutputStream(socket.getOutputStream());
-        }
-        Log.fine("Sending request to Socket Server");
-        out.writeChars(message);
-        out.flush();
-        //read the server response message
-        //close resources
-        out.close();
-        Thread.sleep(500);
-    }
+    public static void logoutMule() {
+        try {
+            File file = new File(MULE_FILE_PATH);
 
-    private static Socket socket;
-    private static DataOutputStream out;
+            if (!file.exists()) {
+                Log.info("Logout file not found");
+            }
+            PrintWriter pw = new PrintWriter(file);
+            pw.println("done");
+            pw.close();
 
-    public static void logoutMule(String ip) throws IOException {
-        send(ip, "Done:");
-        if (out != null) {
-            out.close();
-        }
-        if (socket != null && !socket.isClosed()) {
-            socket.close();
+            Log.info("done");
+
+        } catch (IOException e) {
+            Log.info("File not found");
         }
     }
 

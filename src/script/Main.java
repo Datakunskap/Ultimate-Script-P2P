@@ -26,14 +26,12 @@ import script.wrappers.GEWrapper;
 import script.wrappers.PriceCheckService;
 import script.wrappers.SupplyMapWrapper;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener, DeathListener {
 
     private static final String MULE_NAME = "ScatGrem";
-    private static final String MULE_IP = "10.181.66.95";
     private static final int MULE_AMOUNT = 1_500_000;
     private static final int MULE_WORLD = 393;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
@@ -55,7 +53,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
 
         submit( new GetStartersGold(),
                 new SellGE(),
-                new Mule(MULE_IP, MULE_AMOUNT, MULE_NAME, MULE_AREA.getCenter(), MULE_WORLD, MULE_AMOUNT_TO_KEEP),
+                new Mule(MULE_AMOUNT, MULE_NAME, MULE_AREA.getCenter(), MULE_WORLD, MULE_AMOUNT_TO_KEEP),
                 new BuyGE(),
                 new BuyItemsNeeded(),
                 new TrainTo13()
@@ -80,11 +78,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
     public void onStop() {
         Log.severe("Script Stopped");
         if (BankWrapper.isMuleing()) {
-            try {
-                Mule.logoutMule(MULE_IP);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Mule.logoutMule();
         }
         PriceCheckService.dispose();
     }
