@@ -1,6 +1,7 @@
 package script.quests.witches_house.tasks;
 
 import org.rspeer.runetek.adapter.scene.Npc;
+import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.Interfaces;
@@ -46,6 +47,7 @@ public class WitchesHouse_0 extends Task {
         if (boy != null) {
             if (Boy.distance() <= 10 && !Dialog.isOpen()) {
                 boy.click();
+                Time.sleepUntil(()-> Dialog.isOpen(), 5000);
             }
         }
         if (Dialog.isOpen() && Interfaces.getComponent(219, 1) == null) {

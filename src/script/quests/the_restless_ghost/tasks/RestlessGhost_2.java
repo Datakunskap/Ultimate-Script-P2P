@@ -55,14 +55,11 @@ public class RestlessGhost_2 extends Task {
             }
             Dialog.process("Yep, now tell me what");
         } else {
-                final Npc ghost = Npcs.getNearest(922);
+                Npc ghost = Npcs.getNearest(922);
                 SceneObject coffinClosed = SceneObjects.getNearest(2145);
                 SceneObject coffinOpen = SceneObjects.getNearest(15061);
 
                     if (ghost != null) {
-                        Movement.walkTo(ghost);
-                        Time.sleepUntil(() -> (local.isMoving()), 10000);
-                        Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
                         ghost.interact("Talk-to");
                     } else {
                         if (coffinClosed != null) {
