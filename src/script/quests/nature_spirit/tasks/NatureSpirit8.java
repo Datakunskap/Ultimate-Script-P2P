@@ -38,7 +38,7 @@ public class NatureSpirit8 extends Task {
 
         if (needsToPick) {
             NatureSpirit.doFungusPicking();
-            if (Inventory.contains("Mort myre fungus")) {
+            if (Inventory.contains("Mort myre fungus") && Inventory.contains("A used spell")) {
                 needsToPick = false;
             }
             return NatureSpirit.getLoopReturn();
