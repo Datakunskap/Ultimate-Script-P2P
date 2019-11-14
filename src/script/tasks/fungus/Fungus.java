@@ -87,6 +87,7 @@ public class Fungus extends Task {
         }
 
         if (atClanWars()) {
+            WorldhopWrapper.resetChecker();
             doBanking();
         }
 

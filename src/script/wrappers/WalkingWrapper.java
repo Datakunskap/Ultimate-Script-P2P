@@ -15,7 +15,6 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
-import script.quests.nature_spirit.data.Location;
 import script.tasks.fungus.Fungus;
 
 public class WalkingWrapper {
@@ -28,7 +27,8 @@ public class WalkingWrapper {
                             Log.fine("Handling Gate");
                             handleGate();
                         } else {
-                            Movement.toggleRun(true);
+                            if (!Movement.isRunEnabled())
+                                Movement.toggleRun(true);
                             if (Players.getLocal().getHealthPercent() < 35) {
                                 Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
                                 if (food != null) {
@@ -40,6 +40,23 @@ public class WalkingWrapper {
                     }
                     return false;
                 }) || position.distance() < 4;
+    }
+
+    public static void walkToNearestBank() {
+        Movement.getDaxWalker().walkToBank(() -> {
+            if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldEnableRun()) {
+                if (!Movement.isRunEnabled())
+                    Movement.toggleRun(true);
+                if (Players.getLocal().getHealthPercent() < 35) {
+                    Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
+                    if (food != null) {
+                        Log.fine("Eating");
+                        food.interact("Eat");
+                    }
+                }
+            }
+            return false;
+        });
     }
 
     public static boolean shouldEnableRun() {

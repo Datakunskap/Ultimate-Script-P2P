@@ -217,6 +217,7 @@ public class TrainTo13 extends Task {
         if (Inventory.getCount(item) < amount) {
             if (Bank.withdraw(item, amount)) {
                 Time.sleepUntil(() -> Inventory.getCount(stack, item) == amount, SleepWrapper.longSleep7500());
+                Time.sleep(600);
             }
         }
     }

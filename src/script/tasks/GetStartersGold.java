@@ -23,10 +23,10 @@ import script.wrappers.SleepWrapper;
 
 public class GetStartersGold extends Task {
 
-    private static final int MULE_WORLD = 494;
+    private static final int MULE_WORLD = 393;
     static final int AMOUNT_TO_RECEIVE = 2000000;
 
-    private static final String MULE_FOR_STARTERS_GOLD = "2147 Emblems";
+    private static final String MULE_FOR_STARTERS_GOLD = "ScatGrem";
 
     private static final Position MULE_POSITION = BankLocation.GRAND_EXCHANGE.getPosition();
 

@@ -59,32 +59,29 @@ public class BankWrapper {
 
     HashSet<BankLocation> failedLocations;
 
-    private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted, Set<String> set,  String... itemsToKeep) {
+    private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted, Set<String> set, String... itemsToKeep) {
         Log.fine("Walking To Nearest Bank");
-        BankLocation bank = BankLocation.getNearest();
-        if (bank != null && WalkingWrapper.walkToPosition(bank.getPosition())) {
-            int tries = 10;
-            while (!openNearest() && Game.isLoggedIn() && tries > 0) {
-                Log.info("Opening Nearest Bank");
-                Time.sleep(SleepWrapper.mediumSleep1000());
-                tries--;
-            }
-        } else {
-            Log.severe("Failed Walking To Bank");
-            return;
+        WalkingWrapper.walkToNearestBank();
+
+        int tries = 10;
+        while (!openNearest() && Game.isLoggedIn() && tries > 0) {
+            Log.info("Opening Nearest Bank");
+            Time.sleep(SleepWrapper.mediumSleep1000());
+            tries--;
         }
 
         Bank.depositInventory();
         Time.sleepUntil(Inventory::isEmpty, 8000);
         Time.sleep(300, 600);
         inventoryValue = 0;
+
         updateBankValue();
 
 
         if (numCoinsToKeep > 0) {
             Bank.withdraw(995, numCoinsToKeep);
             Time.sleepUntil(()
-                            -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, 5000);
+                    -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, 5000);
         }
         if (keepAllCoins) {
             Bank.withdrawAll(995);
@@ -130,7 +127,9 @@ public class BankWrapper {
         }
 
         updateBankValue();
+
         updateInventoryValue();
+
     }
 
     public static void openAndDepositAll(boolean keepAllCoins, Set<String> itemsToKeepSet) {
@@ -150,7 +149,7 @@ public class BankWrapper {
     }
 
     public static void openAndDepositAll(int numCoinsToKeep, String... itemsToKeep) {
-        openAndDepositAll(false, numCoinsToKeep,true, null, itemsToKeep);
+        openAndDepositAll(false, numCoinsToKeep, true, null, itemsToKeep);
     }
 
     public static void openAndDepositAll(boolean keepAllCoins) {
@@ -205,7 +204,7 @@ public class BankWrapper {
             for (Map.Entry<String, Integer> i : itemsToBuy.entrySet()) {
                 if (Bank.contains(x
                         -> x.getName().toLowerCase().equals(i.getKey().toLowerCase())
-                            && x.getStackSize() >= i.getValue())) {
+                        && x.getStackSize() >= i.getValue())) {
 
                     set.remove(i.getKey());
                 }
@@ -218,7 +217,9 @@ public class BankWrapper {
         BankWrapper.isMuleing = isMuleing;
     }
 
-    public static boolean isMuleing() { return isMuleing; }
+    public static boolean isMuleing() {
+        return isMuleing;
+    }
 
     public static int getAmountMuled() {
         return amountMuled;

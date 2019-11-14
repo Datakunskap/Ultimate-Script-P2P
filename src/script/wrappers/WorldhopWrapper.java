@@ -24,7 +24,7 @@ public class WorldhopWrapper {
     private static int currentWorld;
 
     private static final String WORLDS_FILE_PATH = Script.getDataDirectory() + "\\SS-Fungi-Worlds.txt";
-    private static final int WORLD_HOP_MINS = 3;
+    private static final int WORLD_HOP_SECONDS = 30;
     private static final Area FUNGUS_AREA = Area.rectangular(3417, 3441, 3425, 3434);
 
     public static void resetChecker() {
@@ -43,7 +43,7 @@ public class WorldhopWrapper {
 
         if (otherFungusPicker()) {
 
-            if (worldHopTimer.exceeds(Duration.ofMinutes(WORLD_HOP_MINS))) {
+            if (worldHopTimer.exceeds(Duration.ofSeconds(WORLD_HOP_SECONDS))) {
                 Log.fine("World-Hopping");
 
                 //removeWorld(Worlds.getCurrent(), WORLDS_FILE_PATH);
@@ -59,7 +59,7 @@ public class WorldhopWrapper {
                 if (worldHopTimer.getElapsed().toMinutes() != elapsedMinutes) {
                     elapsedMinutes = worldHopTimer.getElapsed().toMinutes();
                     Log.fine("World Hopping in: "
-                            + (WORLD_HOP_MINS - worldHopTimer.getElapsed().toMinutes()) + "min(s)");
+                            + (WORLD_HOP_SECONDS - worldHopTimer.getElapsed().toSeconds()) + "min(s)");
                 }
             }
         } else {

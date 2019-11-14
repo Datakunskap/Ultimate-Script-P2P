@@ -1,5 +1,6 @@
 package script.quests.nature_spirit.tasks;
 
+import org.rspeer.runetek.api.component.tab.Equipment;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
@@ -16,6 +17,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.wrappers.BankWrapper;
 
 public class NatureSpirit7 extends Task {
 
@@ -28,6 +30,16 @@ public class NatureSpirit7 extends Task {
 
     @Override
     public int execute() {
+        if (Inventory.contains("Ghostspeak amulet")) {
+            Inventory.getFirst("Ghostspeak amulet").interact(a -> true);
+            Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+        }
+
+        if (!Equipment.contains("Ghostspeak amulet")) {
+            WalkingWrapper.exitAndLeaveGrotto();
+            BankWrapper.openAndDepositAll(false, false, "Mort myre fungus", "Ghostspeak amulet", "Druidic spell", "A used spell", "Silver sickle");
+        }
+
         if (Dialog.isOpen()) {
             Dialog.processContinue();
             return NatureSpirit.getLoopReturn();
