@@ -24,10 +24,7 @@ import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
-import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
-import script.wrappers.SleepWrapper;
-import script.wrappers.SupplyMapWrapper;
+import script.wrappers.*;
 
 import java.util.HashMap;
 
@@ -74,6 +71,8 @@ public class Fungus extends Task {
         }
 
         if (atMortMyreFungusLogs()) {
+            WorldhopWrapper.checkWorldHop();
+
             if (!outOfPrayer()) {
                 if (!Inventory.isFull()) {
                     collecingFungi();
