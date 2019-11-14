@@ -1,17 +1,12 @@
 package script.quests.nature_spirit.tasks;
 
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
-import org.rspeer.runetek.api.component.Interfaces;
-import org.rspeer.runetek.api.component.tab.Inventory;
-import script.data.Locations;
-import script.quests.nature_spirit.NatureSpirit;
-import script.quests.nature_spirit.data.Location;
-import script.quests.nature_spirit.data.Quest;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.Interfaces;
+import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.menu.ActionOpcodes;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.scene.Npcs;
@@ -19,6 +14,11 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.data.Locations;
+import script.quests.nature_spirit.NatureSpirit;
+import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.tasks.fungus.Fungus;
 
 public class NatureSpirit8 extends Task {
@@ -52,7 +52,16 @@ public class NatureSpirit8 extends Task {
             WalkingWrapper.walkToNatureGrotto();
         }
 
+        SceneObject orangeStone = SceneObjects.getNearest(3528);
+
         if (Dialog.isOpen()) {
+            if (orangeStone != null && orangeStone.getPosition().equals(Players.getLocal().getPosition())) {
+                InterfaceComponent hmm = Interfaces.getComponent(231, 4);
+                if (hmm != null && hmm.isVisible() && hmm.getText().contains("Hmm, something still")) {
+                    needsToPick = true;
+                }
+            }
+
             if (Dialog.canContinue()) {
                 Dialog.processContinue();
             }
@@ -81,8 +90,6 @@ public class NatureSpirit8 extends Task {
                 Log.info("Placed Spell");
             }
 
-            SceneObject orangeStone = SceneObjects.getNearest(3528);
-
             if (!Players.getLocal().getPosition().equals(orangeStone.getPosition())) {
                 Movement.setWalkFlag(orangeStone);
                 orangeStone.interact(ActionOpcodes.OBJECT_ACTION_0);
@@ -90,12 +97,6 @@ public class NatureSpirit8 extends Task {
             }
 
             if (Players.getLocal().getPosition().equals(orangeStone.getPosition())) {
-
-                InterfaceComponent hmm = Interfaces.getComponent(231, 4);
-                if (hmm != null && hmm.isVisible() && hmm.getText().contains("Hmm, something still")) {
-                    needsToPick = true;
-                }
-
                 Npc filliman = Npcs.getNearest("Filliman Tarlock");
                 SceneObject grotto = SceneObjects.getNearest("Grotto");
 
