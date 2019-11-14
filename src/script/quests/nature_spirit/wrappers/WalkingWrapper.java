@@ -29,9 +29,8 @@ public class WalkingWrapper {
         if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
             Log.fine("Walking To Nature Grotto");
 
-            if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea()) {
+            if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
                 script.wrappers.WalkingWrapper.walkToPosition(GATE_POSITION);
-                Fungus.useSalveGraveyardTeleport();
             }
 
             Movement.walkTo(Location.NATURE_GROTTO_BRIDGE_POSITION,
