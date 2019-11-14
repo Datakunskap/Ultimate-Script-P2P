@@ -45,6 +45,7 @@ public class NatureSpirit8 extends Task {
             if (Inventory.contains("Mort myre fungus")) {
                 needsToPick = false;
             }
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
