@@ -36,10 +36,6 @@ public class NatureSpirit8 extends Task {
             Fungus.getSilverSickleB();
         }
 
-        if (Dialog.isOpen()) {
-            Dialog.processContinue();
-        }
-
         if (needsToPick) {
             NatureSpirit.doFungusPicking();
             if (Inventory.contains("Mort myre fungus")) {

@@ -64,6 +64,10 @@ public class NatureSpirit {
     }
 
     public static void doFungusPicking() {
+        if (Dialog.isOpen()) {
+            Dialog.processContinue();
+        }
+
         SceneObject fungiLog = SceneObjects.getNearest(3509);
 
         if (fungiLog != null && !Inventory.contains("Mort myre fungus")) {
