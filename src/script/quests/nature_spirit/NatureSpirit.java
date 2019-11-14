@@ -64,7 +64,7 @@ public class NatureSpirit {
     }
 
     public static void doFungusPicking() {
-        if (Dialog.isOpen()) {
+        if (Dialog.isOpen() && Dialog.canContinue()) {
             Dialog.processContinue();
         }
 
