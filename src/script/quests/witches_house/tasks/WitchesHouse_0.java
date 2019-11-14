@@ -1,5 +1,6 @@
 package script.quests.witches_house.tasks;
 
+import api.API;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
@@ -11,13 +12,16 @@ import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
+import static api.API.lowRandom;
 import static script.quests.witches_house.data.Quest.THE_RESTLESS_GHOST;
 import static script.quests.witches_house.data.Quest.WITCHES_HOUSE;
 
 public class WitchesHouse_0 extends Task {
 
-    private static final Position Boy = new Position(2929, 3456);
+    public static final String BOY_NAME = "Boy";
+    public static final Position BOY_POSITION = new Position(2929, 3456);
 
     @Override
     public boolean validate() {
@@ -30,58 +34,22 @@ public class WitchesHouse_0 extends Task {
     @Override
     public int execute() {
 
-        if (Dialog.canContinue()) {
-            Dialog.processContinue();
-        }
+        Log.info("WitchesHouse_0");
 
-        if (!Movement.isRunEnabled()) {
-            if (Movement.getRunEnergy() > Random.mid(5, 30)) {
-                Movement.toggleRun(true);
-            }
-        }
+        API.runFromAttacker();
 
-        Npc boy = Npcs.getNearest(3994);
-        if (Boy.distance() > 10) {
-            Movement.walkToRandomized(Boy);
-        }
-        if (boy != null) {
-            if (Boy.distance() <= 10 && !Dialog.isOpen()) {
-                boy.click();
-                Time.sleepUntil(()-> Dialog.isOpen(), 5000);
-            }
-        }
-        if (Dialog.isOpen() && Interfaces.getComponent(219, 1) == null) {
-            Dialog.processContinue();
-            lowRandom();
-        }
-        if (getComponentOptions(1).contains("What's")) {
-            clickDialogComponenet(1);
-        }
-        if (getComponentOptions(1).contains("Ok")) {
-            clickDialogComponenet(1);
-        }
+        API.doDialog();
 
-        return lowRandom();
+        API.toggleRun();
 
-    }
+        API.drinkStaminaPotion();
 
-    public int lowRandom() {
-        return Random.mid(299, 444);
-    }
+        API.talkTo(BOY_NAME, BOY_POSITION);
+        Dialog.process("What's the matter?");
+        Dialog.process("Ok, I'll see what I can do.");
 
-    public void clickDialogComponenet(int Option) {
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Interfaces.getComponent(219, 1, Option).click();
-            lowRandom();
-        }
-    }
+        return API.lowRandom();
 
-    public String getComponentOptions(int Option) {
-        String Text = "Null";
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Text = Interfaces.getComponent(219, 1, Option).getText();
-        }
-        return Text;
     }
 
 }
