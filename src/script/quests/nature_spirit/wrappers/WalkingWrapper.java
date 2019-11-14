@@ -39,7 +39,6 @@ public class WalkingWrapper {
                             if (inSalveGravyardArea()) {
                                 Log.fine("Handling Gate");
                                 Fungus.handleGate();
-                                return true;
                             } else {
                                 Movement.toggleRun(true);
                                 if (Players.getLocal().getHealthPercent() < 35) {
