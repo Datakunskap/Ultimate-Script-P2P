@@ -21,6 +21,12 @@ public class BankWrapper {
     private static boolean isMuleing;
     private static int amountMuled;
 
+    public static void resetStartingValue() {
+        startingValue = 0;
+        bankValue = -1;
+        inventoryValue = -1;
+    }
+
     public static int getTotalValue() {
         return getBankValue() + getInventoryValue();
     }
@@ -117,8 +123,14 @@ public class BankWrapper {
             for (String i : set) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
                     if (withdrawNoted) {
+                        if (i.contains("Ring of dueling(")) {
+                            Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1);
+                        }
                         Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
                     } else {
+                        if (i.contains("Ring of dueling(")) {
+                            Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1);
+                        }
                         Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
                     }
                     Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
@@ -127,7 +139,6 @@ public class BankWrapper {
         }
 
         updateBankValue();
-
         updateInventoryValue();
 
     }

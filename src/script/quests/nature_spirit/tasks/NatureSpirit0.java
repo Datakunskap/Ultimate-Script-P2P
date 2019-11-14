@@ -46,9 +46,9 @@ public class NatureSpirit0 extends Task {
                     Time.sleepUntil(()-> !Inventory.contains("Varrock teleport"), 5000);
                 }
             }
-            if (!Inventory.contains("Silver sickle")) {
+            if (!Inventory.contains("Silver sickle") || (!Inventory.contains("Ghostspeak amulet") && !Equipment.contains("Ghostspeak amulet"))) {
                 BankWrapper.openAndDepositAll(false, false, "Silver sickle", "Ghostspeak amulet", "Salve graveyard teleport");
-                Bank.withdraw("Tuna", 10);
+                Bank.withdraw("Tuna", 15);
             } else {
                 hasSupplies = true;
                 SupplyMapWrapper.setSupplyMap(SupplyMapWrapper.getNatureSpiritItemsMap());

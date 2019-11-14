@@ -1,6 +1,7 @@
 package script.quests.nature_spirit.wrappers;
 
 import org.rspeer.runetek.adapter.component.Item;
+import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
@@ -9,6 +10,8 @@ import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
+import org.rspeer.runetek.api.movement.position.Position;
+import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
@@ -19,13 +22,15 @@ import script.tasks.fungus.Fungus;
 public class WalkingWrapper {
 
     private static Area MORTANIA = Area.rectangular(3410, 3454, 3520, 3321);
-    private static Area BEFORE_GATE_AREA = Area.rectangular(3441, 3458, 3444, 3460);
+    private static final Position GATE_POSITION = new Position(3443, 3459, 0);
+    private static final Position AMULET_POSITION = new Position(3147, 3174, 0);;
 
     public static void walkToNatureGrotto() {
         if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
             Log.fine("Walking To Nature Grotto");
-            if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea()) {
 
+            if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea()) {
+                script.wrappers.WalkingWrapper.walkToPosition(GATE_POSITION);
                 Fungus.useSalveGraveyardTeleport();
             }
 
@@ -88,6 +93,24 @@ public class WalkingWrapper {
         if (Inventory.contains("Ghostspeak amulet")) {
             Inventory.getFirst("Ghostspeak amulet").interact(a -> true);
             Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+        }
+        if (Equipment.contains("Ghostspeak amulet")) {
+            if (GATE_POSITION.distance() > 5) {
+                script.wrappers.WalkingWrapper.walkToPosition(AMULET_POSITION);
+            } else {
+                if (!Dialog.isOpen()) {
+                    Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
+                    if (man != null) {
+                        man.interact("Talk-to");
+                    }
+                } else {
+                    if (Dialog.canContinue()) {
+                        Dialog.processContinue();
+                    }
+                    //TODO: add dialog options
+                    Dialog.process("");
+                }
+            }
         }
 
         SceneObject grotto = SceneObjects.getNearest("Grotto");
