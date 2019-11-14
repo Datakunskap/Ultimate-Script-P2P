@@ -20,6 +20,7 @@ import script.quests.witches_house.WitchesHouse;
 import script.tasks.*;
 import script.tasks.fungus.Fungus;
 import script.tasks.training.magic.TrainTo13;
+import script.tasks.training.prayer.LeaveWilderness;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
@@ -36,7 +37,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
     private static final int MULE_WORLD = 393;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
     private static final Area MULE_AREA = Area.rectangular(3176, 3470, 3179, 3468);
-    public static final String API_KEY = "JV5ML4DE4M9W8Z5KBE00322RDVNDGGMTMU1EH9226YCVGFUBE6J6OY1Q2NJ0RA8YAPKO70";
+    public static final String API_KEY = "JV5ML4DE4M9W8Z5KBE00322RDVNDGGMTMU1EH9226YCVGFUBE6J6OY1Q2NJ0RA8YAPKO70"; // Not used atm
 
     private ScriptPaint paint;
     private StopWatch runtime;
@@ -66,6 +67,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
         submit(NatureSpirit.TASKS);
 
         submit(new TrainTo50(),
+                new LeaveWilderness(),
                 new Fungus()
         );
 
@@ -98,9 +100,9 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
     public void notify(DeathEvent e) {
         if (e.getSource().equals(Players.getLocal())) {
             Log.severe("You Died");
-            HashMap<String, Integer> map = SupplyMapWrapper.getCurrentSupplyMap();
-            if (map != null && map.equals(SupplyMapWrapper.getNatureSpiritItemsMap())) {
-                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getCurrentSupplyMap());
+            HashMap<String, Integer> currMap = SupplyMapWrapper.getCurrentSupplyMap();
+            if (currMap != null && currMap.equals(SupplyMapWrapper.getNatureSpiritItemsMap())) {
+                GEWrapper.setBuySupplies(true, false, currMap);
             }
         }
     }
