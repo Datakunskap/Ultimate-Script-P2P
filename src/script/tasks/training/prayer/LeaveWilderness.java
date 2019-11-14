@@ -9,11 +9,6 @@ import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
-import script.wrappers.GEWrapper;
-import script.wrappers.SupplyMapWrapper;
-import script.wrappers.WalkingWrapper;
-
-import java.lang.reflect.WildcardType;
 
 public class LeaveWilderness extends Task {
 

@@ -19,14 +19,16 @@ import script.tasks.fungus.Fungus;
 public class WalkingWrapper {
 
     private static Area MORTANIA = Area.rectangular(3410, 3454, 3520, 3321);
+    private static Area BEFORE_GATE_AREA = Area.rectangular(3441, 3458, 3444, 3460);
 
     public static void walkToNatureGrotto() {
-        if (Inventory.contains("Salve graveyard teleport") && !MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea()) {
-            Fungus.useSalveGraveyardTeleport();
-        }
-
         if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
             Log.fine("Walking To Nature Grotto");
+            if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea()) {
+
+                Fungus.useSalveGraveyardTeleport();
+            }
+
             Movement.walkTo(Location.NATURE_GROTTO_BRIDGE_POSITION,
                     () -> {
                         if (script.wrappers.WalkingWrapper.shouldBreakOnTarget() || inSalveGravyardArea()) {

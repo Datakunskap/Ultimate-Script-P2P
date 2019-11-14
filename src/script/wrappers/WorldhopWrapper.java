@@ -47,8 +47,19 @@ public class WorldhopWrapper {
                 Log.fine("World-Hopping");
 
                 //removeWorld(Worlds.getCurrent(), WORLDS_FILE_PATH);
+                HashSet<Integer> exclude = new HashSet<>();
+                exclude.add(403);
+                exclude.add(404);
+                exclude.add(405);
+                exclude.add(406);
+                exclude.add(407);
+                exclude.add(408);
+                exclude.add(410);
+                exclude.add(411);
+                exclude.add(412);
+                exclude.add(535);
 
-                hopToLowPopWorld(50, Worlds.getCurrent(), getWorldsFromFile(WORLDS_FILE_PATH));
+                hopToLowPopWorld(50, Worlds.getCurrent(), exclude);
 
                 //writeWorldToFile(Worlds.getCurrent(), WORLDS_FILE_PATH);
                 currentWorld = Worlds.getCurrent();
@@ -76,7 +87,7 @@ public class WorldhopWrapper {
         while (newWorld == null && pop <= 1100) {
             final int finalPop = pop;
             newWorld = ExWorlds.getRandom(x -> !excludeWorlds.contains(x.getId()) && x.getPopulation() <= finalPop
-                                            && x.isMembers() && !x.isBounty() && !x.isSkillTotal());
+                                            && x.isMembers() && !x.isBounty() && !x.isSkillTotal() && !x.isPVP() && !x.isHighRisk() && !x.isDeadman() && !x.isTournament() && !x.isSeasonDeadman() && !x.isLastManStanding());
             pop += 50;
         }
         if (newWorld == null) {
