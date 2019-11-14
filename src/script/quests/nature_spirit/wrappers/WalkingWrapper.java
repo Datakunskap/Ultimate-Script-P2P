@@ -95,6 +95,7 @@ public class WalkingWrapper {
             Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
         }
         if (Equipment.contains("Ghostspeak amulet")) {
+            Log.fine("Getting amulet of ghostspeak");
             if (GATE_POSITION.distance() > 5) {
                 script.wrappers.WalkingWrapper.walkToPosition(AMULET_POSITION);
             } else {

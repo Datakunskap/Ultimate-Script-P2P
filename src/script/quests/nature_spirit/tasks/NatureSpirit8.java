@@ -1,5 +1,7 @@
 package script.quests.nature_spirit.tasks;
 
+import org.rspeer.runetek.adapter.component.InterfaceComponent;
+import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import script.data.Locations;
 import script.quests.nature_spirit.NatureSpirit;
@@ -20,6 +22,9 @@ import org.rspeer.ui.Log;
 import script.tasks.fungus.Fungus;
 
 public class NatureSpirit8 extends Task {
+
+    private boolean needsToPick;
+
     @Override
     public boolean validate() {
         return Quest.NATURE_SPIRIT.getVarpValue() == 55;
@@ -29,6 +34,17 @@ public class NatureSpirit8 extends Task {
     public int execute() {
         if (!Inventory.contains("Silver sickle")) {
             Fungus.getSilverSickleB();
+        }
+
+        if (Dialog.isOpen()) {
+            Dialog.processContinue();
+        }
+
+        if (needsToPick) {
+            NatureSpirit.doFungusPicking();
+            if (Inventory.contains("Mort myre fungus")) {
+                needsToPick = false;
+            }
         }
 
         if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
@@ -74,6 +90,11 @@ public class NatureSpirit8 extends Task {
             }
 
             if (Players.getLocal().getPosition().equals(orangeStone.getPosition())) {
+
+                InterfaceComponent hmm = Interfaces.getComponent(231, 4);
+                if (hmm != null && hmm.isVisible() && hmm.getText().contains("Hmm, something still")) {
+                    needsToPick = true;
+                }
 
                 Npc filliman = Npcs.getNearest("Filliman Tarlock");
                 SceneObject grotto = SceneObjects.getNearest("Grotto");
