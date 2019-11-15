@@ -58,6 +58,7 @@ public class WorldhopWrapper {
                 exclude.add(411);
                 exclude.add(412);
                 exclude.add(535);
+                exclude.add(512);
 
                 hopToLowPopWorld(50, Worlds.getCurrent(), exclude);
 

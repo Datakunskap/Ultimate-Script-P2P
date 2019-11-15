@@ -1,19 +1,14 @@
 package script.wrappers;
 
-import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
-import org.rspeer.runetek.adapter.scene.SceneObject;
-import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
-import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
 import script.tasks.fungus.Fungus;
 
@@ -22,10 +17,10 @@ public class WalkingWrapper {
     public static boolean walkToPosition(Position position) {
         return Movement.walkTo(position,
                 () -> {
-                    if (shouldBreakOnTarget() || shouldEnableRun() || (Fungus.inMortania() && Fungus.inSalveGravyardArea())) {
-                        if (Fungus.inMortania() && Fungus.inSalveGravyardArea()) {
+                    if (shouldBreakOnTarget() || shouldEnableRun() || Fungus.inSalveGravyardArea()) {
+                        if (Fungus.inSalveGravyardArea()) {
                             Log.fine("Handling Gate");
-                            handleGate();
+                            Fungus.handleGate();
                         } else {
                             if (!Movement.isRunEnabled())
                                 Movement.toggleRun(true);
@@ -79,41 +74,20 @@ public class WalkingWrapper {
                 /*|| Movement.isStaminaEnhancementActive()*/;
     }
 
-    public static void handleGate() {
-        Player local = Players.getLocal();
-        SceneObject gate = SceneObjects.getNearest("Gate");
-        InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
-        InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
-        Log.info("Opening the gate");
-        if (gate != null) {
-            if (gate.containsAction("Open")) {
-                if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
-                    if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
-                        Log.info("dontAskMeThisAgain is visible");
-                        if (dontAskMeThisAgain.interact("Off/On")) {
-                            Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
-                        }
-                    }
-                    if (enterTheSwamp != null) {
-                        if (enterTheSwamp.getMaterialId() == 942) {
-                            Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
-                            if (enterTheSwamp.interact("Yes")) {
-                                Log.info("Clicked enterTheSwamp");
-                                Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
-                            }
-                        }
-                    }
-                    if (dontAskMeThisAgain == null && enterTheSwamp != null) {
-                        Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
-                        if (enterTheSwamp.interact("Yes")) {
-                            Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> !Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
-                        }
-                    }
-                }
+    public static boolean consumeFirstConsumable() {
+        Item food = Inventory.getFirst(f -> f.containsAction("Eat") || f.containsAction("Drink"));
+        if (food != null) {
+            if (food.containsAction("Eat")) {
+                Log.info("Eating: " + food.getName());
+                food.interact("Eat");
+                return true;
+            }
+            if (food.containsAction("Drink")) {
+                Log.info("Drinking: " + food.getName());
+                food.interact("Drink");
+                return true;
             }
         }
+        return false;
     }
 }

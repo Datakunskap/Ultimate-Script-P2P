@@ -1,6 +1,5 @@
 package script.quests.nature_spirit.wrappers;
 
-import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
@@ -19,7 +18,7 @@ import script.data.Locations;
 import script.quests.nature_spirit.data.Location;
 import script.tasks.fungus.Fungus;
 
-public class WalkingWrapper {
+public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
     private static Area MORTANIA = Area.rectangular(3410, 3454, 3520, 3321);
     private static final Position GATE_POSITION = new Position(3443, 3459, 0);
@@ -30,23 +29,22 @@ public class WalkingWrapper {
             Log.fine("Walking To Nature Grotto");
 
             if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
-                script.wrappers.WalkingWrapper.walkToPosition(GATE_POSITION);
+                if (Inventory.contains("Salve graveyard teleport") && GATE_POSITION.distance() > 10) {
+                    Fungus.useSalveGraveyardTeleport();
+                }
+                walkToPosition(GATE_POSITION);
             }
 
             Movement.walkTo(Location.NATURE_GROTTO_BRIDGE_POSITION,
                     () -> {
-                        if (script.wrappers.WalkingWrapper.shouldBreakOnTarget() || inSalveGravyardArea()) {
+                        if (shouldBreakOnTarget() || inSalveGravyardArea()) {
                             if (inSalveGravyardArea()) {
                                 Log.fine("Handling Gate");
                                 Fungus.handleGate();
                             } else {
                                 Movement.toggleRun(true);
                                 if (Players.getLocal().getHealthPercent() < 35) {
-                                    Log.info("Eating");
-                                    Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
-                                    if (food != null) {
-                                        food.interact("Eat");
-                                    }
+                                    consumeFirstConsumable();
                                 }
                             }
                         }
@@ -69,11 +67,7 @@ public class WalkingWrapper {
 
     public static void crossGrottoBridge(boolean toGrotto) {
         if (Players.getLocal().getHealthPercent() < 35) {
-            Log.info("Eating");
-            Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
-            if (food != null) {
-                food.interact("Eat");
-            }
+            consumeFirstConsumable();
         }
         SceneObject bridge = SceneObjects.getNearest("Bridge");
         if (bridge != null && !Players.getLocal().isMoving() && bridge.interact(a -> true)) {

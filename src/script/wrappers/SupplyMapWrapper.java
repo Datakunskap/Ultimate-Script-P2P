@@ -55,6 +55,7 @@ public class SupplyMapWrapper {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
         map.put("Salve graveyard teleport", 3);
+        map.put("Jug of wine", 10);
         map.put("Tuna", 5);
         return map;
     }
@@ -86,6 +87,8 @@ public class SupplyMapWrapper {
         map.put("Silver sickle", 1);
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
+        map.put("Salve graveyard teleport", 3);
+        map.put("Jug of wine", 15);
         return map;
     }
 }
