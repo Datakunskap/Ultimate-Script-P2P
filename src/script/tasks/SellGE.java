@@ -1,5 +1,7 @@
 package script.tasks;
 
+import api.component.ExWorldHopper;
+import api.component.ExWorlds;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -65,7 +67,8 @@ public class SellGE extends Task {
 
         RSWorld world = Worlds.get(Worlds.getCurrent());
         if (world != null && !world.isMembers()) {
-            WorldHopper.randomHopInP2p();
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return SleepWrapper.shortSleep600();
         }
 
         if (itemsToSell == null) {

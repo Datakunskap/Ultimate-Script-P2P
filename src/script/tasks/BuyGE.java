@@ -1,6 +1,8 @@
 package script.tasks;
 
+import api.component.ExWorldHopper;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
@@ -11,6 +13,7 @@ import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
+import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
@@ -65,6 +68,12 @@ public class BuyGE extends Task {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
+            return SleepWrapper.shortSleep600();
+        }
+
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            ExWorldHopper.randomInstaHopInPureP2p();
             return SleepWrapper.shortSleep600();
         }
 

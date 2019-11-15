@@ -1,5 +1,6 @@
 package script.tasks;
 
+import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.Worlds;
@@ -99,8 +100,10 @@ public class Mule extends Task {
         loginMule();
 
         if (Worlds.getCurrent() != muleWorld) {
-            begWorld = Worlds.getCurrent();
-            WorldHopper.hopTo(muleWorld);
+            if (begWorld < 1) {
+                begWorld = Worlds.getCurrent();
+            }
+            ExWorldHopper.instaHopTo(muleWorld);
 
             if (Dialog.isOpen()) {
                 if (Dialog.canContinue()) {
@@ -183,8 +186,12 @@ public class Mule extends Task {
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
                             if (begWorld != -1) {
-                                WorldHopper.hopTo(begWorld);
-                                Time.sleepUntil(() -> Worlds.getCurrent() == begWorld, 10_000);
+                                ExWorldHopper.instaHopTo(begWorld);
+                                if (Time.sleepUntil(() -> Worlds.getCurrent() == begWorld, 10_000)) {
+                                    ExWorldHopper.randomInstaHopInPureP2p();
+                                }
+                            } else {
+                                ExWorldHopper.randomInstaHopInPureP2p();
                             }
                             Time.sleep(8000, 10000);
                             BankWrapper.setMuleing(false);
