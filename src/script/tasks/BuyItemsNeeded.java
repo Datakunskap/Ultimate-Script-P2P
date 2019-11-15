@@ -23,11 +23,11 @@ public class BuyItemsNeeded extends Task {
 
     @Override
     public boolean validate() {
-        return Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
-                && Inventory.getCount(true, Strings.COINS) >= GetStartersGold.AMOUNT_TO_RECEIVE
-                || Inventory.containsOnly(Strings.COINS)
+        return (Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
+                && Inventory.getCount(true, Strings.COINS) >= GetStartersGold.AMOUNT_TO_RECEIVE)
+                || (Inventory.containsOnly(Strings.COINS)
                 && Inventory.getCount(true,Strings.COINS) >= GetStartersGold.AMOUNT_TO_RECEIVE
-                && Skills.getLevel(Skill.MAGIC) <= 1;
+                && Skills.getLevel(Skill.MAGIC) <= 1);
     }
 
     @Override
