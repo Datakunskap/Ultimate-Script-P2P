@@ -128,7 +128,7 @@ public class BuyGE extends Task {
             doneRestockingHelper();
         }
 
-        return SleepWrapper.shortSleep800();
+        return SleepWrapper.mediumSleep1000();
     }
 
     private void doneRestockingHelper() {
