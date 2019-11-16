@@ -106,6 +106,7 @@ public class BankWrapper {
         if (itemsToKeep != null && itemsToKeep.length > 0) {
             for (String i : itemsToKeep) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
+                    Log.info("Withdrawing: " + i);
                     if (withdrawNoted) {
                         Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
                     } else {
@@ -124,6 +125,7 @@ public class BankWrapper {
         if (set != null && set.size() > 0) {
             for (String i : set) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
+                    Log.info("Withdrawing: " + i);
                     if (withdrawNoted) {
                         Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
                     } else {
@@ -145,6 +147,7 @@ public class BankWrapper {
                 int amount = entry.getValue();
 
                 if (Bank.contains(item)) {
+                    Log.info("Withdrawing: " + item);
                     Bank.withdraw(i -> i.getName().equalsIgnoreCase(item), amount);
                     Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
                             && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount),

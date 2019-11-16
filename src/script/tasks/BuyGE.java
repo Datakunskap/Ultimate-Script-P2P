@@ -79,6 +79,7 @@ public class BuyGE extends Task {
 
         RSWorld world = Worlds.get(Worlds.getCurrent());
         if (world != null && !world.isMembers()) {
+            Log.info("World Hopping to P2P");
             ExWorldHopper.randomInstaHopInPureP2p();
             return SleepWrapper.shortSleep600();
         }
