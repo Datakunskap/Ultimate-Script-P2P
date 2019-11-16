@@ -4,14 +4,12 @@ import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.ui.Log;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BankWrapper {
 
@@ -64,13 +62,13 @@ public class BankWrapper {
     }
 
     private static void doBanking(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted,
-                                          Set<String> set, HashMap<String, Integer> map,  String... itemsToKeep) {
+                                  Set<String> set, HashMap<String, Integer> map, String... itemsToKeep) {
         if (BankLocation.getNearest().getPosition().distance() > 3) {
             Log.fine("Walking To Nearest Bank");
             WalkingWrapper.walkToNearestBank();
         }
 
-        for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries --) {
+        for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries--) {
             Log.info("Opening Nearest Bank");
             Time.sleep(SleepWrapper.mediumSleep1000());
             tries--;
@@ -112,11 +110,13 @@ public class BankWrapper {
                     } else {
                         Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
                     }
-                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 10_000);
-                } else if (Bank.contains(i.substring(0, i.length()-3))) {
-                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length()-3)), 1);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), Random.nextInt(500, 800), 10_000);
+                } else if (Bank.contains(i.substring(0, i.length() - 3))) {
+                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length() - 3)), 1);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().contains(i.substring(0, i.length() - 3))),
+                            Random.nextInt(500, 800), 10_000);
                 }
-                Time.sleep(300, 600);
+                Time.sleep(200, 400);
             }
         }
 
@@ -128,11 +128,13 @@ public class BankWrapper {
                     } else {
                         Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
                     }
-                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 10_000);
-                } else if (Bank.contains(i.substring(0, i.length()-3))) {
-                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length()-3)), 1);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), Random.nextInt(500, 800), 10_000);
+                } else if (Bank.contains(i.substring(0, i.length() - 3))) {
+                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length() - 3)), 1);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().contains(i.substring(0, i.length() - 3))),
+                            Random.nextInt(500, 800), 10_000);
                 }
-                Time.sleep(300, 600);
+                Time.sleep(200, 400);
             }
         }
 
@@ -143,12 +145,15 @@ public class BankWrapper {
 
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(item))) {
                     Bank.withdraw(i -> i.getName().equalsIgnoreCase(item), amount);
-                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
-                            && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount), 10_000);
-                } else if (Bank.contains(item.substring(0, item.length()-3))) {
-                    Bank.withdraw(i -> i.getName().contains(item.substring(0, item.length()-3)), amount);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
+                            && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount),
+                            Random.nextInt(500, 800), 10_000);
+                } else if (Bank.contains(item.substring(0, item.length() - 3))) {
+                    Bank.withdraw(i -> i.getName().contains(item.substring(0, item.length() - 3)), amount);
+                    Time.sleepUntilForDuration(() -> Inventory.contains(i -> i.getName().contains(item.substring(0, item.length() - 3))),
+                            Random.nextInt(500, 800), 10_000);
                 }
-                Time.sleep(300, 600);
+                Time.sleep(200, 400);
             }
         }
 
@@ -182,7 +187,6 @@ public class BankWrapper {
     }
 
 
-
     public static boolean openNearest() {
         if (Bank.isOpen()) {
             return true;
@@ -191,24 +195,26 @@ public class BankWrapper {
     }
 
     public static void withdrawSellableItems(Set<String> itemsToKeep) {
+        if (!Bank.isOpen() || Bank.getItems().length < 1) {
+            Bank.open();
+            Time.sleepUntil(() -> Bank.getItems().length < 1, 8000);
+        }
         if (!Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE)) {
             Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
             Time.sleep(800, 1250);
         }
 
-        Item[] sellables = Bank.getItems(i -> i.isExchangeable()
-                && !itemsToKeep.contains(i.getName()));
+        Item[] sellables = Bank.getItems(s
+                -> (s.getName().equalsIgnoreCase("Mort myre fungus")
+                || s.getName().contains("Dragon bones"))
+                || (s.isExchangeable() && !itemsToKeep.contains(s.getName())
+                && PriceCheckService.getPrice(s.getId()) != null
+                && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000)));
 
         for (Item s : sellables) {
-            if ((s.getName().equalsIgnoreCase("Mort myre fungus")
-                    || s.getName().contains("Dragon bones"))
-                    || (PriceCheckService.getPrice(s.getId()) != null
-                    && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000))) {
-
-                Bank.withdrawAll(i -> i.getName().equalsIgnoreCase(s.getName()));
-                Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 10_000);
-                Time.sleep(300, 600);
-            }
+            Bank.withdrawAll(i -> i.getName().equalsIgnoreCase(s.getName()));
+            Time.sleepUntilForDuration(() -> Inventory.contains(s.getName()), Random.mid(500, 800), 10_000);
+            Time.sleep(200, 400);
         }
 
         updateBankValue();
