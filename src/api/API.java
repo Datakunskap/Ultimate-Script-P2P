@@ -15,6 +15,7 @@ import org.rspeer.runetek.api.component.Trade;
 import org.rspeer.runetek.api.component.WorldHopper;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.local.Health;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -32,6 +33,7 @@ public class API {
     public static final String WEAR_ACTION = "Wear";
     public static final String WIELD_ACTION = "Wield";
     public static final String DRINK_ACTION = "Drink";
+    public static final String EAT_ACTION = "Eat";
 
     public static void drinkStaminaPotion() {
         if (Movement.getRunEnergy() < Random.mid(5, 10)) {
@@ -50,26 +52,97 @@ public class API {
 
     public static void useItemOn(String itemName, String interactableTarget, Position interactablePosition) {
         Interactable target = SceneObjects.getNearest(interactableTarget);
-        if (interactablePosition.distance() <= 3) {
-            if (Inventory.contains(itemName)) {
-                if (Inventory.isItemSelected()) {
-                    if (target != null) {
-                        if (target.interact("Use")) {
-                        }
-                    }
-                }
-                if (!Inventory.isItemSelected()) {
-                    Inventory.getFirst(itemName).interact("Use");
-                }
-            }
-        }
         if (interactablePosition.distance() > 3) {
             Log.info("Walking to" + " " + interactableTarget);
             Movement.walkTo(interactablePosition, MovementBreaks::shouldBreakOnRunenergy);
         }
+        if (interactablePosition.distance() <= 3) {
+            if (Inventory.contains(itemName)) {
+                if (!Inventory.isItemSelected()) {
+                    Inventory.getFirst(itemName).interact("Use");
+                    Time.sleep(API.mediumRandom());
+                }
+                if (Inventory.isItemSelected()) {
+                    if (target != null) {
+                        if (target.interact("Use")) {
+                            Time.sleep(API.mediumRandom());
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    public static boolean isAt(Area areaYouNeedToBe) {
+    public static void useItemOn(int itemNameID, int interactableTargetID, Position interactablePosition) {
+        Interactable target = SceneObjects.getNearest(interactableTargetID);
+        if (interactablePosition.distance() > 3) {
+            Log.info("Walking to" + " " + interactableTargetID);
+            Movement.walkTo(interactablePosition, MovementBreaks::shouldBreakOnRunenergy);
+        }
+        if (interactablePosition.distance() <= 3) {
+            if (Inventory.contains(itemNameID)) {
+                if (!Inventory.isItemSelected()) {
+                    Inventory.getFirst(itemNameID).interact("Use");
+                    Time.sleep(API.mediumRandom());
+                }
+                if (Inventory.isItemSelected()) {
+                    if (target != null) {
+                        if (target.interact("Use")) {
+                            Time.sleep(API.mediumRandom());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void useItemOn(String itemName, int interactableTargetID, Position interactablePosition) {
+        Interactable target = SceneObjects.getNearest(interactableTargetID);
+        if (interactablePosition.distance() > 3) {
+            Log.info("Walking to" + " " + interactableTargetID);
+            Movement.walkTo(interactablePosition, MovementBreaks::shouldBreakOnRunenergy);
+        }
+        if (interactablePosition.distance() <= 3) {
+            if (Inventory.contains(itemName)) {
+                if (!Inventory.isItemSelected()) {
+                    Inventory.getFirst(itemName).interact("Use");
+                    Time.sleep(API.mediumRandom());
+                }
+                if (Inventory.isItemSelected()) {
+                    if (target != null) {
+                        if (target.interact("Use")) {
+                            Time.sleep(API.mediumRandom());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void useItemOn(int itemNameID, String interactableTargetName, Position interactablePosition) {
+        Interactable target = SceneObjects.getNearest(interactableTargetName);
+        if (interactablePosition.distance() > 3) {
+            Log.info("Walking to" + " " + interactableTargetName);
+            Movement.walkTo(interactablePosition, MovementBreaks::shouldBreakOnRunenergy);
+        }
+        if (interactablePosition.distance() <= 3) {
+            if (Inventory.contains(itemNameID)) {
+                if (!Inventory.isItemSelected()) {
+                    Inventory.getFirst(itemNameID).interact("Use");
+                    Time.sleep(API.mediumRandom());
+                }
+                if (Inventory.isItemSelected()) {
+                    if (target != null) {
+                        if (target.interact("Use")) {
+                            API.mediumRandom();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean playerIsAt(Area areaYouNeedToBe) {
         return areaYouNeedToBe.contains(Players.getLocal());
     }
 
@@ -90,32 +163,33 @@ public class API {
 
     public static void interactWithSceneobject(String sceneObjectName, String action, Position sceneObjectPosition) {
         SceneObject sceneObject = SceneObjects.getNearest(sceneObjectName);
-        if (sceneObject.isPositionInteractable()) {
+        if (!sceneObjectPosition.isPositionInteractable() || sceneObjectPosition.distance() > 10) {
+            Log.info("Walking to" + " " + sceneObjectName);
+            Movement.walkTo(sceneObjectPosition, MovementBreaks::shouldBreakOnTarget);
+        }
+        if (sceneObjectPosition.isPositionInteractable()) {
             if (sceneObject != null) {
                 if (sceneObject.containsAction(action)) {
                     Log.info("Interacting with" + " " + sceneObjectName);
                     sceneObject.interact(action);
                     Time.sleepUntil(() -> !sceneObject.containsAction(action), API.mediumRandom());
-                    if(Dialog.isOpen()){
+                    if (Dialog.isOpen()) {
                         Dialog.process();
                     }
                 }
             }
         }
-        if (!sceneObject.isPositionInteractable()) {
-            Log.info("Walking to" + " " + sceneObjectName);
-            Movement.walkTo(sceneObjectPosition, MovementBreaks::shouldBreakOnRunenergy);
-        }
     }
 
-    public static void withdrawItem(String item, int amount) {
+    public static void withdrawItem(boolean stack, String itemName, int amount) {
         if (!Bank.isOpen()) {
             Bank.open();
         }
         if (Bank.isOpen()) {
-            if (!Inventory.contains(item)) {
-                if (Bank.withdraw(item, amount)) {
-                    Time.sleepUntil(() -> Inventory.getCount(item) == amount, Random.mid(3000, 5000));
+            int amountInInventory = Inventory.getCount(stack, x -> x.getName().contains(itemName));
+            if (amountInInventory < amount) {
+                if (Bank.withdraw(x -> x.getName().contains(itemName), amount - amountInInventory)) {
+                    Time.sleepUntilForDuration(() -> Inventory.getCount(stack, x -> x.getName().contains(itemName)) == amount, Random.nextInt(600, 800), Random.mid(8000, 10000));
                 }
             }
         }
@@ -123,21 +197,101 @@ public class API {
 
     public static void interactWithSceneobject(int sceneObjectID, String action, Position sceneObjectPosition) {
         SceneObject sceneObject = SceneObjects.getNearest(sceneObjectID);
-        if (sceneObject.isPositionInteractable()) {
+        if (!sceneObjectPosition.isPositionInteractable() || sceneObjectPosition.distance() > 10) {
+            Log.info("Walking to" + " " + sceneObjectID);
+            Movement.walkTo(sceneObjectPosition, MovementBreaks::shouldBreakOnTarget);
+        }
+        if (sceneObjectPosition.isPositionInteractable()) {
             if (sceneObject != null) {
+                Log.info("The sceneobject is there");
                 if (sceneObject.containsAction(action)) {
                     Log.info("Interacting with" + " " + sceneObjectID);
                     sceneObject.interact(action);
                     Time.sleepUntil(() -> !sceneObject.containsAction(action), API.mediumRandom());
-                    if(Dialog.isOpen()){
+                    if (Dialog.isOpen()) {
                         Dialog.process();
                     }
                 }
             }
         }
-        if (!sceneObject.isPositionInteractable()) {
-            Log.info("Walking to" + " " + sceneObjectID);
-            Movement.walkTo(sceneObjectPosition, MovementBreaks::shouldBreakOnRunenergy);
+    }
+
+    public static boolean isOnFloorLevel(int floorLevel) {
+        Player local = Players.getLocal();
+        return local.getFloorLevel() == floorLevel;
+    }
+
+    public static void interactWithSceneobjectWithoutMoving(int sceneObjectID, String action) {
+        SceneObject sceneObject = SceneObjects.getNearest(sceneObjectID);
+        if (sceneObject != null) {
+            if (sceneObject.containsAction(action)) {
+                Log.info("Interacting with" + " " + sceneObjectID);
+                sceneObject.interact(action);
+                Time.sleepUntil(() -> !sceneObject.containsAction(action), API.mediumRandom());
+                if (Dialog.isOpen()) {
+                    Dialog.process();
+                }
+            }
+        }
+
+    }
+
+    public static void interactWithSceneobjectWithoutMoving(String sceneObjectName, String action) {
+        SceneObject sceneObject = SceneObjects.getNearest(sceneObjectName);
+        if (sceneObject != null) {
+            if (sceneObject.containsAction(action)) {
+                Log.info("Interacting with" + " " + sceneObjectName);
+                sceneObject.interact(action);
+                Time.sleepUntil(() -> !sceneObject.containsAction(action), API.mediumRandom());
+                if (Dialog.isOpen()) {
+                    Dialog.process();
+                }
+            }
+        }
+    }
+
+    public static void doEating(int hpToEatAt) {
+        if (Health.getCurrent() <= hpToEatAt) {
+            Item food = Inventory.getFirst(x -> x.containsAction(EAT_ACTION));
+            if (food != null) {
+                int healthBefore = Health.getCurrent();
+                food.interact(EAT_ACTION);
+                Time.sleepUntil(() -> Health.getCurrent() != healthBefore, 5000);
+            }
+        }
+    }
+
+    public static void interactWithItemInInventory(String itemName, String action) {
+        Item item = Inventory.getFirst(x -> x.getName().contains(itemName));
+        if (item != null) {
+            if (item.containsAction(action)) {
+                Log.info("Interacting with" + " " + itemName);
+                item.interact(action);
+                Time.sleepUntil(() -> !item.containsAction(action), API.mediumRandom());
+                if (Dialog.isOpen()) {
+                    Dialog.process();
+                }
+            }
+        }
+        if (item == null) {
+            Log.info("I don't have" + " " + itemName);
+        }
+    }
+
+    public static void interactWithItemInInventory(int itemID, String action) {
+        Item item = Inventory.getFirst(x -> x.getId() == itemID);
+        if (item != null) {
+            if (item.containsAction(action)) {
+                Log.info("Interacting with" + " " + itemID);
+                item.interact(action);
+                Time.sleepUntil(() -> !item.containsAction(action), API.mediumRandom());
+                if (Dialog.isOpen()) {
+                    Dialog.process();
+                }
+            }
+        }
+        if (item == null) {
+            Log.info("I don't have" + " " + itemID);
         }
     }
 
@@ -169,23 +323,28 @@ public class API {
         return Inventory.getCount(stack, x -> x.getName().contains(itemName)) == amount;
     }
 
+    public static boolean inventoryHasItem(boolean stack, int itemID, int amount) {
+        Item item = Inventory.getFirst(x -> x.getId() == itemID);
+        return Inventory.getCount(stack, x -> x.getId() == itemID) == amount;
+    }
+
     public static void talkTo(String npcName, Position npcPosition) {
         Npc npc = Npcs.getNearest(npcName);
         if (!Dialog.isOpen()) {
-            if (npc != null) {
-                if (npc.isPositionInteractable()) {
+            if (!npcPosition.isPositionInteractable()) {
+                Log.info("I am walking to" + " " + npcName);
+                Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
+            }
+            if (npcPosition.isPositionInteractable()) {
+                if (npc != null) {
                     Log.info("Talking to" + " " + npcName);
                     npc.interact(TALK_TO_ACTION);
                     Time.sleepUntil(() -> Dialog.isOpen(), 10_000);
                 }
-                if (!npc.isPositionInteractable()) {
+                if (!npcPosition.isPositionInteractable()) {
                     Log.info("I am walking to" + " " + npcName);
                     Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
                 }
-            }
-            if (npc == null) {
-                Log.info("I am walking to" + " " + npcName);
-                Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
             }
         }
     }
