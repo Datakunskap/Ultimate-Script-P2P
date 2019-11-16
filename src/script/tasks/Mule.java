@@ -209,7 +209,7 @@ public class Mule extends Task {
         return 500;
     }
 
-    private void loginMule() {
+    public static void loginMule() {
         try {
             File file = new File(MULE_FILE_PATH);
 

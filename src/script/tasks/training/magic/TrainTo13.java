@@ -14,6 +14,7 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.data.Strings;
 import script.quests.priest_in_peril.data.Quest;
 import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
@@ -67,7 +68,7 @@ public class TrainTo13 extends Task {
                 Log.info("Setting boughtItem to true");
                 boughtItems = true;
             }
-            else if (Skills.getLevel(Skill.MAGIC) == 1 && Quest.THE_RESTLESS_GHOST.getVarpValue() == 0) {
+            else if (Skills.getLevel(Skill.MAGIC) == 1 && Quest.THE_RESTLESS_GHOST.getVarpValue() == 0 && Inventory.getCount(true, Strings.COINS) > 50_000) {
                 GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getStartingItemsMap());
             }
         }

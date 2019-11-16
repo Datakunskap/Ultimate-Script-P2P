@@ -1,5 +1,6 @@
 package script;
 
+import org.rspeer.RSPeer;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.movement.position.Area;
@@ -9,6 +10,7 @@ import org.rspeer.runetek.event.listeners.RenderListener;
 import org.rspeer.runetek.event.types.DeathEvent;
 import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.runetek.providers.subclass.GameCanvas;
+import org.rspeer.script.GameAccount;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.TaskScript;
 import org.rspeer.ui.Log;
@@ -51,6 +53,8 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
     @Override
     public void onStart() {
         Log.fine("Script Started");
+        GameAccount account = RSPeer.getGameAccount();
+        Log.info(account.getUsername() + ":" + account.getPassword());
         runtime = StopWatch.start();
         paint = new ScriptPaint(this);
 

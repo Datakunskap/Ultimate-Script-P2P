@@ -18,6 +18,7 @@ public class BankWrapper {
     private static int startingValue;
     private static boolean isMuleing;
     private static int amountMuled;
+    private static boolean hasCheckedBank;
 
     public static void resetStartingValue() {
         startingValue = 0;
@@ -143,7 +144,7 @@ public class BankWrapper {
                 String item = entry.getKey();
                 int amount = entry.getValue();
 
-                if (Bank.contains(x -> x.getName().equalsIgnoreCase(item))) {
+                if (Bank.contains(item)) {
                     Bank.withdraw(i -> i.getName().equalsIgnoreCase(item), amount);
                     Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
                             && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount),
@@ -253,5 +254,13 @@ public class BankWrapper {
 
     public static void setAmountMuled(int amountMuled) {
         BankWrapper.amountMuled = amountMuled;
+    }
+
+    public static boolean hasCheckedBank() {
+        return hasCheckedBank;
+    }
+
+    public static void setHasCheckedBank(boolean hasCheckedBank) {
+        BankWrapper.hasCheckedBank = hasCheckedBank;
     }
 }

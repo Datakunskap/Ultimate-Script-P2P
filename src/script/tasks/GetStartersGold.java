@@ -30,10 +30,11 @@ public class GetStartersGold extends Task {
     private static final String MULE_FOR_STARTERS_GOLD = Main.MULE_NAME;
 
     private static final Position MULE_POSITION = Main.MULE_AREA.getCenter();
+    private boolean hasStartingGold;
 
     @Override
     public boolean validate() {
-        return Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
+        return !hasStartingGold && Inventory.containsAll(IDs.TUTORIAL_ISLAND_ITEMS)
                 && Inventory.containsOnly(IDs.TUTORIAL_ISLAND_ITEMS);
     }
 
@@ -73,12 +74,12 @@ public class GetStartersGold extends Task {
         }
 
         if (Worlds.getCurrent() == MULE_WORLD) {
-            if (MULE_POSITION.distance() > 15) {
+            if (MULE_POSITION.distance() > 5) {
                 Log.info("I am walking to the mule");
                 WalkingWrapper.walkToPosition(MULE_POSITION);
             }
 
-            if (MULE_POSITION.distance() <= 15) {
+            if (MULE_POSITION.distance() <= 5) {
                 if (!Inventory.contains(Strings.COINS)) {
                     Player mule = Players.getNearest(MULE_FOR_STARTERS_GOLD);
                     if (mule != null) {
@@ -117,6 +118,7 @@ public class GetStartersGold extends Task {
                 if (Inventory.contains(Strings.COINS)) {
                     if (Inventory.getCount(true, Strings.COINS) >= AMOUNT_TO_RECEIVE) {
                         Log.info("I did receive enough starters gold");
+                        hasStartingGold = true;
                     }
                     if (Inventory.getCount(true, Strings.COINS) < AMOUNT_TO_RECEIVE) {
                         Log.info("I didn't receive enough starters gold");

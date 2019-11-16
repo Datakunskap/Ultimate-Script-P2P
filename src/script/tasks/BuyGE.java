@@ -24,10 +24,9 @@ import java.util.*;
 public class BuyGE extends Task {
 
     private HashMap<String, Integer> SUPPLIES;
-    private Iterator<String> itemsIterator;
-    private HashSet<String> items;
+    private Iterator<Map.Entry<String, Integer>> itemsIterator;
+    private HashMap<String, Integer> items;
     private String itemToBuy;
-    private boolean checkedBank;
     private int coinsToSpend;
 
     public BuyGE() {
@@ -47,11 +46,10 @@ public class BuyGE extends Task {
         if (SUPPLIES != null && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
-            items = new HashSet<>();
-            items.addAll(Arrays.asList(SUPPLIES.keySet().toArray(new String[0])));
+            items = new HashMap<>(SUPPLIES);
 
-            itemsIterator = items.iterator();
-            itemToBuy = itemsIterator.next();
+            itemsIterator = items.entrySet().iterator();
+            itemToBuy = itemsIterator.next().getKey();
             return true;
         }
 
@@ -69,18 +67,20 @@ public class BuyGE extends Task {
             return SleepWrapper.shortSleep600();
         }
 
+        if (!BankWrapper.hasCheckedBank()) {
+            Log.info("Checking Bank");
+            BankWrapper.setHasCheckedBank(true);
+            BankWrapper.doBanking(true, SUPPLIES);
+            if (Bank.isOpen()) {
+                Bank.close();
+                Time.sleepUntil(Bank::isClosed, 1000, 5000);
+            }
+        }
+
         RSWorld world = Worlds.get(Worlds.getCurrent());
         if (world != null && !world.isMembers()) {
             ExWorldHopper.randomInstaHopInPureP2p();
             return SleepWrapper.shortSleep600();
-        }
-
-        if (!checkedBank) {
-            Log.info("Checking Bank");
-            BankWrapper.doBanking(true, SUPPLIES);
-            Bank.close();
-            Time.sleepUntil(Bank::isClosed, 1000, 5000);
-            checkedBank = true;
         }
 
         coinsToSpend = Inventory.getCount(true, "Coins");
@@ -97,7 +97,7 @@ public class BuyGE extends Task {
                     Log.info("Buying: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
                     if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 20_000)) {
                         if (itemsIterator.hasNext()) {
-                            itemToBuy = itemsIterator.next();
+                            itemToBuy = itemsIterator.next().getKey();
                         } else {
                             itemsIterator = null;
                         }
@@ -106,7 +106,7 @@ public class BuyGE extends Task {
             } else {
                 Log.info("Already has: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
                 if (itemsIterator.hasNext()) {
-                    itemToBuy = itemsIterator.next();
+                    itemToBuy = itemsIterator.next().getKey();
                 } else {
                     itemsIterator = null;
                 }
@@ -155,8 +155,8 @@ public class BuyGE extends Task {
             Inventory.getFirst("Silver sickle (b)").interact(a -> true);
             Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
         }
+        BankWrapper.setHasCheckedBank(false);
         GEWrapper.setBuySupplies(false, false, SUPPLIES);
-        checkedBank = false;
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
@@ -164,7 +164,7 @@ public class BuyGE extends Task {
     }
 
     private int getQuantity(String item, boolean checkEnough) {
-        int quantity = SUPPLIES.get(item);
+        int quantity = items.get(item);
         int price = 0;
         if (checkEnough) {
             price = getPrice(item);
@@ -175,7 +175,7 @@ public class BuyGE extends Task {
                 Log.severe("Not enough gp for" + quantity + " " + item + ": Buying AMAP");
                 return coinsToSpend / price;
             }
-            return SUPPLIES.get(item);
+            return quantity;
         }
 
         return 0;
