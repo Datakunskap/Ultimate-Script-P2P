@@ -63,48 +63,46 @@ public class BankWrapper {
         inventoryValue = newValue;
     }
 
-    HashSet<BankLocation> failedLocations;
+    private static void doBanking(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted,
+                                          Set<String> set, HashMap<String, Integer> map,  String... itemsToKeep) {
+        if (BankLocation.getNearest().getPosition().distance() > 3) {
+            Log.fine("Walking To Nearest Bank");
+            WalkingWrapper.walkToNearestBank();
+        }
 
-    private static void openAndDepositAll(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted, Set<String> set, String... itemsToKeep) {
-        Log.fine("Walking To Nearest Bank");
-        WalkingWrapper.walkToNearestBank();
-
-        int tries = 10;
-        while (!openNearest() && Game.isLoggedIn() && tries > 0) {
+        for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries --) {
             Log.info("Opening Nearest Bank");
             Time.sleep(SleepWrapper.mediumSleep1000());
             tries--;
         }
 
         Bank.depositInventory();
-        Time.sleepUntil(Inventory::isEmpty, 8000);
+        Time.sleepUntil(Inventory::isEmpty, 10_000);
         Time.sleep(300, 600);
         inventoryValue = 0;
-
-        updateBankValue();
-
 
         if (numCoinsToKeep > 0) {
             Bank.withdraw(995, numCoinsToKeep);
             Time.sleepUntil(()
-                    -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, 5000);
+                    -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, 10_000);
         }
         if (keepAllCoins) {
             Bank.withdrawAll(995);
-            Time.sleepUntil(() -> Inventory.contains(995), 5000);
+            Time.sleepUntil(() -> Inventory.contains(995), 10_000);
         }
 
         if (withdrawNoted) {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.NOTE) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, 5000);
+                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, 10_000);
             }
         } else {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.ITEM) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.ITEM);
-                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, 5000);
+                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, 10_000);
             }
         }
+        Time.sleep(300, 600);
 
         if (itemsToKeep != null && itemsToKeep.length > 0) {
             for (String i : itemsToKeep) {
@@ -114,8 +112,11 @@ public class BankWrapper {
                     } else {
                         Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
                     }
-                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
+                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 10_000);
+                } else if (Bank.contains(i.substring(0, i.length()-3))) {
+                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length()-3)), 1);
                 }
+                Time.sleep(300, 600);
             }
         }
 
@@ -123,18 +124,31 @@ public class BankWrapper {
             for (String i : set) {
                 if (Bank.contains(x -> x.getName().equalsIgnoreCase(i))) {
                     if (withdrawNoted) {
-                        if (i.contains("Ring of dueling(")) {
-                            Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1);
-                        }
                         Bank.withdrawAll(x -> x.getName().equalsIgnoreCase(i));
                     } else {
-                        if (i.contains("Ring of dueling(")) {
-                            Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1);
-                        }
                         Bank.withdraw(x -> x.getName().equalsIgnoreCase(i), 1);
                     }
-                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 6000);
+                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(i)), 10_000);
+                } else if (Bank.contains(i.substring(0, i.length()-3))) {
+                    Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length()-3)), 1);
                 }
+                Time.sleep(300, 600);
+            }
+        }
+
+        if (map != null && map.size() > 0) {
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                String item = entry.getKey();
+                int amount = entry.getValue();
+
+                if (Bank.contains(x -> x.getName().equalsIgnoreCase(item))) {
+                    Bank.withdraw(i -> i.getName().equalsIgnoreCase(item), amount);
+                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
+                            && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount), 10_000);
+                } else if (Bank.contains(item.substring(0, item.length()-3))) {
+                    Bank.withdraw(i -> i.getName().contains(item.substring(0, item.length()-3)), amount);
+                }
+                Time.sleep(300, 600);
             }
         }
 
@@ -143,37 +157,31 @@ public class BankWrapper {
 
     }
 
-    public static void openAndDepositAll(boolean keepAllCoins, Set<String> itemsToKeepSet) {
-        openAndDepositAll(keepAllCoins, 0, true, itemsToKeepSet);
+    public static void doBanking(boolean keepAllCoins, Set<String> itemsToKeepSet) {
+        doBanking(keepAllCoins, 0, true, itemsToKeepSet, null);
     }
 
-    public static void openAndDepositAll(boolean keepAllCoins, String... itemsToKeep) {
-        openAndDepositAll(keepAllCoins, 0, true, null, itemsToKeep);
+    public static void doBanking(boolean keepAllCoins, HashMap<String, Integer> map) {
+        doBanking(keepAllCoins, 0, true, null, map);
     }
 
-    public static void openAndDepositAll(boolean keepAllCoins, boolean withdrawNoted, String... itemsToKeep) {
-        openAndDepositAll(keepAllCoins, 0, withdrawNoted, null, itemsToKeep);
+    public static void doBanking(boolean keepAllCoins, boolean withdrawNoted, String... itemsToKeep) {
+        doBanking(keepAllCoins, 0, withdrawNoted, null, null, itemsToKeep);
     }
 
-    public static void openAndDepositAll(boolean keepAllCoins, boolean withdrawNoted, Set<String> set) {
-        openAndDepositAll(keepAllCoins, 0, withdrawNoted, set);
+    public static void doBanking(boolean keepAllCoins, boolean withdrawNoted, Set<String> set) {
+        doBanking(keepAllCoins, 0, withdrawNoted, set, null);
     }
 
-    public static void openAndDepositAll(int numCoinsToKeep, String... itemsToKeep) {
-        openAndDepositAll(false, numCoinsToKeep, true, null, itemsToKeep);
+    public static void doBanking(boolean keepAllCoins, boolean withdrawNoted, HashMap<String, Integer> map) {
+        doBanking(keepAllCoins, 0, withdrawNoted, null, map);
     }
 
-    public static void openAndDepositAll(boolean keepAllCoins) {
-        openAndDepositAll(keepAllCoins, 0, true, null);
+    public static void doBanking(boolean keepAllCoins) {
+        doBanking(keepAllCoins, 0, true, null, null);
     }
 
-    public static void openAndDepositAll(int numCoinsToKeep) {
-        openAndDepositAll(false, numCoinsToKeep, true, null);
-    }
 
-    public static void openAndDepositAll(String... itemsToKeep) {
-        openAndDepositAll(false, 0, true, null, itemsToKeep);
-    }
 
     public static boolean openNearest() {
         if (Bank.isOpen()) {
@@ -192,13 +200,14 @@ public class BankWrapper {
                 && !itemsToKeep.contains(i.getName()));
 
         for (Item s : sellables) {
-            if (s.getName().equalsIgnoreCase("Mort myre fungus")
-                    || s.getName().contains("Dragon bones")
+            if ((s.getName().equalsIgnoreCase("Mort myre fungus")
+                    || s.getName().contains("Dragon bones"))
                     || (PriceCheckService.getPrice(s.getId()) != null
                     && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000))) {
 
-                Bank.withdrawAll(s.getName());
-                Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 8000);
+                Bank.withdrawAll(i -> i.getName().equalsIgnoreCase(s.getName()));
+                Time.sleepUntil(() -> Inventory.contains(s.getName()), 1500, 10_000);
+                Time.sleep(300, 600);
             }
         }
 

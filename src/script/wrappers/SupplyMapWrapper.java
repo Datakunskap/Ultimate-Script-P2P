@@ -51,6 +51,19 @@ public class SupplyMapWrapper {
         return map;
     }
 
+    public static HashMap<String, Integer> getNatureSpiritKeepMap() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Silver sickle", 1);
+        map.put("Salve graveyard teleport", 3);
+        map.put("Jug of wine", 10);
+        map.put("Tuna", 5);
+        map.put("Mort myre fungus", 1);
+        map.put("Druidic spell", 1);
+        map.put("A used spell", 1);
+        map.put("Ghostspeak amulet", 1);
+        return map;
+    }
+
     public static HashMap<String, Integer> getNatureSpiritItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
@@ -88,7 +101,7 @@ public class SupplyMapWrapper {
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
         map.put("Salve graveyard teleport", 3);
-        map.put("Jug of wine", 15);
+        map.put("Jug of wine", 20);
         return map;
     }
 }

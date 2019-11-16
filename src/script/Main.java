@@ -16,6 +16,7 @@ import script.quests.nature_spirit.NatureSpirit;
 import script.quests.priest_in_peril.PriestInPeril;
 import script.quests.the_restless_ghost.TheRestlessGhost;
 import script.quests.waterfall_quest.WaterfallQuest;
+import script.quests.waterfall_quest.data.Quest;
 import script.quests.witches_house.WitchesHouse;
 import script.tasks.*;
 import script.tasks.fungus.Fungus;
@@ -32,11 +33,11 @@ import java.util.HashMap;
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener, DeathListener {
 
-    private static final String MULE_NAME = "ScatGrem";
+    public static final String MULE_NAME = "ScatGrem";
     private static final int MULE_AMOUNT = 1_000_000;
-    private static final int MULE_WORLD = 393;
+    public static final int MULE_WORLD = 393;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
-    private static final Area MULE_AREA = Area.rectangular(3176, 3470, 3179, 3468);
+    public static final Area MULE_AREA = Area.rectangular(3176, 3470, 3179, 3468);
     public static final String API_KEY = "JV5ML4DE4M9W8Z5KBE00322RDVNDGGMTMU1EH9226YCVGFUBE6J6OY1Q2NJ0RA8YAPKO70"; // Not used atm
 
     private ScriptPaint paint;
@@ -100,9 +101,9 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
     public void notify(DeathEvent e) {
         if (e.getSource().equals(Players.getLocal())) {
             Log.severe("You Died");
-            HashMap<String, Integer> currMap = SupplyMapWrapper.getCurrentSupplyMap();
-            if (currMap != null && currMap.equals(SupplyMapWrapper.getNatureSpiritItemsMap())) {
-                GEWrapper.setBuySupplies(true, false, currMap);
+            int varp = Quest.NATURE_SPIRIT.getVarpValue();
+            if (varp > 0 && varp < 75) {
+                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getNatureSpiritItemsMap());
             }
         }
     }

@@ -126,13 +126,12 @@ public class Fungus extends Task {
     public static void handleGate() {
         Player local = Players.getLocal();
         SceneObject gate = SceneObjects.getNearest("Gate");
-        InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
-        InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
         Log.info("Opening the gate");
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || enterTheSwamp != null, 30_000);
+                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || Interfaces.getComponent(580, 17) != null, 30_000);
+                    InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
                     if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
@@ -140,6 +139,7 @@ public class Fungus extends Task {
                             Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
                         }
                     }
+                    InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
                     if (enterTheSwamp != null) {
                         if (enterTheSwamp.getMaterialId() == 942) {
                             Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
@@ -361,7 +361,11 @@ public class Fungus extends Task {
                 WalkingWrapper.exitAndLeaveGrotto();
                 return;
             } else {
-                BankWrapper.openAndDepositAll(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                } else {
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                }
             }
         }
         if (!Inventory.contains("Silver sickle (b)")) {

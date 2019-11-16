@@ -3,6 +3,7 @@ package script.wrappers;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;

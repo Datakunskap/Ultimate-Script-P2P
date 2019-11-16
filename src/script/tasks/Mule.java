@@ -75,7 +75,7 @@ public class Mule extends Task {
             Log.info("Withdrawing Items To Mule");
             banked = true;
 
-            BankWrapper.openAndDepositAll(false);
+            BankWrapper.doBanking(false);
             Time.sleepUntil(Inventory::isEmpty, 2000, 8000);
             Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
             Time.sleepUntil(() -> Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE), 2000, 8000);
@@ -197,7 +197,7 @@ public class Mule extends Task {
                             BankWrapper.setMuleing(false);
                             BankWrapper.resetStartingValue();
                             banked = false;
-                            BankWrapper.openAndDepositAll(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+                            BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
                         }
                         Time.sleep(700);
                     }

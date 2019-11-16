@@ -18,10 +18,7 @@ import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.wrappers.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 public class BuyGE extends Task {
 
@@ -79,7 +76,7 @@ public class BuyGE extends Task {
 
         if (!checkedBank) {
             Log.info("Checking Bank");
-            BankWrapper.openAndDepositAll(true, SUPPLIES.keySet());
+            BankWrapper.doBanking(true, SUPPLIES);
             Bank.close();
             Time.sleepUntil(Bank::isClosed, 1000, 5000);
             checkedBank = true;
@@ -97,7 +94,7 @@ public class BuyGE extends Task {
             if (stillNeedsItem(itemToBuy)) {
                 if (GEWrapper.buy(itemToBuy, getQuantity(itemToBuy, true), getPrice(itemToBuy), false)) {
                     Log.info("Buying: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
-                    if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 8000)) {
+                    if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 20_000)) {
                         if (itemsIterator.hasNext()) {
                             itemToBuy = itemsIterator.next();
                         } else {
@@ -133,30 +130,32 @@ public class BuyGE extends Task {
 
     private void doneRestockingHelper() {
         Log.fine("Done Restocking");
-        GEWrapper.setBuySupplies(false, false, SUPPLIES);
-        if (SUPPLIES.size() > 10) {
-            BankWrapper.openAndDepositAll(false, SUPPLIES.keySet());
-        } else {
-            BankWrapper.openAndDepositAll(false, false, SUPPLIES.keySet());
-            if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
-                Bank.withdrawAll("Salve graveyard teleport");
-                Time.sleepUntil(() -> !Bank.contains("Salve graveyard teleport"), 8000);
-            }
+        int totalQuantity = 0;
+        for (Integer quantity : SUPPLIES.values()) {
+            totalQuantity += quantity;
         }
+        boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
+        BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
 
-        if (Inventory.contains("Silver sickle (b)")) {
-            Inventory.getFirst("Silver sickle (b)").interact(a -> true);
-            Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
+
+        if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
+            Bank.withdrawAll("Salve graveyard teleport");
+            Time.sleepUntil(() -> !Bank.contains("Salve graveyard teleport"), 8000);
         }
 
         Bank.close();
         Interfaces.closeAll();
         Time.sleepUntil(() -> !Bank.isOpen() && !GrandExchange.isOpen(), 5000);
+        if (Inventory.contains("Silver sickle (b)")) {
+            Inventory.getFirst("Silver sickle (b)").interact(a -> true);
+            Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
+        }
+        GEWrapper.setBuySupplies(false, false, SUPPLIES);
         checkedBank = false;
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
-        return (!Inventory.contains(itemToBuy) || Inventory.getCount(true, itemToBuy) < getQuantity(itemToBuy, true)) && !Equipment.contains(itemToBuy);
+        return Inventory.getCount(true, itemToBuy) < getQuantity(itemToBuy, true) && !Equipment.contains(itemToBuy);
     }
 
     private int getQuantity(String item, boolean checkEnough) {
@@ -168,16 +167,17 @@ public class BuyGE extends Task {
 
         if (quantity > 0) {
             if ((price * quantity) > coinsToSpend) {
+                Log.severe("Not enough gp for" + quantity + " " + item + ": Buying AMAP");
                 return coinsToSpend / price;
             }
             return SUPPLIES.get(item);
         }
 
-        return 1;
+        return 0;
     }
 
     private int getPrice(String item) {
-        int price;
+        /*int price;
 
         try {
             price = PriceCheckService.getPrice(item).getBuyAverage();
@@ -191,6 +191,7 @@ public class BuyGE extends Task {
             return coinsToSpend / getQuantity(item, false);
         }
 
-        return price;
+        return price;*/
+        return coinsToSpend / getQuantity(item, false);
     }
 }

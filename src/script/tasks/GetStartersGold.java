@@ -16,6 +16,7 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.Main;
 import script.data.IDs;
 import script.data.Strings;
 import script.wrappers.WalkingWrapper;
@@ -23,12 +24,12 @@ import script.wrappers.SleepWrapper;
 
 public class GetStartersGold extends Task {
 
-    private static final int MULE_WORLD = 525;
+    private static final int MULE_WORLD = Main.MULE_WORLD;
     static final int AMOUNT_TO_RECEIVE = 2000000;
 
-    private static final String MULE_FOR_STARTERS_GOLD = "2147 Emblems";
+    private static final String MULE_FOR_STARTERS_GOLD = Main.MULE_NAME;
 
-    private static final Position MULE_POSITION = BankLocation.GRAND_EXCHANGE.getPosition();
+    private static final Position MULE_POSITION = Main.MULE_AREA.getCenter();
 
     @Override
     public boolean validate() {
@@ -74,7 +75,7 @@ public class GetStartersGold extends Task {
         if (Worlds.getCurrent() == MULE_WORLD) {
             if (MULE_POSITION.distance() > 15) {
                 Log.info("I am walking to the mule");
-                Movement.walkTo(MULE_POSITION, WalkingWrapper::shouldBreakOnTarget);
+                WalkingWrapper.walkToPosition(MULE_POSITION);
             }
 
             if (MULE_POSITION.distance() <= 15) {

@@ -30,7 +30,7 @@ public class NatureSpirit7 extends Task {
 
         if (!Equipment.contains("Ghostspeak amulet")) {
             WalkingWrapper.exitAndLeaveGrotto();
-            BankWrapper.openAndDepositAll(false, false, "Mort myre fungus", "Ghostspeak amulet", "Druidic spell", "A used spell", "Silver sickle");
+            BankWrapper.doBanking(false, false, "Mort myre fungus", "Ghostspeak amulet", "Druidic spell", "A used spell", "Silver sickle");
         }
 
         if (Dialog.isOpen()) {

@@ -78,7 +78,7 @@ public class SellGE extends Task {
                 itemsToKeep = new HashSet<>();
             }
 
-            BankWrapper.openAndDepositAll(true);
+            BankWrapper.doBanking(true);
             // Items to keep will be in bank after
             BankWrapper.withdrawSellableItems(itemsToKeep);
 
