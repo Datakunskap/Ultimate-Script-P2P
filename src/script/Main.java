@@ -1,5 +1,6 @@
 package script;
 
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.scene.Players;

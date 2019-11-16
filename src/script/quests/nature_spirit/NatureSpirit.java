@@ -86,11 +86,7 @@ public class NatureSpirit {
             if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 WalkingWrapper.walkToNatureGrotto();
             } else {
-                SceneObject grotto = SceneObjects.getNearest("Grotto");
-
-                if (!Dialog.isOpen() && grotto != null && grotto.interact(a -> true)) {
-                    Time.sleepUntil(Dialog::isOpen, 5000);
-                }
+                WalkingWrapper.enterGrotto();
 
                 if (Dialog.isOpen()) {
                     if (Dialog.canContinue()) {

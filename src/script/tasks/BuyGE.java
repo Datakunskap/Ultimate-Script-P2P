@@ -16,6 +16,7 @@ import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.data.Quest;
 import script.wrappers.*;
 
 import java.util.*;
@@ -134,8 +135,12 @@ public class BuyGE extends Task {
         for (Integer quantity : SUPPLIES.values()) {
             totalQuantity += quantity;
         }
-        boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
-        BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
+        if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+            BankWrapper.doBanking(false, false, SUPPLIES);
+        } else {
+            boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
+            BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
+        }
 
 
         if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {

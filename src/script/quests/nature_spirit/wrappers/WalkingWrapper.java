@@ -17,12 +17,15 @@ import org.rspeer.ui.Log;
 import script.data.Locations;
 import script.quests.nature_spirit.data.Location;
 import script.tasks.fungus.Fungus;
+import script.wrappers.BankWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
     private static Area MORTANIA = Area.rectangular(3410, 3454, 3520, 3321);
     private static final Position GATE_POSITION = new Position(3443, 3459, 0);
-    private static final Position AMULET_POSITION = new Position(3147, 3174, 0);;
+    private static final Position AMULET_POSITION = new Position(3147, 3174, 0);
+    ;
 
     public static void walkToNatureGrotto() {
         if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
@@ -39,14 +42,23 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                     () -> {
                         if (shouldBreakOnTarget() || inSalveGravyardArea()) {
                             if (inSalveGravyardArea()) {
-                                Log.fine("Handling Gate");
-                                Fungus.handleGate();
+                                if (Inventory.getCount(true, f -> f.containsAction("Drink") || f.containsAction("Eat")) < 3) {
+                                    Log.info("Getting more foods");
+                                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                                    return true;
+                                } else {
+                                    Log.fine("Handling Gate");
+                                    Fungus.handleGate();
+                                }
                             } else {
                                 Movement.toggleRun(true);
                                 if (Players.getLocal().getHealthPercent() < 35) {
                                     consumeFirstConsumable();
                                 }
                             }
+                        }
+                        if (Players.getLocal().getHealthPercent() < 20) {
+                            consumeFirstConsumable();
                         }
                         return false;
                     });
@@ -86,30 +98,35 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             Inventory.getFirst("Ghostspeak amulet").interact(a -> true);
             Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
         }
-        if (Equipment.contains("Ghostspeak amulet")) {
+        if (!Equipment.contains("Ghostspeak amulet")) {
             Log.fine("Getting amulet of ghostspeak");
-            if (GATE_POSITION.distance() > 5) {
+            if (Inventory.contains("Salve graveyard teleport")) {
+                Fungus.useSalveGraveyardTeleport();
+            } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                exitAndLeaveGrotto();
+            }
+            if (AMULET_POSITION.distance() > 5) {
                 script.wrappers.WalkingWrapper.walkToPosition(AMULET_POSITION);
-            } else {
-                if (!Dialog.isOpen()) {
-                    Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
-                    if (man != null) {
-                        man.interact("Talk-to");
-                    }
-                } else {
-                    if (Dialog.canContinue()) {
-                        Dialog.processContinue();
-                    }
-                    //TODO: add dialog options
-                    Dialog.process("");
+            }
+            if (!Dialog.isOpen()) {
+                Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
+                if (man != null) {
+                    man.interact("Talk-to");
+                    Time.sleepUntil(Dialog::isOpen, 6000);
                 }
             }
-        }
+            if (Dialog.canContinue()) {
+                Dialog.processContinue();
+            }
+            //TODO: add dialog options
+            Dialog.process("");
+        } else {
 
-        SceneObject grotto = SceneObjects.getNearest("Grotto");
+            SceneObject grotto = SceneObjects.getNearest("Grotto");
 
-        if (!Dialog.isOpen() && grotto != null && grotto.interact(a -> true)) {
-            Time.sleepUntil(() -> Dialog.isOpen() && !Players.getLocal().isMoving(), 5000);
+            if (!Dialog.isOpen() && grotto != null && grotto.interact(a -> true)) {
+                Time.sleepUntil(() -> Dialog.isOpen() && !Players.getLocal().isMoving(), 8000);
+            }
         }
     }
 

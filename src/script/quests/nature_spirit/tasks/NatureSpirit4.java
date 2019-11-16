@@ -13,6 +13,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 
 public class NatureSpirit4 extends Task {
 
@@ -36,11 +37,7 @@ public class NatureSpirit4 extends Task {
         }
 
         if (Inventory.contains("Journal")) {
-            SceneObject grotto = SceneObjects.getNearest("Grotto");
-
-            if (!Dialog.isOpen() && grotto != null && grotto.interact(a -> true)) {
-                Time.sleepUntil(Dialog::isOpen, 5000);
-            }
+            WalkingWrapper.enterGrotto();
 
             Inventory.getFirst("Journal").interact("Use");
             Time.sleepUntil(Inventory::isItemSelected, 5000);

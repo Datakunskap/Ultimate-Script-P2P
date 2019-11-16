@@ -11,6 +11,7 @@ import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.BankWrapper;
+import script.wrappers.SupplyMapWrapper;
 
 public class NatureSpirit7 extends Task {
 
@@ -30,7 +31,7 @@ public class NatureSpirit7 extends Task {
 
         if (!Equipment.contains("Ghostspeak amulet")) {
             WalkingWrapper.exitAndLeaveGrotto();
-            BankWrapper.doBanking(false, false, "Mort myre fungus", "Ghostspeak amulet", "Druidic spell", "A used spell", "Silver sickle");
+            BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
         }
 
         if (Dialog.isOpen()) {

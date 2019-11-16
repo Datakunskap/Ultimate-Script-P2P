@@ -7,6 +7,7 @@ import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
@@ -15,11 +16,13 @@ import script.tasks.fungus.Fungus;
 
 public class WalkingWrapper {
 
+    private static Area MORTANIA = Area.rectangular(3410, 3454, 3520, 3321);
+
     public static boolean walkToPosition(Position position) {
         return Movement.walkTo(position,
                 () -> {
-                    if (shouldBreakOnTarget() || shouldEnableRun() || Fungus.inSalveGravyardArea()) {
-                        if (Fungus.inSalveGravyardArea()) {
+                    if (shouldBreakOnTarget() || shouldEnableRun() || (Fungus.inSalveGravyardArea() && MORTANIA.contains(position))) {
+                        if ((Fungus.inSalveGravyardArea() && MORTANIA.contains(position))) {
                             Log.fine("Handling Gate");
                             Fungus.handleGate();
                         } else {

@@ -40,16 +40,14 @@ public class NatureSpirit1 extends Task {
                 Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
             }
 
-            SceneObject grotto = SceneObjects.getNearest("Grotto");
             SceneObject bridge = SceneObjects.getNearest("Bridge");
+            WalkingWrapper.enterGrotto();
 
-            if (grotto != null && grotto.interact(a -> true)) {
-                if (Time.sleepUntil(() -> Quest.NATURE_SPIRIT.getVarpValue() == 10, 5000)) {
-                    Time.sleepUntil(Dialog::isOpen, 1000, 5000);
-                } else {
-                    if (bridge != null && bridge.interact(a -> true)) {
-                        Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
-                    }
+            if (Time.sleepUntil(() -> Quest.NATURE_SPIRIT.getVarpValue() == 10, 5000)) {
+                Time.sleepUntil(Dialog::isOpen, 1000, 5000);
+            } else {
+                if (bridge != null && bridge.interact(a -> true)) {
+                    Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
                 }
             }
         }

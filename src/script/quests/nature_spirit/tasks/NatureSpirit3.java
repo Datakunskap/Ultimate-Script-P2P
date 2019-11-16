@@ -59,15 +59,14 @@ public class NatureSpirit3 extends Task {
         }
 
         if (!Dialog.isOpen() && Inventory.contains("Mirror")) {
-            SceneObject grotto = SceneObjects.getNearest("Grotto");
             Npc filliman = Npcs.getNearest("Filliman Tarlock");
 
             if (filliman != null && filliman.interact("Talk-to")) {
                 Time.sleepUntil(Dialog::isOpen, 5000);
             }
 
-            if (filliman == null && !Dialog.isOpen() && grotto != null && grotto.interact("Enter")) {
-                Time.sleepUntil(Dialog::isOpen, 5000);
+            if (filliman == null && !Dialog.isOpen()) {
+                WalkingWrapper.enterGrotto();
             }
 
             Inventory.getFirst("Mirror").interact("Use");

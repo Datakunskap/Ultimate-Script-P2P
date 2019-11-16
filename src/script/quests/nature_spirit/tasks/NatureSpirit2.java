@@ -30,7 +30,6 @@ public class NatureSpirit2 extends Task {
         }
 
         Npc filliman = Npcs.getNearest("Filliman Tarlock");
-        SceneObject grotto = SceneObjects.getNearest("Grotto");
         SceneObject bridge = SceneObjects.getNearest("Bridge");
 
         if (Inventory.contains("Ghostspeak amulet")) {
@@ -38,14 +37,13 @@ public class NatureSpirit2 extends Task {
             Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
         }
 
-        if (!Dialog.isOpen() && filliman == null && grotto != null && grotto.interact(a -> true)) {
-            if (!Time.sleepUntil(Dialog::isOpen, 5000)) {
+        if (!Dialog.isOpen() && filliman == null) {
+            WalkingWrapper.enterGrotto();
 
-                if (bridge != null && bridge.interact(a -> true)) {
-                    Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
-                    Time.sleep(2000, 2500);
-                    bridge.interact(a -> true);
-                }
+            if (bridge != null && bridge.interact(a -> true)) {
+                Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
+                Time.sleep(2000, 2500);
+                bridge.interact(a -> true);
             }
         }
 

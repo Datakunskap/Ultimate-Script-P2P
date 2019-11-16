@@ -95,12 +95,9 @@ public class NatureSpirit8 extends Task {
 
             if (Players.getLocal().getPosition().equals(orangeStone.getPosition())) {
                 Npc filliman = Npcs.getNearest("Filliman Tarlock");
-                SceneObject grotto = SceneObjects.getNearest("Grotto");
 
                 if (filliman == null) {
-                    if (!Dialog.isOpen() && grotto != null && grotto.interact(a -> true)) {
-                        Time.sleepUntil(Dialog::isOpen, 5000);
-                    }
+                    WalkingWrapper.enterGrotto();
                 } else {
                     filliman.interact("Talk-to");
                     Time.sleepUntil(Dialog::isOpen, 5000);
