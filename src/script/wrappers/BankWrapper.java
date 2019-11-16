@@ -8,6 +8,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.data.Quest;
 
 import java.util.*;
 
@@ -76,29 +77,27 @@ public class BankWrapper {
         }
 
         Bank.depositInventory();
-        Time.sleepUntil(Inventory::isEmpty, 10_000);
-        Time.sleep(300, 600);
-        inventoryValue = 0;
+        Time.sleepUntilForDuration(Inventory::isEmpty, Random.nextInt(500, 800), 10_000);
 
         if (numCoinsToKeep > 0) {
             Bank.withdraw(995, numCoinsToKeep);
-            Time.sleepUntil(()
-                    -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, 10_000);
+            Time.sleepUntilForDuration(()
+                    -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, Random.nextInt(500, 800), 10_000);
         }
         if (keepAllCoins) {
             Bank.withdrawAll(995);
-            Time.sleepUntil(() -> Inventory.contains(995), 10_000);
+            Time.sleepUntilForDuration(() -> Inventory.contains(995), Random.nextInt(500, 800),10_000);
         }
 
         if (withdrawNoted) {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.NOTE) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, 10_000);
+                Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800),10_000);
             }
         } else {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.ITEM) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.ITEM);
-                Time.sleepUntil(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, 10_000);
+                Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.ITEM, Random.nextInt(500, 800), 10_000);
             }
         }
         Time.sleep(300, 600);
@@ -161,9 +160,10 @@ public class BankWrapper {
             }
         }
 
-        updateBankValue();
-        updateInventoryValue();
-
+        if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+            updateBankValue();
+            updateInventoryValue();
+        }
     }
 
     public static void doBanking(boolean keepAllCoins, Set<String> itemsToKeepSet) {
