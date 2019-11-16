@@ -31,7 +31,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             Log.fine("Walking To Nature Grotto");
 
             if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
-                if (Inventory.contains("Salve graveyard teleport") && GATE_POSITION.distance() > 10) {
+                if (Inventory.contains("Salve graveyard teleport") && GATE_POSITION.distance() > 10 && !Location.DUNGEON_AREA.contains(Players.getLocal())) {
                     Fungus.useSalveGraveyardTeleport();
                 }
                 walkToPosition(GATE_POSITION);

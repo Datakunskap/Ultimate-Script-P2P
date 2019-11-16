@@ -47,11 +47,7 @@ public class NatureSpirit0 extends Task {
                 }
             }
             if (!Inventory.contains("Silver sickle") || (!Inventory.contains("Ghostspeak amulet") && !Equipment.contains("Ghostspeak amulet"))) {
-                BankWrapper.doBanking(false, false, "Silver sickle", "Ghostspeak amulet", "Salve graveyard teleport");
-                Bank.withdraw("Tuna", 5);
-                Bank.withdraw("Jug of wine", 10);
-                Time.sleepUntil(() -> Inventory.contains("Jug fo wine"), 10_000);
-                Time.sleep(800, 1200);
+                BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
             } else {
                 hasSupplies = true;
                 SupplyMapWrapper.setSupplyMap(SupplyMapWrapper.getNatureSpiritKeepMap());
