@@ -5,8 +5,7 @@ import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.tab.Equipment;
-import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.component.tab.*;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -100,12 +99,19 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
         }
         if (!Equipment.contains("Ghostspeak amulet")) {
             Log.fine("Getting amulet of ghostspeak");
-            if (Inventory.contains("Salve graveyard teleport")) {
+
+            if (Inventory.contains("Salve graveyard teleport") &&
+                    (MORTANIA.contains(Players.getLocal()) || Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()))) {
                 Fungus.useSalveGraveyardTeleport();
+
             } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 exitAndLeaveGrotto();
             }
             if (AMULET_POSITION.distance() > 5) {
+                BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                if (Inventory.contains("Ghostspeak amulet")) {
+                    return;
+                }
                 script.wrappers.WalkingWrapper.walkToPosition(AMULET_POSITION);
             }
             if (!Dialog.isOpen()) {

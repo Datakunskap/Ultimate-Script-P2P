@@ -104,7 +104,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
             Log.severe("You Died");
             int varp = Quest.NATURE_SPIRIT.getVarpValue();
             if (varp > 0 && varp < 75) {
-                GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getNatureSpiritItemsMap());
+                BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
             }
         }
     }
