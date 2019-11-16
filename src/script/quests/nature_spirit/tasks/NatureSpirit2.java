@@ -27,6 +27,7 @@ public class NatureSpirit2 extends Task {
     public int execute() {
         if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
             WalkingWrapper.walkToNatureGrotto();
+            return NatureSpirit.getLoopReturn();
         }
 
         Npc filliman = Npcs.getNearest("Filliman Tarlock");

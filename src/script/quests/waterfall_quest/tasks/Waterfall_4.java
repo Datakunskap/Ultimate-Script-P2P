@@ -16,6 +16,7 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.wrappers.WalkingWrapper;
 
 import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_OBJECT;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -114,7 +115,7 @@ public class Waterfall_4 extends Task {
             if (!RaftArea.contains(Players.getLocal()) && !RaftArea2.contains(Players.getLocal())) {
             if (Bitch.distance() < 250) {
                 if (Bitch.distance() > 10) {
-                    Movement.walkToRandomized(Bitch);
+                    WalkingWrapper.walkToPosition(Bitch);
                 }
             }
             if (Bitch.distance() <= 8) {

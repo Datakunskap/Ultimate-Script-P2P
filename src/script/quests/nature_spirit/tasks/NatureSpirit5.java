@@ -38,10 +38,7 @@ public class NatureSpirit5 extends Task {
                     Fungus.useSalveGraveyardTeleport();
                 }
 
-                SceneObject bridge = SceneObjects.getNearest("Bridge");
-                if (bridge != null && bridge.interact(a -> true)) {
-                    Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
-                }
+                script.quests.nature_spirit.wrappers.WalkingWrapper.exitAndLeaveGrotto();
             }
 
             if (Location.DREZEL_POSITION.distance() > 3) {

@@ -27,7 +27,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
     ;
 
     public static void walkToNatureGrotto() {
-        if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 3) {
+        if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 4 && !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
             Log.fine("Walking To Nature Grotto");
 
             if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
@@ -83,7 +83,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
         SceneObject bridge = SceneObjects.getNearest("Bridge");
         if (bridge != null && !Players.getLocal().isMoving() && bridge.interact(a -> true)) {
             if (toGrotto) {
-                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000)) {
+                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 10_000)) {
                     Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
                 }
             } else {

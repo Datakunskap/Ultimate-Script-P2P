@@ -72,16 +72,9 @@ public class NatureSpirit0 extends Task {
             return NatureSpirit.getLoopReturn();
         }
 
-        if (!Location.DUNGEON_AREA.contains(Players.getLocal()) && Location.ENTRANCE.distance() > 3) {
-            Movement.walkTo(Location.ENTRANCE, WalkingWrapper::shouldBreakOnTarget);
-            if (Location.ENTRANCE.distance() > 3 && !Movement.isRunEnabled()) {
-                Movement.toggleRun(true);
-            }
-        } else {
-            SceneObject trapdoor = SceneObjects.getNearest("Trapdoor");
-            if (trapdoor != null && trapdoor.interact(a -> true)) {
-                Time.sleepUntil(() -> SceneObjects.getNearest("Trapdoor") == null, 1000, 10_000);
-            }
+        if (!Location.DUNGEON_AREA.contains(Players.getLocal()) && Location.DREZEL_POSITION.distance() > 3) {
+            WalkingWrapper.walkToPosition(Location.DREZEL_POSITION);
+            return NatureSpirit.getLoopReturn();
         }
 
         Npc drezel = Npcs.getNearest("Drezel");
