@@ -3,6 +3,7 @@ package script.tasks;
 import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -92,22 +93,12 @@ public class Mule extends Task {
 
         loginMule();
 
-        if (Worlds.getCurrent() != muleWorld) {
+        if (Worlds.getCurrent() != muleWorld && Game.isLoggedIn()) {
             if (begWorld < 1) {
                 begWorld = Worlds.getCurrent();
             }
-            ExWorldHopper.instaHopTo(muleWorld);
 
-            if (Dialog.isOpen()) {
-                if (Dialog.canContinue()) {
-                    Dialog.processContinue();
-                }
-                Dialog.process(x -> x != null && x.toLowerCase().contains("future"));
-                Dialog.process(x -> x != null && (x.toLowerCase().contains("switch") || x.toLowerCase().contains("yes")));
-                Time.sleepUntil(() -> !Dialog.isProcessing(), 10000);
-            }
-
-            Time.sleepUntil(() -> Worlds.getCurrent() == muleWorld && Players.getLocal() != null, 10000);
+            Time.sleepUntil(() -> ExWorldHopper.instaHopTo(muleWorld), 5000, 15_000);
             return SleepWrapper.shortSleep600();
         }
 

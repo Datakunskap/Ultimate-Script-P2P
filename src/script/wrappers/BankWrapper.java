@@ -201,11 +201,11 @@ public class BankWrapper {
     public static void withdrawSellableItems(Set<String> itemsToKeep) {
         if (!Bank.isOpen() || Bank.getItems().length < 1) {
             Bank.open();
-            Time.sleepUntil(() -> Bank.getItems().length < 1, 8000);
+            Time.sleepUntil(() -> Bank.getItems().length > 0, 8000);
         }
         if (!Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE)) {
             Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-            Time.sleep(800, 1250);
+            Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800), 12_500);
         }
 
         Item[] sellables = Bank.getItems(s
