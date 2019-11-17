@@ -97,14 +97,14 @@ public class SellGE extends Task {
                 Log.severe("Nothing To Sell");
                 Bank.close();
                 GEWrapper.setSellItems(false);
-                return SleepWrapper.shortSleep600();
+                return SleepWrapper.mediumSleep1000();
             }
         }
 
         if (!GrandExchange.isOpen()) {
             GEWrapper.openGE();
             Log.fine("Selling " + itemsToSell.length + " Item(s)");
-            return 1000;
+            return SleepWrapper.mediumSleep1000();
         }
 
         if (itemsLeftToSell()) {
@@ -134,7 +134,7 @@ public class SellGE extends Task {
             Keyboard.pressEnter();
         }
 
-        return SleepWrapper.shortSleep600();
+        return SleepWrapper.mediumSleep1000();
     }
 
     private boolean itemsLeftToSell() {

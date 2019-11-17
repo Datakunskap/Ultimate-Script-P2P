@@ -30,7 +30,6 @@ public class Mule extends Task {
     private boolean trading;
     private int begWorld = -1;
     private boolean banked;
-    private boolean soldItems;
     private int gp;
     private final int muleAmount;
     private final Position mulePosition;
@@ -63,12 +62,6 @@ public class Mule extends Task {
         }
         if (GrandExchange.isOpen()) {
             GEWrapper.closeGE();
-        }
-
-        if (!soldItems) {
-            GEWrapper.setSellItems(true);
-            soldItems = true;
-            return SleepWrapper.shortSleep350();
         }
 
         if (!banked) {
@@ -178,7 +171,6 @@ public class Mule extends Task {
                         if (Trade.accept()) {
                             Time.sleep(3000);
                             Log.fine("Trade completed shutting down mule");
-                            soldItems = false;
                             trading = false;
                             logoutMule();
 
