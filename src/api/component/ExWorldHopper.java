@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  */
 public final class ExWorldHopper {
 
-    private static final Predicate<RSWorld> PURE_WORLD_PREDICATE =
+    public static final Predicate<RSWorld> PURE_WORLD_PREDICATE =
             rsWorld -> !rsWorld.isDeadman()
                     && !rsWorld.isHighRisk()
                     && !rsWorld.isLastManStanding()
@@ -26,7 +26,7 @@ public final class ExWorldHopper {
                     && !rsWorld.isPVP()
                     && !rsWorld.isBounty();
 
-    private static final Predicate<RSWorld> PURE_MEMBER_WORLD_PREDICATE = PURE_WORLD_PREDICATE
+    public static final Predicate<RSWorld> PURE_MEMBER_WORLD_PREDICATE = PURE_WORLD_PREDICATE
             .and(RSWorld::isMembers).and(w -> !getTwistedLeagueWorlds().contains(w.getId()));
 
     private static HashSet<Integer> getTwistedLeagueWorlds() {
