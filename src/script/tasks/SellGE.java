@@ -66,14 +66,14 @@ public class SellGE extends Task {
                 Fungus.useTeleportTab("Varrock teleport");
             }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.shortSleep600();
+            return SleepWrapper.mediumSleep1000();
         }
 
         RSWorld world = Worlds.get(Worlds.getCurrent());
         if (world != null && !world.isMembers()) {
             Log.info("World Hopping to P2P");
             ExWorldHopper.randomInstaHopInPureP2p();
-            return SleepWrapper.shortSleep600();
+            return SleepWrapper.mediumSleep1000();
         }
 
         if (itemsToSell == null) {
@@ -114,7 +114,7 @@ public class SellGE extends Task {
                     if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
-                        if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemId() == itemsToSell[index].getId()) != null,8000)) {
+                        if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemId() == itemsToSell[index].getId()) != null,20_000)) {
                             itemsToSell[i] = null;
                         }
                     } else {

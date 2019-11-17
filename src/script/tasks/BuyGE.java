@@ -86,7 +86,7 @@ public class BuyGE extends Task {
         if (world != null && !world.isMembers()) {
             Log.info("World Hopping to P2P");
             ExWorldHopper.randomInstaHopInPureP2p();
-            return SleepWrapper.shortSleep600();
+            return SleepWrapper.mediumSleep1000();
         }
 
         coinsToSpend = Inventory.getCount(true, "Coins");
@@ -94,7 +94,7 @@ public class BuyGE extends Task {
         if (!GrandExchange.isOpen()) {
             Bank.close();
             GEWrapper.openGE();
-            return SleepWrapper.shortSleep600();
+            return SleepWrapper.mediumSleep1000();
         }
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {
