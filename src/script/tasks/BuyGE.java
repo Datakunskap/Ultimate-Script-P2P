@@ -138,12 +138,7 @@ public class BuyGE extends Task {
             totalQuantity += quantity;
         }
         if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-            BankWrapper.doBanking(false, false, "Ring of dueling(8)");
-
-            if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
-                Bank.withdrawAll("Salve graveyard teleport");
-                Time.sleepUntilForDuration(() -> !Bank.contains("Salve graveyard teleport"), Random.nextInt(500, 800), 10_000);
-            }
+            BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
         } else {
             boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
             BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
