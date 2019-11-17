@@ -27,7 +27,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
     ;
 
     public static void walkToNatureGrotto() {
-        if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 4 && !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+        if (Location.NATURE_GROTTO_BRIDGE_POSITION.distance() > 4) {
             Log.fine("Walking To Nature Grotto");
 
             if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
@@ -76,18 +76,22 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
         }
     }
 
-    public static void crossGrottoBridge(boolean toGrotto) {
+    private static void crossGrottoBridge(boolean toGrotto) {
         if (Players.getLocal().getHealthPercent() < 35) {
             consumeFirstConsumable();
         }
+        if ((toGrotto && Location.NATURE_GROTTO_AREA.contains(Players.getLocal()))
+                || (!toGrotto && !Location.NATURE_GROTTO_AREA.contains(Players.getLocal())))
+                return;
+
         SceneObject bridge = SceneObjects.getNearest("Bridge");
-        if (bridge != null && !Players.getLocal().isMoving() && bridge.interact(a -> true)) {
+        if (bridge != null && bridge.interact(a -> true)) {
             if (toGrotto) {
-                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 10_000)) {
+                if (!Time.sleepUntil(() -> Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 7_000)) {
                     Movement.setWalkFlag(Location.NATURE_GROTTO_AREA.getCenter());
                 }
             } else {
-                Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 5000);
+                Time.sleepUntil(() -> !Location.NATURE_GROTTO_AREA.contains(Players.getLocal()), 7_000);
             }
         }
     }

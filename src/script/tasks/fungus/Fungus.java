@@ -379,7 +379,16 @@ public class Fungus extends Task {
                     NatureSpirit.useItemOnObject("Silver sickle", 3520);
                     if (Time.sleepUntil(() -> Inventory.contains("Silver sickle (b)"), 8000)) {
                         Log.fine("Sickle Blessed!");
-                        WalkingWrapper.exitAndLeaveGrotto();
+                        if (Inventory.contains("Salve graveyard teleport")) {
+                            useSalveGraveyardTeleport();
+                        } else {
+                            WalkingWrapper.exitAndLeaveGrotto();
+                            Time.sleepUntilForDuration(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
+                            WalkingWrapper.exitAndLeaveGrotto();
+                            Time.sleepUntilForDuration(() -> !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
+                            BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                        }
+                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
                     } else {
                         Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
                     }
