@@ -224,7 +224,7 @@ public class Fungus extends Task {
         Time.sleepUntilForDuration(() -> !Bank.isOpen() && !GrandExchange.isOpen(), Random.nextInt(2000, 3000), 8000);
         Item teleportTab = Inventory.getFirst(tabName);
         if (teleportTab != null) {
-            Log.info("Using a tab to teleport to salve graveyard teleport");
+            Log.info("Using a " + teleportTab.getName() + " tab");
             if (teleportTab.interact("Break")) {
                 if (tabName.equalsIgnoreCase("Salve graveyard teleport")) {
                     Time.sleepUntil(() -> BLOOM_TILE.distance() < 100 && !Game.isLoadingRegion(), 5000);
