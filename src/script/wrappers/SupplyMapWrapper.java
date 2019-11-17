@@ -23,6 +23,7 @@ public class SupplyMapWrapper {
         map.put("Ring of dueling(8)", 11);
         map.put("Salve graveyard teleport", 80);
         map.put("Silver sickle (b)", 1);
+        map.put("Varrock teleport", 1);
         return map;
     }
 

@@ -18,6 +18,7 @@ import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.data.Quest;
+import script.tasks.fungus.Fungus;
 import script.wrappers.*;
 
 import java.util.*;
@@ -64,6 +65,9 @@ public class BuyGE extends Task {
     public int execute() {
 
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+            if (Inventory.contains("Varrock teleport")) {
+                Fungus.useTeleportTab("Varrock teleport");
+            }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep600();
         }

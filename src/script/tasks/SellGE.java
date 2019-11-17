@@ -20,6 +20,7 @@ import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
+import script.tasks.fungus.Fungus;
 import script.wrappers.*;
 
 import java.util.HashSet;
@@ -61,6 +62,9 @@ public class SellGE extends Task {
         Player me = Players.getLocal();
 
         if (!GEWrapper.GE_AREA_LARGE.contains(me)) {
+            if (Inventory.contains("Varrock teleport")) {
+                Fungus.useTeleportTab("Varrock teleport");
+            }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep600();
         }

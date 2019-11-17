@@ -35,7 +35,7 @@ public class NatureSpirit5 extends Task {
 
             if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 if (Inventory.contains("Salve graveyard teleport")) {
-                    Fungus.useSalveGraveyardTeleport();
+                    Fungus.useTeleportTab("Salve graveyard teleport");
                 }
 
                 script.quests.nature_spirit.wrappers.WalkingWrapper.exitAndLeaveGrotto();

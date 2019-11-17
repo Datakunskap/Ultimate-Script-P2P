@@ -32,7 +32,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
             if (!MORTANIA.contains(Players.getLocal()) && !inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
                 if (Inventory.contains("Salve graveyard teleport") && GATE_POSITION.distance() > 10 && !Location.DUNGEON_AREA.contains(Players.getLocal())) {
-                    Fungus.useSalveGraveyardTeleport();
+                    Fungus.useTeleportTab("Salve graveyard teleport");
                 }
                 walkToPosition(GATE_POSITION);
             }
@@ -106,7 +106,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
             if (Inventory.contains("Salve graveyard teleport") &&
                     (MORTANIA.contains(Players.getLocal()) || Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()))) {
-                Fungus.useSalveGraveyardTeleport();
+                Fungus.useTeleportTab("Salve graveyard teleport");
 
             } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 exitAndLeaveGrotto();
