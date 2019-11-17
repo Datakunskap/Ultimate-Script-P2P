@@ -83,7 +83,7 @@ public class SupplyMapWrapper {
 
     public static HashMap<String, Integer> getPrayerItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("Dragon Bones", 26);
+        map.put("Dragon Bones", 300);
         map.put("Amulet of glory(6)", 1);
         map.put("Burning amulet(5)", 1);
         return map;
