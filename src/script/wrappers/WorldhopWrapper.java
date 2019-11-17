@@ -47,20 +47,8 @@ public class WorldhopWrapper {
                 Log.fine("World-Hopping");
 
                 //removeWorld(Worlds.getCurrent(), WORLDS_FILE_PATH);
-                HashSet<Integer> exclude = new HashSet<>();
-                exclude.add(403);
-                exclude.add(404);
-                exclude.add(405);
-                exclude.add(406);
-                exclude.add(407);
-                exclude.add(408);
-                exclude.add(410);
-                exclude.add(411);
-                exclude.add(412);
-                exclude.add(535);
-                exclude.add(512);
 
-                hopToLowPopWorld(50, Worlds.getCurrent(), exclude);
+                hopToLowPopWorld(50, Worlds.getCurrent(), ExWorldHopper.getTwistedLeagueWorlds());
 
                 //writeWorldToFile(Worlds.getCurrent(), WORLDS_FILE_PATH);
                 currentWorld = Worlds.getCurrent();

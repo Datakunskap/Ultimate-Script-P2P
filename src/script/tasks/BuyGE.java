@@ -145,8 +145,8 @@ public class BuyGE extends Task {
         }
 
         Bank.close();
-        Interfaces.closeAll();
-        Time.sleepUntil(() -> !Bank.isOpen() && !GrandExchange.isOpen(), 5000);
+        Time.sleepUntilForDuration(() -> !Bank.isOpen() && !GrandExchange.isOpen(), Random.nextInt(400, 600), 5000);
+
         if (Inventory.contains("Silver sickle (b)")) {
             Inventory.getFirst("Silver sickle (b)").interact(a -> true);
             Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);

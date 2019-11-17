@@ -78,7 +78,8 @@ public class PriceCheckService {
                     } catch (Exception ignored) { }
 
                     if (itemValue <= 0) {
-                        if (item.getName().equalsIgnoreCase("Mort myre fungus")) {
+                        if (item.getName().equalsIgnoreCase("Mort myre fungus")
+                                || item.getName().equalsIgnoreCase("Salve graveyard teleport")) {
                             try {
                                 itemValue = getAccurateRSPrice(item.getId()) * item.getStackSize();
                             } catch (Exception ignored) { }
