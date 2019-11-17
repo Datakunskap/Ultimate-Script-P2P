@@ -362,7 +362,7 @@ public class Fungus extends Task {
                 return;
             } else {
                 if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
                 } else {
                     BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
                 }
@@ -389,9 +389,14 @@ public class Fungus extends Task {
                 WalkingWrapper.enterGrotto();
             } else {
                 Log.info("Buying sickle");
-                HashMap<String, Integer> map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
-                map.remove("Silver sickle (b)");
-                map.put("Silver sickle", 1);
+                HashMap<String, Integer> map;
+                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+                    map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
+                    map.remove("Silver sickle (b)");
+                    map.put("Silver sickle", 1);
+                } else {
+                    map = new HashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
+                }
                 GEWrapper.setBuySupplies(true, true, map);
             }
         }

@@ -12,6 +12,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.WorldHopper;
+import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.component.tab.Skill;
 import org.rspeer.runetek.api.component.tab.Skills;
@@ -25,6 +26,8 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.quests.priest_in_peril.data.Quest;
+import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
 import script.wrappers.SleepWrapper;
 import script.wrappers.SupplyMapWrapper;
 
@@ -99,6 +102,8 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(glory, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(glory), SleepWrapper.longSleep7500());
                                 }
+                            } else if (!Equipment.contains(glory)) {
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                         if (!Inventory.contains(burningAmulet)) {
@@ -107,6 +112,8 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(burningAmulet, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(burningAmulet), SleepWrapper.longSleep7500());
                                 }
+                            } else {
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                         if (!Inventory.contains(dragonBones)) {
@@ -115,6 +122,8 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(dragonBones, 26)) {
                                     Time.sleepUntil(() -> Inventory.contains(dragonBones), SleepWrapper.longSleep7500());
                                 }
+                            } else {
+                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                     }
