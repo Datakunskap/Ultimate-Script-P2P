@@ -56,7 +56,7 @@ public class Fungus extends Task {
             }
         }
 
-        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() < 5) {
+        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() < 10) {
             useSalveGraveyardTeleport();
         }
 
