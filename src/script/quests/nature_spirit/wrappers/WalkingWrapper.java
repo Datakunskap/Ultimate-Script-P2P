@@ -51,7 +51,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                                 }
                             } else {
                                 Movement.toggleRun(true);
-                                if (Players.getLocal().getHealthPercent() < 35) {
+                                if (Players.getLocal().getHealthPercent() < 35 || Inventory.isFull()) {
                                     consumeFirstConsumable();
                                 }
                             }

@@ -5,6 +5,7 @@ import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
 import org.rspeer.runetek.api.component.Interfaces;
@@ -137,16 +138,15 @@ public class BuyGE extends Task {
             totalQuantity += quantity;
         }
         if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-            BankWrapper.doBanking(false, false, SUPPLIES);
+            BankWrapper.doBanking(false, false, "Ring of dueling(8)");
+
+            if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
+                Bank.withdrawAll("Salve graveyard teleport");
+                Time.sleepUntilForDuration(() -> !Bank.contains("Salve graveyard teleport"), Random.nextInt(500, 800), 10_000);
+            }
         } else {
             boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
             BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
-        }
-
-
-        if (SUPPLIES.containsKey("Salve graveyard teleport") && Bank.contains("Salve graveyard teleport")) {
-            Bank.withdrawAll("Salve graveyard teleport");
-            Time.sleepUntil(() -> !Bank.contains("Salve graveyard teleport"), 8000);
         }
 
         Bank.close();

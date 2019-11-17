@@ -7,6 +7,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.providers.RSWorld;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -25,7 +26,15 @@ public final class ExWorldHopper {
                     && !rsWorld.isPVP()
                     && !rsWorld.isBounty();
 
-    private static final Predicate<RSWorld> PURE_MEMBER_WORLD_PREDICATE = PURE_WORLD_PREDICATE.and(RSWorld::isMembers);
+    private static final Predicate<RSWorld> PURE_MEMBER_WORLD_PREDICATE = PURE_WORLD_PREDICATE
+            .and(RSWorld::isMembers).and(w -> !getTwistedLeagueWorlds().contains(w.getId()));
+
+    private static HashSet<Integer> getTwistedLeagueWorlds() {
+        HashSet<Integer> worlds = new HashSet<>();
+        worlds.add(403);worlds.add(404);worlds.add(405);worlds.add(406);worlds.add(407);
+        worlds.add(408);worlds.add(410);worlds.add(411);worlds.add(412);worlds.add(535);worlds.add(512);
+        return worlds;
+    }
 
     /**
      * Insta hops to a target world

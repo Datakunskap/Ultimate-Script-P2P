@@ -1,5 +1,6 @@
 package script.tasks.training.prayer;
 
+import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -93,7 +94,7 @@ public class TrainTo50 extends Task {
                             }
                         }
                         if (!Inventory.contains(glory)) {
-                            Log.info("Withrawing glory");
+                            Log.info("Withdrawing glory");
                             if (Bank.contains(glory)) {
                                 if (Bank.withdraw(glory, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(glory), SleepWrapper.longSleep7500());
@@ -102,7 +103,7 @@ public class TrainTo50 extends Task {
                         }
                         if (!Inventory.contains(burningAmulet)) {
                             if (Bank.contains(burningAmulet)) {
-                                Log.info("Withrawing burning amulet");
+                                Log.info("Withdrawing burning amulet");
                                 if (Bank.withdraw(burningAmulet, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(burningAmulet), SleepWrapper.longSleep7500());
                                 }
@@ -110,7 +111,7 @@ public class TrainTo50 extends Task {
                         }
                         if (!Inventory.contains(dragonBones)) {
                             if (Bank.contains(dragonBones)) {
-                                Log.info("Withrawing dragon bones");
+                                Log.info("Withdrawing dragon bones");
                                 if (Bank.withdraw(dragonBones, 26)) {
                                     Time.sleepUntil(() -> Inventory.contains(dragonBones), SleepWrapper.longSleep7500());
                                 }
@@ -213,7 +214,7 @@ public class TrainTo50 extends Task {
                 if (!p.getName().equals(local.getName())) {
                     if (p.getCombatLevel() <= local.getCombatLevel() + 41) {
                         Log.info("Hopping to a random p2p world");
-                        if (WorldHopper.randomHopInP2p()) {
+                        if (ExWorldHopper.randomInstaHopInPureP2p()) {
                             Time.sleepUntil(() -> !Game.isLoggedIn(), 5000);
                             Time.sleepUntil(() -> Game.isLoggedIn(), 5000);
                         }

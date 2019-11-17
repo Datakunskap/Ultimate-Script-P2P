@@ -197,7 +197,8 @@ public class Mule extends Task {
                             BankWrapper.setMuleing(false);
                             BankWrapper.resetStartingValue();
                             banked = false;
-                            BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap().keySet());
+                            BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                            return 500;
                         }
                         Time.sleep(700);
                     }
