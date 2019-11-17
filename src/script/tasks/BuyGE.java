@@ -178,21 +178,6 @@ public class BuyGE extends Task {
     }
 
     private int getPrice(String item) {
-        /*int price;
-
-        try {
-            price = PriceCheckService.getPrice(item).getBuyAverage();
-        } catch (Exception e) {
-            return coinsToSpend / getQuantity(item, false);
-        }
-
-        price += ((int) (price * .80));
-
-        if (price <= 0 || price > coinsToSpend) {
-            return coinsToSpend / getQuantity(item, false);
-        }
-
-        return price;*/
         return coinsToSpend / getQuantity(item, false);
     }
 }
