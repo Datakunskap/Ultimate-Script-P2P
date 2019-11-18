@@ -40,9 +40,12 @@ public final class ExWorlds {
         final int currentWorld = Game.getClient().getCurrentWorld();
         final RSWorld[] worlds = Worlds.getLoaded(predicate);
 
-        RSWorld world = worlds[Random.nextInt(worlds.length)];
+        RSWorld world = null;
+        if (worlds.length > 0) {
+            world = worlds[Random.nextInt(worlds.length)];
+        }
 
-        while (world.getId() == currentWorld) {
+        while (world != null && world.getId() == currentWorld) {
             world = worlds[Random.nextInt(worlds.length)];
         }
 

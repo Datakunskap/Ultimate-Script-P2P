@@ -48,10 +48,11 @@ public class WorldhopWrapper {
 
                 //removeWorld(Worlds.getCurrent(), WORLDS_FILE_PATH);
 
-                hopToLowPopWorld(50, Worlds.getCurrent(), ExWorldHopper.getTwistedLeagueWorlds());
+                ExWorldHopper.randomInstaHopInPureP2p();
+                //hopToLowPopWorld(50, Worlds.getCurrent(), ExWorldHopper.getTwistedLeagueWorlds());
 
                 //writeWorldToFile(Worlds.getCurrent(), WORLDS_FILE_PATH);
-                currentWorld = Worlds.getCurrent();
+                currentWorld = Game.getClient().getCurrentWorld();
 
                 resetChecker();
             }
