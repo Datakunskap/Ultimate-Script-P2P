@@ -42,6 +42,8 @@ public class Monster {
                 if (player.isFacing(monsterFullBodytransform) && !monsterHeadTransform.isFacing(player)) {
                     // snap head not instant, but fast... needs some positional transitioning?
                     monsterHeadTransform.transformFast(new Quaternian(x, y, z, ...));
+                    Animator.SetLookAtPosition(player.position);
+                    Animator.SetLookAtWeight(1f);
                     // necessary?
                     Time.sleepUntil(() -> monsterHeadTransform.isFacing(player), 10_000);
 

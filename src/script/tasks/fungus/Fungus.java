@@ -60,10 +60,6 @@ public class Fungus extends Task {
             }
         }
 
-        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() < 10) {
-            useTeleportTab("Salve graveyard teleport");
-        }
-
         if (!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()) {
             Log.info("idk");
             Movement.walkTo(BankLocation.CLAN_WARS.getPosition());

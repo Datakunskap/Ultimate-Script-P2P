@@ -24,7 +24,7 @@ public class WorldhopWrapper {
     private static int currentWorld;
 
     private static final String WORLDS_FILE_PATH = Script.getDataDirectory() + "\\SS-Fungi-Worlds.txt";
-    private static final int WORLD_HOP_SECONDS = 30;
+    private static final int WORLD_HOP_SECONDS = 20;
     private static final Area FUNGUS_AREA = Area.rectangular(3417, 3441, 3425, 3434);
 
     public static void resetChecker() {

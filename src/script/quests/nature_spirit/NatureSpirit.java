@@ -67,6 +67,9 @@ public class NatureSpirit {
         if (Dialog.isOpen() && Dialog.canContinue()) {
             Dialog.processContinue();
         }
+        if (Inventory.isFull()) {
+            WalkingWrapper.consumeFirstConsumable();
+        }
 
         SceneObject fungiLog = SceneObjects.getNearest(3509);
 
