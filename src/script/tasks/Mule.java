@@ -168,19 +168,19 @@ public class Mule extends Task {
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
-                            if (begWorld != -1) {
-                                ExWorldHopper.instaHopTo(begWorld);
-                                if (Time.sleepUntil(() -> Worlds.getCurrent() == begWorld, 10_000)) {
-                                    ExWorldHopper.randomInstaHopInPureP2p();
-                                }
-                            } else {
-                                ExWorldHopper.randomInstaHopInPureP2p();
-                            }
                             Time.sleep(8000, 10000);
                             BankWrapper.setMuleing(false);
                             BankWrapper.resetStartingValue();
                             banked = false;
-                            BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                            BankWrapper.setHasCheckedBank(false);
+                            if (!GEWrapper.isBuySupplies()) {
+                                BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                            }
+                            if (begWorld != -1) {
+                                ExWorldHopper.instaHopTo(begWorld);
+                            } else {
+                                ExWorldHopper.randomInstaHopInPureP2p();
+                            }
                             return 500;
                         }
                         Time.sleep(700);
