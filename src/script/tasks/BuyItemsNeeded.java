@@ -69,6 +69,7 @@ public class BuyItemsNeeded extends Task {
             if(Bank.isOpen()){
                 Log.info("Depositing everything expect coins");
                 if(Bank.depositAllExcept(Strings.COINS)){
+                    Log.info("Deposited");
                     Time.sleepUntil(()-> Inventory.containsOnly(Strings.COINS), SleepWrapper.longSleep7500());
                 }
             }

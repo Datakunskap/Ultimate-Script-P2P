@@ -1,33 +1,32 @@
 package script.quests.witches_house.tasks;
 
-import org.rspeer.runetek.adapter.scene.Npc;
+import api.API;
+import org.rspeer.runetek.adapter.component.Item;
+import org.rspeer.runetek.adapter.scene.Pickable;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
-import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.component.tab.Magic;
+import org.rspeer.runetek.api.component.tab.Spell;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
-import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Pickables;
 import org.rspeer.runetek.api.scene.Players;
-import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
 import static script.quests.witches_house.data.Quest.WITCHES_HOUSE;
 
-
 public class WitchesHouse_4 extends Task {
 
-    private static final Position Pot = new Position(2899, 3473);
-    private static final Position Ladder = new Position(2906, 3476);
-    private Area Shed = Area.rectangular(2934, 3467, 2937, 3459);
-    private Area House = Area.rectangular(2901, 3476, 2937, 3459, 0);
-    private Area Basement = Area.rectangular(2901, 9890, 2937, 9850);
-    private Npc boy;
-    private static final Position Boy = new Position(2929, 3456);
+    public static final String BALL = "Ball";
+    public static final String FALADOR_TELEPORT = "Falador teleport";
+    public static final String BOY = "Boy";
+
+    public static final Position BOY_POSITION = new Position(2929, 3456);
+
+    public static final Area SHED = Area.rectangular(2934, 3467, 2937, 3459);
+
     @Override
     public boolean validate() {
         return WITCHES_HOUSE.getVarpValue() == 6;
@@ -35,73 +34,45 @@ public class WitchesHouse_4 extends Task {
 
     @Override
     public int execute() {
-        Player me = Players.getLocal();
-       if(!Inventory.contains(2407)){
-           if(Pickables.getNearest(2407) != null){
-               Pickables.getNearest(2407).click();
-               RandomSleep();
-           }
-       }
-       if(Inventory.contains(2407) && Inventory.contains(8009) && Shed.contains(Players.getLocal())){
-           Inventory.getFirst(8009).click();
-           RandomSleep();
-           RandomSleep();
-       }
-       if(!Shed.contains(Players.getLocal())){
-           boy = Npcs.getNearest(3994);
-           if(Boy.distance() > 10){
-               Movement.walkToRandomized(Boy);
-           }
-           if(Boy.distance() <= 10 && !Dialog.isOpen()){
-               boy.click();
-           }
-           if(Dialog.isOpen() && Interfaces.getComponent(219, 1) == null) {
-               Dialog.processContinue();
-               RandomSleep();
-           }
-       }
-        return 600;
-    }
 
-    public void interactWithObject(int ID){
-        if(SceneObjects.getNearest(ID) != null){
-            SceneObjects.getNearest(ID).click();
-            RandomSleep();
+        Log.info("WitchesHouse_4");
+
+        Player local = Players.getLocal();
+
+        API.runFromAttacker();
+
+        API.doDialog();
+
+        API.toggleRun();
+
+        API.drinkStaminaPotion();
+
+        if (!Inventory.contains(BALL)) {
+            Pickable ball = Pickables.getNearest(BALL);
+            if (ball.interact("Take")) {
+                Time.sleepUntil(() -> Inventory.contains(BALL), 10_000);
+            }
         }
-    }
 
-    public void clickDialogComponenet(int Option) {
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Interfaces.getComponent(219, 1, Option).click();
-            RandomSleep();
+        if (Inventory.contains(BALL)) {
+            if (SHED.contains(local)) {
+                Item faladorTeleport = Inventory.getFirst(FALADOR_TELEPORT);
+                if (faladorTeleport != null) {
+                    faladorTeleport.interact("Break");
+                    Time.sleepUntil(() -> !SHED.contains(local), 5000);
+                }
+                if (faladorTeleport == null) {
+                    if (Magic.canCast(Spell.Modern.HOME_TELEPORT)) {
+                        Magic.cast(Spell.Modern.HOME_TELEPORT);
+                        Time.sleepUntil(() -> !SHED.contains(local), 30000);
+                    }
+                }
+            }
+            if (!SHED.contains(local)) {
+                API.talkTo(BOY, BOY_POSITION);
+            }
         }
+        return API.lowRandom();
     }
 
-    public String getComponentOptions(int Option){
-        String Text = "Null";
-        if(Interfaces.getComponent(219, 1, Option) != null){
-            Text = Interfaces.getComponent(219, 1, Option).getText();
-        }
-        return Text;
-    }
-
-    public String getDialogOptions(){
-        String Text = "Null";
-        if(Interfaces.getComponent(219, 1, 0) != null){
-            Text = Interfaces.getComponent(219, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public String getDialog(){
-        String Text = "Null";
-        if(Interfaces.getComponent(263, 1, 0) != null){
-            Text = Interfaces.getComponent(263, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public void RandomSleep(){
-        Time.sleep(Random.nextInt(250, 550));
-    }
 }
