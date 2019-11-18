@@ -1,7 +1,6 @@
 package script.tasks;
 
 import api.component.ExWorldHopper;
-import api.component.ExWorlds;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -12,7 +11,6 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
 import org.rspeer.runetek.api.component.Interfaces;
-import org.rspeer.runetek.api.component.WorldHopper;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.scene.Players;
@@ -114,7 +112,7 @@ public class SellGE extends Task {
                     if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
-                        if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemId() == itemsToSell[index].getId()) != null,20_000)) {
+                        if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().equalsIgnoreCase(itemsToSell[index].getName())) != null,12_000)) {
                             itemsToSell[i] = null;
                         }
                     } else {
@@ -128,7 +126,7 @@ public class SellGE extends Task {
             GrandExchange.open(GrandExchange.View.OVERVIEW);
         }
 
-        if (GrandExchange.getOffers(RSGrandExchangeOffer.Type.SELL).length > 0) {
+        if (GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.SELL) || GrandExchange.getFirst(o -> o.getProgress() == RSGrandExchangeOffer.Progress.FINISHED) != null) {
             GrandExchange.collectAll();
             Time.sleep(300, 600);
             Keyboard.pressEnter();
