@@ -128,7 +128,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             if (Dialog.canContinue()) {
                 Dialog.processContinue();
             }
-            //TODO: add dialog options
+            // add dialog options
             Dialog.process("");
         } else {
 

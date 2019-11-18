@@ -80,11 +80,13 @@ public class NatureSpirit8 extends Task {
             if (NatureSpirit.useItemOnObject("Mort myre fungus", 3527)) {
                 Time.sleepUntil(() -> Inventory.getCount(true, "Mort myre fungus") < numFungi, 5000);
                 Log.info("Placed Fungus");
+                Time.sleep(500, 800);
             }
 
             if (NatureSpirit.useItemOnObject("A used spell", 3529)) {
                 Time.sleepUntil(() -> Inventory.getCount(true, "A used spell") < numUsedSpells, 5000);
                 Log.info("Placed Spell");
+                Time.sleep(500, 800);
             }
 
             if (!Players.getLocal().getPosition().equals(orangeStone.getPosition())) {
@@ -98,6 +100,8 @@ public class NatureSpirit8 extends Task {
 
                 if (filliman == null) {
                     WalkingWrapper.enterGrotto();
+                    Movement.setWalkFlag(orangeStone.getPosition());
+                    Time.sleepUntil(() -> Players.getLocal().getPosition().equals(orangeStone.getPosition()), 5000);
                 } else {
                     filliman.interact("Talk-to");
                     Time.sleepUntil(Dialog::isOpen, 5000);

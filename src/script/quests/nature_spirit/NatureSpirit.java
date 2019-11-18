@@ -67,7 +67,7 @@ public class NatureSpirit {
         if (Dialog.isOpen() && Dialog.canContinue()) {
             Dialog.processContinue();
         }
-        if (Inventory.isFull()) {
+        if (Inventory.isFull() || Players.getLocal().getHealthPercent() < 35) {
             WalkingWrapper.consumeFirstConsumable();
         }
 
