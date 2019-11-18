@@ -50,13 +50,13 @@ public class Fungus extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
-        if (!Equipment.contains("Silver sickle (b)")) {
+        if (!Bank.isOpen() && !Equipment.contains("Silver sickle (b)")) {
             if (Inventory.contains("Silver sickle (b)") && Inventory.getFirst("Silver sickle (b)").interact(a -> true)) {
                 Log.info("Sickle equipped");
                 Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
             } else {
                 getSilverSickleB();
-                return SleepWrapper.shortSleep600();
+                return SleepWrapper.mediumSleep1000();
             }
         }
 
