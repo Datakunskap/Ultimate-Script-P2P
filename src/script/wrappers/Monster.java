@@ -12,7 +12,7 @@ public class Monster {
     // Reference of AI Tier from AI thingy-mo-bob
     public Integer AI_TIER = 1;
     // Drag-n-drop Transform reference in Unity.
-    public Transform monsterFullBodytransform;
+    public Transform monsterFullBodytraansform;
     public Transform monsterHeadTransform;
     public Transform monsterNeckDownTransform;
     public Transform monsterWaistHingeTransform;
@@ -54,6 +54,9 @@ public class Monster {
                     if (monsterWaistHingeTransform.angleDegree() < 180 || monsterWaistHingeTransform.angleDegree() > 0) {
                         monsterWaistHingeTransform.transform(new Angle(0, 180, 0));
                     }
+
+                    //rigid
+                    Animator.
                 }
             }
         }

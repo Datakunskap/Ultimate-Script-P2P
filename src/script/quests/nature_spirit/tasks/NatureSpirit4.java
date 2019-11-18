@@ -31,6 +31,10 @@ public class NatureSpirit4 extends Task {
             return NatureSpirit.getLoopReturn();
         }
 
+        if (Inventory.isFull()) {
+            WalkingWrapper.consumeFirstConsumable();
+        }
+
         SceneObject tree = SceneObjects.getNearest("Grotto tree");
         if (!Inventory.contains("Journal") && tree != null && tree.interact("Search")) {
             Time.sleepUntil(() -> Inventory.contains("Journal"), 5000);
