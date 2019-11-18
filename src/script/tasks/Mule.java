@@ -172,10 +172,7 @@ public class Mule extends Task {
                             BankWrapper.setMuleing(false);
                             BankWrapper.resetStartingValue();
                             banked = false;
-                            BankWrapper.setHasCheckedBank(false);
-                            if (!GEWrapper.isBuySupplies()) {
-                                BankWrapper.doBanking(true, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
-                            }
+                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             if (begWorld != -1) {
                                 ExWorldHopper.instaHopTo(begWorld);
                             } else {

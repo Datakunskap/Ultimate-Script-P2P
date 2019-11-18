@@ -49,6 +49,7 @@ public class GEWrapper {
 
     public static void setBuySupplies(boolean buySupplies, boolean sellItems, HashMap<String, Integer> supplyMap) {
         GEWrapper.buySupplies = buySupplies;
+        BankWrapper.setHasCheckedBank(false);
         SupplyMapWrapper.setSupplyMap(supplyMap);
         setSellItems(sellItems);
     }
