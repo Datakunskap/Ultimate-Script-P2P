@@ -169,21 +169,23 @@ public class BuyGE extends Task {
     }
 
     private int getQuantity(String item, boolean checkEnough) {
-        int quantity = items.get(item);
-        int price = 0;
-        if (checkEnough) {
-            price = getPrice(item);
-        }
+        int quantity = items.get(item) - Inventory.getCount(true, item);
 
         if (quantity > 0) {
-            if ((price * quantity) > coinsToSpend) {
-                Log.severe("Not enough gp for" + quantity + " " + item + ": Buying AMAP");
-                return coinsToSpend / price;
+            int price = 0;
+            if (checkEnough) {
+                price = getPrice(item);
             }
-            return quantity;
-        }
 
-        return 0;
+            if (quantity > 0) {
+                if ((price * quantity) > coinsToSpend) {
+                    Log.severe("Not enough gp for" + quantity + " " + item + ": Buying AMAP");
+                    return coinsToSpend / price;
+                }
+                return quantity;
+            }
+        }
+        return 1;
     }
 
     private int getPrice(String item) {

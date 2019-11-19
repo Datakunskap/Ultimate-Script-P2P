@@ -27,14 +27,7 @@ public final class ExWorldHopper {
                     && !rsWorld.isBounty();
 
     public static final Predicate<RSWorld> PURE_MEMBER_WORLD_PREDICATE = PURE_WORLD_PREDICATE
-            .and(RSWorld::isMembers).and(w -> !getTwistedLeagueWorlds().contains(w.getId()));
-
-    public static HashSet<Integer> getTwistedLeagueWorlds() {
-        HashSet<Integer> worlds = new HashSet<>();
-        worlds.add(403);worlds.add(404);worlds.add(405);worlds.add(406);worlds.add(407);
-        worlds.add(408);worlds.add(410);worlds.add(411);worlds.add(412);worlds.add(535);worlds.add(512);
-        return worlds;
-    }
+            .and(RSWorld::isMembers);
 
     /**
      * Insta hops to a target world
@@ -129,7 +122,7 @@ public final class ExWorldHopper {
      * @return true if it succeeds to insta hop; false otherwise
      */
     public static boolean randomInstaHopInPureP2p() {
-        return randomInstaHop(PURE_MEMBER_WORLD_PREDICATE, 318, 319);
+        return randomInstaHop(PURE_MEMBER_WORLD_PREDICATE,
+                318, 319, 403, 404, 405, 406, 407, 408, 410, 411, 412, 535, 512);
     }
-
 }
