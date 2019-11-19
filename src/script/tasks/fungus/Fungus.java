@@ -134,7 +134,7 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || Interfaces.getComponent(580, 17) != null, 2000);
+                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || Interfaces.getComponent(580, 17) != null, 4000);
                     InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
                     if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
@@ -153,7 +153,8 @@ public class Fungus extends Task {
                             }
                         }
                     }
-                    if (dontAskMeThisAgain == null && enterTheSwamp != null) {
+                    if ((dontAskMeThisAgain == null || !dontAskMeThisAgain.isVisible() || dontAskMeThisAgain.isExplicitlyHidden())
+                            && enterTheSwamp != null) {
                         Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
                         if (enterTheSwamp.interact("Yes")) {
                             Log.info("Clicked enterTheSwamp");
