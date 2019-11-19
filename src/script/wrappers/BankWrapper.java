@@ -80,13 +80,13 @@ public class BankWrapper {
         Time.sleepUntilForDuration(Inventory::isEmpty, Random.nextInt(500, 800), 10_000);
 
         if (numCoinsToKeep > 0) {
-            Bank.withdraw(995, numCoinsToKeep);
+            Bank.withdraw("Coins", numCoinsToKeep);
             Time.sleepUntilForDuration(()
                     -> Inventory.contains(995) && Inventory.getCount(true, 995) >= numCoinsToKeep, Random.nextInt(500, 800), 10_000);
         }
         if (keepAllCoins) {
-            Bank.withdrawAll(995);
-            Time.sleepUntilForDuration(() -> Inventory.contains(995), Random.nextInt(500, 800),10_000);
+            Bank.withdrawAll("Coins");
+            Time.sleepUntilForDuration(() -> Inventory.contains("Coins"), Random.nextInt(1000, 1200),10_000);
         }
 
         if (withdrawNoted) {

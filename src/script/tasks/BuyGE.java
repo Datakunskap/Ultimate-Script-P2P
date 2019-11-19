@@ -8,7 +8,6 @@ import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.GrandExchange;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
@@ -78,11 +77,13 @@ public class BuyGE extends Task {
 
         if (!BankWrapper.hasCheckedBank()) {
             Log.info("Checking Bank");
-            BankWrapper.setHasCheckedBank(true);
             BankWrapper.doBanking(true, SUPPLIES);
             if (Bank.isOpen()) {
                 Bank.close();
                 Time.sleepUntil(Bank::isClosed, 1000, 5000);
+            }
+            if (Inventory.contains("Coins")) {
+                BankWrapper.setHasCheckedBank(true);
             }
         }
 
