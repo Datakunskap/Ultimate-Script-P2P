@@ -7,6 +7,7 @@ import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.data.Quest;
 
@@ -67,7 +68,7 @@ public class BankWrapper {
                                   Set<String> set, HashMap<String, Integer> map, String... itemsToKeep) {
         if (BankLocation.getNearest().getPosition().distance() > 3) {
             Log.fine("Walking To Nearest Bank");
-            WalkingWrapper.walkToNearestBank();
+            WalkingWrapper.walkToPosition(BankLocation.getNearest().getPosition());
         }
 
         for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries--) {

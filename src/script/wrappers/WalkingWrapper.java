@@ -40,23 +40,6 @@ public class WalkingWrapper {
                 }) || position.distance() < 4;
     }
 
-    public static void walkToNearestBank() {
-        Movement.getDaxWalker().walkToBank(() -> {
-            if (WalkingWrapper.shouldBreakOnTarget() || WalkingWrapper.shouldEnableRun()) {
-                if (!Movement.isRunEnabled())
-                    Movement.toggleRun(true);
-                if (Players.getLocal().getHealthPercent() < 35) {
-                    Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
-                    if (food != null) {
-                        Log.fine("Eating");
-                        food.interact("Eat");
-                    }
-                }
-            }
-            return false;
-        });
-    }
-
     public static boolean shouldEnableRun() {
         return (Movement.getRunEnergy() > Random.nextInt(5, 15) && !Movement.isRunEnabled());
     }
