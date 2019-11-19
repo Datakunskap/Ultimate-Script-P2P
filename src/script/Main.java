@@ -11,6 +11,7 @@ import org.rspeer.runetek.event.types.RenderEvent;
 import org.rspeer.runetek.providers.subclass.GameCanvas;
 import org.rspeer.script.GameAccount;
 import org.rspeer.script.ScriptMeta;
+import org.rspeer.script.task.Task;
 import org.rspeer.script.task.TaskScript;
 import org.rspeer.ui.Log;
 import script.paint.ScriptPaint;
@@ -44,6 +45,15 @@ public class Main extends TaskScript implements RenderListener, DeathListener {
 
     public StopWatch getRuntime() {
         return runtime;
+    }
+
+    public void submitNextTaskSet(Task... tasks) {
+        removeAll();
+        submit(tasks);
+
+        if (!GameCanvas.isInputEnabled()) {
+            GameCanvas.setInputEnabled(true);
+        }
     }
 
     @Override

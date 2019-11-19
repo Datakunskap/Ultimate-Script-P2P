@@ -66,7 +66,7 @@ public class BankWrapper {
 
     private static void doBanking(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted,
                                   Set<String> set, HashMap<String, Integer> map, String... itemsToKeep) {
-        if (BankLocation.getNearest().getPosition().distance() > 3) {
+        if (BankLocation.getNearest().getPosition().distance() > 5) {
             Log.fine("Walking To Nearest Bank");
             Movement.getDaxWalker().walkToBank();
             //WalkingWrapper.walkToPosition(BankLocation.getNearest().getPosition());
