@@ -7,6 +7,7 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.menu.ActionOpcodes;
+import org.rspeer.runetek.api.local.Health;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
@@ -67,7 +68,7 @@ public class NatureSpirit {
         if (Dialog.isOpen() && Dialog.canContinue()) {
             Dialog.processContinue();
         }
-        if (Inventory.isFull() || Players.getLocal().getHealthPercent() < 35) {
+        if (Inventory.isFull() || Players.getLocal().getHealthPercent() < 35 || Health.getPercent() < 35) {
             WalkingWrapper.consumeFirstConsumable();
         }
 

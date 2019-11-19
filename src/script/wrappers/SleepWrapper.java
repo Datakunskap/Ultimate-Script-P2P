@@ -28,4 +28,8 @@ public class SleepWrapper {
         return Random.mid(4999,9999);
     }
 
+    public static int extraLongSleep15000() {
+        return Random.mid(11999,17999);
+    }
+
 }

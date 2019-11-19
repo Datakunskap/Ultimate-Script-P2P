@@ -1,5 +1,6 @@
 package script.tasks.training.magic;
 
+import api.API;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
@@ -24,7 +25,7 @@ import script.wrappers.SupplyMapWrapper;
 public class TrainTo13 extends Task {
 
     boolean hasItems = false;
-    boolean wearingGear = false;
+    boolean hasGear = false;
     boolean boughtItems = false;
 
     private static final String[] ALL_ITEMS_NEEDED_FOR_ACCOUNT_PREPERATION = new String[]{
@@ -99,12 +100,34 @@ public class TrainTo13 extends Task {
             }
         }
 
-        if (!wearingGear) {
-            if (Equipment.containsAll(GLORY, STAFF_OF_AIR)) {
-                Log.info("Setting wearingGear to true");
-                wearingGear = true;
+        if (!hasGear) {
+            if (!Equipment.contains(x -> x.getName().contains(GLORY))) {
+                if (!Inventory.contains(x -> x.getName().contains(GLORY))) {
+                    Log.info("I don't have a glory");
+                    API.withdrawItem(false, GLORY, 1);
+                    Log.info("Withdrew the glory");
+                }
+                if (Inventory.contains(x -> x.getName().contains(GLORY))) {
+                    Log.info("Got glory in invent");
+                    API.wearItem(GLORY);
+                    Log.info("Wielded the glory");
+                }
+            }
+            if (!Equipment.contains(x -> x.getName().contains(GLORY))) {
+                if (!Inventory.contains(STAFF_OF_AIR)) {
+                    API.withdrawItem(false, STAFF_OF_AIR, 1);
+                }
+                if (Inventory.contains(STAFF_OF_AIR)) {
+                    API.wearItem(STAFF_OF_AIR);
+                }
+            }
+            if (Equipment.contains(x -> x.getName().contains(GLORY))
+                    && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
+                Log.info("Setting hasGear to true");
+                hasGear = true;
             }
         }
+
 
         if (Inventory.containsAnyExcept(ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING)) {
             if (!Bank.isOpen()) {
@@ -117,8 +140,6 @@ public class TrainTo13 extends Task {
                     Time.sleepUntil(Inventory::isEmpty, SleepWrapper.longSleep7500());
                 }
                 if (Inventory.isEmpty()) {
-                    withdrawItem("Staff of air", 1, false);
-                    withdrawItem("Amulet of glory(6)", 1, false);
                     withdrawItem("Ring of wealth (5)", 1,false );
                     withdrawItem("Stamina potion(4)", 1,false);
                     withdrawItem("Mind rune", 1000, true);
@@ -130,7 +151,7 @@ public class TrainTo13 extends Task {
             }
         }
 
-        if (hasItems && !wearingGear) {
+        if (hasItems && !hasGear) {
             if (Inventory.contains(362)) {
                 if (!Bank.isOpen()) {
                     Bank.open();
@@ -156,7 +177,7 @@ public class TrainTo13 extends Task {
                 }
             }
         }
-        if (hasItems && wearingGear) {
+        if (hasItems && hasGear) {
             if (!TRAINING_AREA.contains(local)) {
                 Movement.walkToRandomized(TRAINING_AREA.getCenter());
             }

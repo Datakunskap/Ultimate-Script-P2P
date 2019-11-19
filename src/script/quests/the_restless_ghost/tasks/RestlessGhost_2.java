@@ -4,6 +4,8 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
@@ -21,7 +23,7 @@ public class RestlessGhost_2 extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 2;
+        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 2&& Skills.getLevel(Skill.MAGIC) >= 13;
     }
 
     @Override

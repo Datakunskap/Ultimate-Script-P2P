@@ -2,6 +2,8 @@ package script.quests.the_restless_ghost.tasks;
 
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.SceneObjects;
@@ -19,7 +21,7 @@ public class RestlessGhost_4 extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 4;
+        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 4 && Skills.getLevel(Skill.MAGIC) >= 13;
     }
 
     @Override
@@ -35,20 +37,20 @@ public class RestlessGhost_4 extends Task {
 
         API.drinkStaminaPotion();
 
-        if(GHOST_POSITION.distance() > 10 || !GHOST_POSITION.isPositionInteractable()){
+        if (GHOST_POSITION.distance() > 10 || !GHOST_POSITION.isPositionInteractable()) {
             Log.info("Walking to the ghost");
             Movement.walkTo(GHOST_POSITION, MovementBreaks::shouldBreakOnRunenergy);
         }
 
-        if(GHOST_POSITION.distance() <= 10){
+        if (GHOST_POSITION.distance() <= 10) {
             SceneObject coffin = SceneObjects.getNearest("Coffin");
-            if(coffin.containsAction("Close")){
+            if (coffin.containsAction("Close")) {
                 API.useItemOn(GHOSTS_SKULL, "Coffin", GHOST_POSITION);
             }
-            if(coffin.containsAction("Open")){
+            if (coffin.containsAction("Open")) {
                 Log.info("Opening the chest");
                 coffin.interact("Open");
-                Time.sleepUntil(()-> !coffin.containsAction("Open"), 5000);
+                Time.sleepUntil(() -> !coffin.containsAction("Open"), 5000);
             }
         }
 

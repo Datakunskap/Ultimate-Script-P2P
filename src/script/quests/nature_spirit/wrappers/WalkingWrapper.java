@@ -6,6 +6,7 @@ import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.tab.*;
+import org.rspeer.runetek.api.local.Health;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -50,13 +51,12 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                                     Fungus.handleGate();
                                 }
                             } else {
-                                Movement.toggleRun(true);
-                                if (Players.getLocal().getHealthPercent() < 35 || Inventory.isFull()) {
-                                    consumeFirstConsumable();
+                                if (!Movement.isRunEnabled()) {
+                                    Movement.toggleRun(true);
                                 }
                             }
                         }
-                        if (Players.getLocal().getHealthPercent() < 20) {
+                        if (Players.getLocal().getHealthPercent() < 35 || Health.getPercent() < 35 || Inventory.isFull()) {
                             consumeFirstConsumable();
                         }
                         return false;

@@ -86,7 +86,7 @@ public class GetStartersGold extends Task {
                         if (!Trade.isOpen()) {
                             Log.info("I am offering the mule to trade");
                             if (mule.interact(Strings.TRADE_ACTION)) {
-                                Time.sleepUntil(Trade::isOpen, SleepWrapper.longSleep7500());
+                                Time.sleepUntil(Trade::isOpen, SleepWrapper.extraLongSleep15000());
                             }
                         }
                         if (Trade.isOpen()) {
@@ -112,7 +112,7 @@ public class GetStartersGold extends Task {
                     }
                     if (mule == null) {
                         Log.info("I can't find the mule, I'll wait for him");
-                        Time.sleepUntil(() -> Players.getNearest(MULE_FOR_STARTERS_GOLD) != null, SleepWrapper.longSleep7500());
+                        Time.sleepUntil(() -> Players.getNearest(MULE_FOR_STARTERS_GOLD) != null, SleepWrapper.extraLongSleep15000());
                     }
                 }
                 if (Inventory.contains(Strings.COINS)) {

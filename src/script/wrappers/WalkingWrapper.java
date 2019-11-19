@@ -5,6 +5,7 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.local.Health;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -27,14 +28,10 @@ public class WalkingWrapper {
                         } else {
                             if (!Movement.isRunEnabled())
                                 Movement.toggleRun(true);
-                            if (Players.getLocal().getHealthPercent() < 35) {
-                                Item food = Inventory.getFirst(f -> f.containsAction("Eat"));
-                                if (food != null) {
-                                    Log.fine("Eating");
-                                    food.interact("Eat");
-                                }
-                            }
                         }
+                    }
+                    if (Players.getLocal().getHealthPercent() < 35 || Health.getPercent() < 35) {
+                        consumeFirstConsumable();
                     }
                     return false;
                 }) || position.distance() < 4;

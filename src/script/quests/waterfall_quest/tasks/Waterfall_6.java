@@ -56,9 +56,9 @@ public class Waterfall_6 extends Task {
             final SceneObject PILLAR_ONE = SceneObjects.getFirstAt(new Position(2562, 9910));
             final SceneObject PILLAR_TWO = SceneObjects.getFirstAt(new Position(2562, 9912));
             final SceneObject PILLAR_THREE = SceneObjects.getFirstAt(new Position(2562, 9914));
-            final SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9914));
+            final SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9910));
             final SceneObject PILLAR_FIVE = SceneObjects.getFirstAt(new Position(2569, 9912));
-            final SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9910));
+            final SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9914));
 
             if (Inventory.contains(AIR_RUNE) || Inventory.contains(WATER_RUNE) || Inventory.contains(EARTH_RUNE)) {
                 useAllRunesOnPillar(PILLAR_ONE, 0);
@@ -87,7 +87,7 @@ public class Waterfall_6 extends Task {
         if (Inventory.getFirst(runeName) != null) {
             if (Inventory.getFirst(runeName).getStackSize() == runeStack - amountOfRunes) {
                 Inventory.getFirst(runeName).interact(USE_ACTION);
-                API.mediumRandom();
+                API.highRandom();
                 pillarForOne.interact(USE_ACTION);
                 API.highRandom();
             }
@@ -96,11 +96,11 @@ public class Waterfall_6 extends Task {
 
     public void useAllRunesOnPillar(SceneObject pillarForAll, int amountOfRunesToSubtract) {
         useOneRuneOnPillar(AIR_RUNE, AIR_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.mediumRandom());
+        Time.sleep(API.highRandom());
         useOneRuneOnPillar(WATER_RUNE, WATER_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.mediumRandom());
+        Time.sleep(API.highRandom());
         useOneRuneOnPillar(EARTH_RUNE, EARTH_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.mediumRandom());
+        Time.sleep(API.highRandom());
     }
 
 }

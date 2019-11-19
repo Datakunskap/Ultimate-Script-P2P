@@ -1,6 +1,8 @@
 package script.quests.the_restless_ghost.tasks;
 
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.script.task.Task;
 import api.API;
@@ -13,7 +15,7 @@ public class RestlessGhost_1 extends Task {
 
     @Override
     public boolean validate() {
-        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 1;
+        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 1 && Skills.getLevel(Skill.MAGIC) >= 13;
     }
 
     @Override

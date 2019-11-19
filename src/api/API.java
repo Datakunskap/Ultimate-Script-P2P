@@ -331,7 +331,7 @@ public class API {
     public static void talkTo(String npcName, Position npcPosition) {
         Npc npc = Npcs.getNearest(npcName);
         if (!Dialog.isOpen()) {
-            if (!npcPosition.isPositionInteractable()) {
+            if (!npcPosition.isPositionInteractable() || npcPosition.distance() > 10) {
                 Log.info("I am walking to" + " " + npcName);
                 Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
             }
@@ -341,7 +341,7 @@ public class API {
                     npc.interact(TALK_TO_ACTION);
                     Time.sleepUntil(() -> Dialog.isOpen(), 10_000);
                 }
-                if (!npcPosition.isPositionInteractable()) {
+                if (!npcPosition.isPositionInteractable() || npcPosition.distance() > 10) {
                     Log.info("I am walking to" + " " + npcName);
                     Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
                 }

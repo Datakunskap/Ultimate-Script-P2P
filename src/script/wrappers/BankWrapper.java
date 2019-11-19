@@ -68,7 +68,8 @@ public class BankWrapper {
                                   Set<String> set, HashMap<String, Integer> map, String... itemsToKeep) {
         if (BankLocation.getNearest().getPosition().distance() > 3) {
             Log.fine("Walking To Nearest Bank");
-            WalkingWrapper.walkToPosition(BankLocation.getNearest().getPosition());
+            Movement.getDaxWalker().walkToBank();
+            //WalkingWrapper.walkToPosition(BankLocation.getNearest().getPosition());
         }
 
         for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries--) {
