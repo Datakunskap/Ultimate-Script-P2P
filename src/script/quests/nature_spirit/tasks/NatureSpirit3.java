@@ -34,6 +34,9 @@ public class NatureSpirit3 extends Task {
             Movement.toggleRun(true);
             return NatureSpirit.getLoopReturn();
         }
+        if (Inventory.isFull()) {
+            WalkingWrapper.consumeFirstConsumable();
+        }
 
         if (!Inventory.contains("Mirror")) {
 
