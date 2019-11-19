@@ -1,4 +1,4 @@
-package quests.witches_house;
+package script.quests.witches_house.tasks;
 
 import api.API;
 import org.rspeer.runetek.adapter.scene.Npc;
@@ -64,25 +64,29 @@ public class WitchesHouse_2 extends Task {
             if (!CHEESE_POSITION.isPositionInteractable()) {
                 if (LADDER_AREA.contains(local)) {
                     SceneObject door = SceneObjects.getNearest(24686);
-                    door.interact("Open");
-                    Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
+                    if (door != null) {
+                        door.interact("Open");
+                        Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
+                    }
                 }
                 if (HOUSE_MAIN_PART.contains(local)) {
                     SceneObject door = SceneObjects.getNearest(24686);
-                    door.interact("Open");
-                    Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
+                    if (door != null) {
+                        door.interact("Open");
+                        Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
+                    }
                 }
             }
-            if(CHEESE_POSITION.isPositionInteractable()){
-                if(CHEESE_POSITION.distance() > 1) {
-                    Movement.walkTo(CHEESE_POSITION);
+            if (CHEESE_POSITION.isPositionInteractable()) {
+                if (CHEESE_POSITION.distance() > 1) {
+                    Movement.setWalkFlag(CHEESE_POSITION);
                 }
-                if(CHEESE_POSITION.distance() <= 1){
+                if (CHEESE_POSITION.distance() <= 1) {
                     Npc mouse = Npcs.getNearest("Mouse");
-                    if(mouse == null)
+                    if (mouse == null)
                         Inventory.getFirst("Cheese").interact("Drop");
-                    Time.sleepUntil(()-> Npcs.getNearest("Mouse") != null, 5000);
-                    if(mouse != null){
+                    Time.sleepUntil(() -> Npcs.getNearest("Mouse") != null, 5000);
+                    if (mouse != null) {
                         Inventory.use(x -> x.getName().equals("Magnet"), mouse);
                     }
                 }

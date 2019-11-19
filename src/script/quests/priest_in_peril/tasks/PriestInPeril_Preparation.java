@@ -42,8 +42,6 @@ public class PriestInPeril_Preparation extends Task {
 
     Predicate<Item> glory = x -> x.getName().contains("Amulet of glory(");
 
-    private static final Area GE_AREA = Area.rectangular(3157, 3489, 3171, 3477);
-
     @Override
     public boolean validate() {
         return WATERFALL.getVarpValue() == 10

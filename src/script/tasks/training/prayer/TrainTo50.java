@@ -102,8 +102,6 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(glory, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(glory), SleepWrapper.longSleep7500());
                                 }
-                            } else if (!Equipment.contains(glory)) {
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                         if (!Inventory.contains(burningAmulet)) {
@@ -112,8 +110,6 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(burningAmulet, 1)) {
                                     Time.sleepUntil(() -> Inventory.contains(burningAmulet), SleepWrapper.longSleep7500());
                                 }
-                            } else {
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                         if (!Inventory.contains(dragonBones)) {
@@ -122,8 +118,6 @@ public class TrainTo50 extends Task {
                                 if (Bank.withdraw(dragonBones, 26)) {
                                     Time.sleepUntil(() -> Inventory.contains(dragonBones), SleepWrapper.longSleep7500());
                                 }
-                            } else {
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getPrayerItemsMap());
                             }
                         }
                     }
