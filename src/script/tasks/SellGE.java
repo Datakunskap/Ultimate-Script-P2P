@@ -52,6 +52,7 @@ public class SellGE extends Task {
             BankWrapper.updateInventoryValue();
         }
         itemsToSell = null;
+        BankWrapper.setHasCheckedBank(false);
         return false;
     }
 
