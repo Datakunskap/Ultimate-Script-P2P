@@ -58,6 +58,10 @@ public class WalkingWrapper {
     }
 
     public static boolean consumeFirstConsumable() {
+        if (Inventory.isFull() && Inventory.contains("Rotten food")) {
+            Inventory.getFirst("Rotten food").interact("Drop");
+            return true;
+        }
         Item food = Inventory.getFirst(f -> f.containsAction("Eat") || f.containsAction("Drink"));
         if (food != null) {
             if (food.containsAction("Eat")) {
