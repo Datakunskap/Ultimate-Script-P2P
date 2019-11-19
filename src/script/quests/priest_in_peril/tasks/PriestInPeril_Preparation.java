@@ -33,8 +33,6 @@ public class PriestInPeril_Preparation extends Task {
     private static final String GLORY = "Amulet of glory(6)";
     private static final String ADAMANT_SCIMITAR = "Adamant scimitar";
     private static final String RING_OF_RECOIL = "Ring of recoil";
-    private static final String RUNE_ESSENCE = "Rune essence";
-    private static final String BUCKET = "Bucket";
     private static final String VARROCK_TELEPORT = "Varrock teleport";
     private static final String STAMINA_POTION = "Stamina potion(4)";
     private static final String TUNA = "Tuna";
@@ -75,7 +73,7 @@ public class PriestInPeril_Preparation extends Task {
 
         if (new Position(2603, 9912).distance() < 10) {
             if (Inventory.getFirst("Lumbridge teleport").interact("Break")) {
-                Time.sleepUntil(()-> new Position(2603,9912).distance() > 10, SleepWrapper.longSleep7500());
+                Time.sleepUntil(() -> new Position(2603, 9912).distance() > 10, SleepWrapper.longSleep7500());
             }
         }
 
@@ -106,10 +104,16 @@ public class PriestInPeril_Preparation extends Task {
                     }
                 }
                 if (Bank.isOpen()) {
-                    for (String i : GEAR) {
-                        if (Bank.contains(i)) {
-                            if (Bank.withdraw(i, 1)) {
-                                Time.sleepUntil(() -> Inventory.contains(i), SleepWrapper.longSleep7500());
+                    if (Inventory.getFreeSlots() < 2) {
+                        Bank.depositInventory();
+                        Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
+                    }
+                    if (Inventory.getFreeSlots() >= 2) {
+                        for (String i : GEAR) {
+                            if (Bank.contains(i)) {
+                                if (Bank.withdraw(i, 1)) {
+                                    Time.sleepUntil(() -> Inventory.contains(i), SleepWrapper.longSleep7500());
+                                }
                             }
                         }
                     }
@@ -144,15 +148,21 @@ public class PriestInPeril_Preparation extends Task {
                 Bank.open();
             }
             if (Bank.isOpen()) {
-                if (Inventory.contains(COINS)) {
-                    if (Bank.depositInventory()) {
-                        Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
-                    }
+                if (Inventory.getFreeSlots() < 18) {
+                    Bank.depositInventory();
+                    Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
                 }
-                if (!Inventory.contains(COINS)) {
-                    withdrawItem(STAMINA_POTION, 3, false);
-                    withdrawItem(VARROCK_TELEPORT, 5, true);
-                    withdrawItem(TUNA, 10, false);
+                if (Inventory.getFreeSlots() >= 18) {
+                    if (Inventory.contains(COINS)) {
+                        if (Bank.depositInventory()) {
+                            Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
+                        }
+                    }
+                    if (!Inventory.contains(COINS)) {
+                        withdrawItem(STAMINA_POTION, 3, false);
+                        withdrawItem(VARROCK_TELEPORT, 5, true);
+                        withdrawItem(TUNA, 10, false);
+                    }
                 }
             }
         }

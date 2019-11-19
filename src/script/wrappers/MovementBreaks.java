@@ -17,13 +17,14 @@ public class MovementBreaks {
 
     public static boolean shouldBreakOnTarget() {
         Npc attacker = Npcs.getNearest(a -> true);
-        Player me = Players.getLocal();
-        return Movement.getRunEnergy() > 0
-                && !Movement.isRunEnabled()
-                && me.isHealthBarVisible()
+        Player local = Players.getLocal();
+        return local.isHealthBarVisible()
                 && attacker != null
                 && attacker.getTarget() != null
-                && attacker.getTarget().equals(me);
+                && attacker.getTarget().equals(local)
+                || !Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 20)
+                || Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 10)
+                || !Movement.isRunEnabled() && Movement.getRunEnergy() > Random.mid(5, 25);
     }
 
 }

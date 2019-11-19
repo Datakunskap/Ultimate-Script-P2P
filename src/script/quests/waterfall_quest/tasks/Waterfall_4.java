@@ -1,38 +1,52 @@
 package script.quests.waterfall_quest.tasks;
 
-import org.rspeer.runetek.adapter.scene.Npc;
-import org.rspeer.runetek.adapter.scene.SceneObject;
+import api.API;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.*;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
-import org.rspeer.runetek.api.scene.Npcs;
-import org.rspeer.runetek.api.scene.Players;
-import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.quests.nature_spirit.wrappers.WalkingWrapper;
+import script.wrappers.MovementBreaks;
 
-import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_OBJECT;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
-import static script.quests.waterfall_quest.data.Quest.WITCHES_HOUSE;
-
+import static script.quests.witches_house.data.Quest.WITCHES_HOUSE;
 
 public class Waterfall_4 extends Task {
 
+    private static final int CLOSED_CHEST = 1994;
+    private static final int OPEN_CHEST = 1995;
+    private static final int TOMB = 1993;
+    private static final int ROCK = 1996;
+    private static final int LEDGE = 2010;
+    private static final int TREE = 2020;
 
-    private Area Dungeon = Area.rectangular(2523, 9850, 2559, 9808);
-    private static final Position Ledgeposition = new Position(2511, 3463);
-    private static final Position Pos1 = new Position(2541, 9844);
-    private static final Position Pos2 = new Position(2545, 9830);
-    private static final Position Bitch = new Position(2521, 3495);
-    private Area RaftArea = Area.rectangular(2507, 3483, 2515, 3476);
-    private Area RaftArea2 = Area.rectangular(2506, 3470, 2518, 3460);
+    private static final String OPEN_ACTION = "Open";
+    private static final String SEARCH_ACTION = "Search";
+    private static final String GLARIALS_AMULET = "Glarial's amulet";
+    private static final String GLARIALS_URN = "Glarial's urn";
+    private static final String WATER_RUNE = "Water rune";
+    private static final String EARTH_RUNE = "Earth rune";
+    private static final String AIR_RUNE = "Air rune";
+    private static final String TUNA = "Tuna";
+    private static final String ROPE = "Rope";
+    private static final String STAMINA_POTION = "Stamina potion(";
+    private static final String LUMBRIDGE_TELEPORT = "Lumbridge teleport";
+
+    private static final Position CHEST_POSITION = new Position(2531, 9844);
+    private static final Position TOMB_POSITION = new Position(2542, 9810);
+    private static final Position LEDGE_POSITION = new Position(2511, 3463);
+    private static final Position ROCK_POSITION = new Position(2512, 3476);
+    private static final Position TREE_POSITION = new Position(2512, 3466);
+
+    private static final Area DUNGEON_AREA = Area.rectangular(2523, 9850, 2559, 9808);
+    private static final Area CAVE_AREA = Area.rectangular(2555, 9919, 2597, 9860);
+    private static final Area ISLAND_ONE_AREA = Area.rectangular(2510, 3482, 2513, 3475);
+    private static final Area ISLAND_TWO_AREA = Area.rectangular(2511, 3470, 2514, 3465);
+
     @Override
     public boolean validate() {
         return WITCHES_HOUSE.getVarpValue() == 7 && WATERFALL.getVarpValue() == 4;
@@ -40,198 +54,100 @@ public class Waterfall_4 extends Task {
 
     @Override
     public int execute() {
-        SceneObject Tomb;
-        SceneObject tomb;
-        tomb = SceneObjects.getNearest(x -> x.getName().contains("Glarial's"));
 
-        if(Skills.getCurrentLevel(Skill.HITPOINTS) <= Skills.getLevel(Skill.HITPOINTS) - 4){
-            if(Inventory.contains("Tuna")){
-                Inventory.getFirst("Tuna").click();
-                RandomSleep();
-            }
-        }
-        if(Dungeon.contains(Players.getLocal())) {
-            if (!Inventory.contains(295)) {
-                Tomb = SceneObjects.newQuery().ids(1994, 1995).results().nearest();
-                if (Tomb == null) {
-                    Movement.setWalkFlag(Pos1);
-                    RandomSleep();
-                    RandomSleep();
-                }
-                if (Tomb != null) {
-                    Tomb.click();
-                    RandomSleep();
-                }
-            }
-            if (Inventory.contains(295) && !Inventory.contains(296)) {
-                if(tomb == null) {
-                    Movement.setWalkFlag(Pos2);
-                    RandomSleep();
-                }
-                if(tomb != null){
-                    tomb.click();
-                    RandomSleep();
-                    RandomSleep();
-                }
-            }
-            if(Inventory.containsAll(295, 296)) {
-                if (Inventory.contains(x -> x.getName().contains("Games") && !Equipment.contains(i -> i.getName().contains("Games")))) {
-                    Inventory.getFirst(x -> x.getName().contains("Games")).click();
-                    RandomSleep();
-                    RandomSleep();
-                }
-                if (Equipment.contains(x -> x.getName().contains("Games"))) {
-                    if(!Tabs.open(Tab.EQUIPMENT)){
-                        Tabs.open(Tab.EQUIPMENT);
+        Log.info("Waterfall_4");
+
+        API.runFromAttacker();
+
+        API.doDialog();
+
+        API.toggleRun();
+
+        API.drinkStaminaPotion();
+
+        API.doEating(20);
+
+        if (!API.inventoryHasItem(false, GLARIALS_AMULET, 1)
+                || !API.inventoryHasItem(false, GLARIALS_URN, 1)) {
+            if (API.playerIsAt(DUNGEON_AREA)) {
+                if (!API.inventoryHasItem(false, GLARIALS_AMULET, 1)) {
+                    if (CHEST_POSITION.distance() > 1) {
+                        Log.info("Setting flag");
+                        Movement.setWalkFlag(CHEST_POSITION);
+                        Time.sleepUntil(() -> CHEST_POSITION.distance() <= 1, API.lowRandom());
                     }
-                    Equipment.interact(x -> x.getName().contains("Games"), "Barbarian outpost");
-                    RandomSleep();
+                    if (CHEST_POSITION.distance() <= 1) {
+                        API.interactWithSceneobjectWithoutMoving(CLOSED_CHEST, OPEN_ACTION);
+                        API.interactWithSceneobjectWithoutMoving(OPEN_CHEST, SEARCH_ACTION);
+                    }
                 }
-            }
-            }
-        if(!Dungeon.contains(Players.getLocal()) && !Inventory.containsAll(296, 555, 556, 557, 361, 954) || (!Inventory.containsAll(296, 555, 556, 557, 361, 954) && !Equipment.contains(295))){
-            DoBanking();
-        }
-        if(Bank.isOpen()){
-            RandomSleep();
-            RandomSleep();
-            Bank.depositInventory();
-            RandomSleep();
-            RandomSleep();
-            RandomSleep();
-            WithdrawItem("Air rune", 6);
-            WithdrawItem("Earth rune", 6);
-            WithdrawItem("Water rune", 6);
-            WithdrawItem("Glarial's pebble", 1);
-            WithdrawItem("Glarial's amulet", 1);
-            WithdrawItem("Rope", 1);
-            WithdrawItem("Glarial's urn", 1);
-            WithdrawItem("Lumbridge teleport", 1);
-            RandomSleep();
-            WithdrawItem("Tuna", 10);
-            RandomSleep();
-        }
-        if(Inventory.containsAll(296, 555, 556, 557, 361, 954) || (Inventory.containsAll(296, 555, 556, 557, 361, 954) && Equipment.contains(295))){
-            if (!RaftArea.contains(Players.getLocal()) && !RaftArea2.contains(Players.getLocal())) {
-            if (Bitch.distance() < 250) {
-                if (Bitch.distance() > 10) {
-                    WalkingWrapper.walkToPosition(Bitch);
-                }
-            }
-            if (Bitch.distance() <= 8) {
-                if(Inventory.contains(295)){
-                    Inventory.getFirst(295).click();
-                    RandomSleep();
-                }
-                    SceneObject Raft = SceneObjects.newQuery().actions("Board").nameContains("Log").reachable().results().nearest();
-                    if (Raft == null) {
-                        if (SceneObjects.getNearest(1558) != null) {
-                            SceneObjects.getNearest(1558).click();
-                            RandomSleep();
+                if (API.inventoryHasItem(false, GLARIALS_AMULET, 1)) {
+                    if (!API.inventoryHasItem(false, GLARIALS_URN, 1)) {
+                        if (TOMB_POSITION.distance() > 1) {
+                            Log.info("Setting flag");
+                            Movement.setWalkFlag(TOMB_POSITION);
+                            Time.sleepUntil(() -> TOMB_POSITION.distance() <= 1, API.lowRandom());
                         }
-                    }
-                    if (Raft != null) {
-                        Raft.click();
-                        RandomSleep();
-                    }
-                }
-            }
-            if (RaftArea.contains(Players.getLocal())) {
-                if(SceneObjects.getNearest(1996) != null){
-                    Inventory.getFirst(954).interact("Use");
-                    RandomSleep();
-                    SceneObjects.getNearest(1996).interact(ITEM_ON_OBJECT);
-                    RandomSleep();
-                    Time.sleepUntil(() -> !RaftArea.contains(Players.getLocal()),5850);
-                    }
-            }
-            if(RaftArea2.contains(Players.getLocal())){
-                if(Ledgeposition.distance() > 0) {
-                    Inventory.getFirst(954).interact("Use");
-                    RandomSleep();
-                    SceneObjects.getNearest(2020).interact(ITEM_ON_OBJECT);
-                    RandomSleep();
-                    Time.sleepUntil(() -> !RaftArea.contains(Players.getLocal()), 5850);
-                }
-                if(Ledgeposition.distance() < 1) {
-                    if(Equipment.contains(295)){
-                        if(SceneObjects.getNearest(2010) != null){
-                            SceneObjects.getNearest(2010).click();
-                            RandomSleep();
-                            RandomSleep();
+                        if (TOMB_POSITION.distance() <= 1) {
+                            API.interactWithSceneobjectWithoutMoving(TOMB, SEARCH_ACTION);
                         }
                     }
                 }
             }
         }
 
-
-
-
-        return 400;
-    }
-
-    private void WithdrawItem(String Name, int amount){
-        if(Bank.contains(Name)){
-            Bank.withdraw(Name, amount);
-            Time.sleepUntil(() -> Inventory.contains(Name), Random.mid(2500, 5850));
-            Time.sleep(250);
-        }
-    }
-
-    public void DoBanking(){
-        if (BankLocation.getNearest().getPosition().distance() > 3) {
-            Movement.walkToRandomized(BankLocation.getNearest().getPosition());
-        }
-        if (BankLocation.getNearest().getPosition().distance() <= 10 && !Bank.isOpen()) {
-            Npc NpcsBank = Npcs.getNearest(Npc -> (Npc.getName().equals("Banker") && Npc.containsAction("Bank")));
-            if (NpcsBank != null) {
-                NpcsBank.interact(s -> s.equals("Bank") || s.equals("Use"));
-                Time.sleepUntil(() -> Bank.isOpen(), Random.mid(8500, 16850)); // randomise movements to bank
+        if (API.inventoryHasItem(false, GLARIALS_AMULET, 1)
+                && API.inventoryHasItem(false, GLARIALS_URN, 1)
+                || API.inventoryHasItem(false, GLARIALS_URN, 1)
+                && API.isWearingItem(GLARIALS_AMULET)) {
+            if (!API.playerIsAt(CAVE_AREA)) {
+                if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, LUMBRIDGE_TELEPORT) || !Equipment.contains(GLARIALS_AMULET)) {
+                    if (BankLocation.BARBARIAN_ASSAULT.getPosition().distance() > 50) {
+                        Movement.walkTo(BankLocation.BARBARIAN_ASSAULT.getPosition(), MovementBreaks::shouldBreakOnTarget);
+                    }
+                    if (BankLocation.BARBARIAN_ASSAULT.getPosition().distance() <= 50) {
+                        API.wearItem(GLARIALS_AMULET);
+                        if (!Bank.isOpen()) {
+                            Bank.open();
+                        }
+                        if (Bank.isOpen()) {
+                            if (Inventory.containsAnyExcept(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
+                                Bank.depositInventory();
+                                Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
+                            }
+                            if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
+                                API.withdrawItem(false, GLARIALS_URN, 1);
+                                API.withdrawItem(true, WATER_RUNE, 6);
+                                API.withdrawItem(true, AIR_RUNE, 6);
+                                API.withdrawItem(true, EARTH_RUNE, 6);
+                                API.withdrawItem(false, TUNA, 15);
+                                API.withdrawItem(false, ROPE, 1);
+                                API.withdrawItem(false, STAMINA_POTION, 2);
+                                API.withdrawItem(false, LUMBRIDGE_TELEPORT, 1);
+                            }
+                        }
+                    }
+                }
+                if (Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, LUMBRIDGE_TELEPORT) && Equipment.contains(GLARIALS_AMULET)) {
+                    if (!API.playerIsAt(ISLAND_ONE_AREA) && !API.playerIsAt(ISLAND_TWO_AREA) && LEDGE_POSITION.distance() > 0) {
+                        Movement.walkTo(ISLAND_ONE_AREA.getCenter(), MovementBreaks::shouldBreakOnTarget);
+                    }
+                    if (API.playerIsAt(ISLAND_ONE_AREA) && !API.playerIsAt(ISLAND_TWO_AREA) && LEDGE_POSITION.distance() > 0) {
+                        API.useItemOn(ROPE, ROCK, ROCK_POSITION);
+                        Time.sleep(API.highRandom());
+                    }
+                    if (!API.playerIsAt(ISLAND_ONE_AREA) && API.playerIsAt(ISLAND_TWO_AREA) && LEDGE_POSITION.distance() > 0) {
+                        API.useItemOn(ROPE, TREE, TREE_POSITION);
+                        Time.sleep(API.highRandom());
+                    }
+                    if (!API.playerIsAt(ISLAND_ONE_AREA) && !API.playerIsAt(ISLAND_TWO_AREA) && LEDGE_POSITION.distance() < 1) {
+                        API.interactWithSceneobjectWithoutMoving(LEDGE, OPEN_ACTION);
+                    }
+                }
             }
         }
-        if (BankLocation.getNearest().getPosition().distance() <= 5 && !Bank.isOpen()) {
-            Log.info("Using Booth");
-            SceneObject sceneObjectBank = SceneObjects.newQuery().actions("Use", "Bank").within(5).reachable().results().limit(1).nearest();
-            if (sceneObjectBank != null) {
-                sceneObjectBank.click();
-                Time.sleepUntil(() -> Bank.isOpen(), Random.mid(5500, 8850));
-            }
-        }
+
+        return API.lowRandom();
     }
 
-    public void clickDialogComponenet(int Option) {
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Interfaces.getComponent(219, 1, Option).click();
-            RandomSleep();
-        }
-    }
-
-    public String getComponentOptions(int Option){
-        String Text = "Null";
-        if(Interfaces.getComponent(219, 1, Option) != null){
-            Text = Interfaces.getComponent(219, 1, Option).getText();
-        }
-        return Text;
-    }
-
-    public String getDialogOptions(){
-        String Text = "Null";
-        if(Interfaces.getComponent(219, 1, 0) != null){
-            Text = Interfaces.getComponent(219, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public String getDialog(){
-        String Text = "Null";
-        if(Interfaces.getComponent(263, 1, 0) != null){
-            Text = Interfaces.getComponent(263, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public void RandomSleep(){
-        Time.sleep(Random.nextInt(250, 550));
-    }
 }

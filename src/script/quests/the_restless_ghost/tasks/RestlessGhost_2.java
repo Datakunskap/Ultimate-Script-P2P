@@ -1,87 +1,72 @@
-package script.quests.the_restless_ghost.tasks;
+package quests.the_restless_ghost;
 
-import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Npc;
-import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
-import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
-
-import java.util.function.Predicate;
-
-import static script.quests.the_restless_ghost.data.Quest.THE_RESTLESS_GHOST;
-
+import org.rspeer.ui.Log;
+import api.API;
+import script.quests.the_restless_ghost.data.Quest;
+import script.wrappers.MovementBreaks;
 
 public class RestlessGhost_2 extends Task {
-    private static final Predicate<String> YEP_NOW_TELL_ME_PREDICATE = o -> o.contains("Yep, now tell me what");
 
-    private final Player local = Players.getLocal();
-
-    public int randomSleep(){
-        if (Movement.isRunEnabled()) {
-            return Random.mid(2500,4000);
-        } else {
-            return Random.mid(4000,9000);
-        }
-    }
+    public static final String GHOSTSPEAK_AMULET = "Ghostspeak amulet";
+    public static final Position GHOST_POSITION = new Position(3248, 3193);
 
     @Override
     public boolean validate() {
-        return THE_RESTLESS_GHOST.getVarpValue() == 2;
+        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 2;
     }
 
     @Override
     public int execute() {
-        final Predicate<Item> Necklace = item -> item.getId() == 552;
-        if (Movement.getRunEnergy() > 20 && !Movement.isRunEnabled()) { //Turn on run if it's off with over 20 energy
-            Movement.toggleRun(true);
 
+        Log.info("TheRestlessGhost_2");
+
+        API.runFromAttacker();
+
+        API.doDialog();
+
+        API.toggleRun();
+
+        API.drinkStaminaPotion();
+
+        API.wearItem(GHOSTSPEAK_AMULET);
+
+        if(GHOST_POSITION.distance() > 10 || !GHOST_POSITION.isPositionInteractable()){
+            Log.info("Walking to the ghost");
+            Movement.walkTo(GHOST_POSITION, MovementBreaks::shouldBreakOnRunenergy);
         }
-        if (Inventory.getFirst(Necklace) != null) {
-            Inventory.getFirst(Necklace).interact("Wear");
-        }
-        if (Dialog.isOpen()){
-            if (Dialog.canContinue()) {
-                if (Dialog.processContinue()) {
+
+        if(GHOST_POSITION.distance() <= 10){
+
+            Dialog.process("Yep, now tell me what");
+
+            SceneObject coffin = SceneObjects.getNearest("Coffin");
+            if(coffin.containsAction("Close")){
+                Npc ghost = Npcs.getNearest("Restless ghost");
+                if(ghost != null){
+                    if(!Dialog.isOpen()){
+                        Log.info("Talking to the ghost");
+                        ghost.interact("Talk-to");
+                        Time.sleepUntil(()-> Dialog.isOpen(), 5000);
+                    }
                 }
             }
-            Dialog.process("Yep, now tell me what");
-        } else {
-                Npc ghost = Npcs.getNearest(922);
-                SceneObject coffinClosed = SceneObjects.getNearest(2145);
-                SceneObject coffinOpen = SceneObjects.getNearest(15061);
-
-                    if (ghost != null) {
-                        ghost.interact("Talk-to");
-                    } else {
-                        if (coffinClosed != null) {
-                            Movement.walkTo(coffinClosed);
-                            Time.sleepUntil(() -> (local.isMoving()), 10000);
-                            Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
-                            coffinClosed.interact("Open");
-                        } else if (coffinOpen != null) {
-                            Movement.walkTo(coffinOpen);
-                            Time.sleepUntil(() -> (local.isMoving()), 10000);
-                            Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
-                            coffinOpen.interact("Search");
-                        } else {
-                            Movement.walkTo(new Position(3249, 3192, 0));
-                            Time.sleepUntil(() -> (local.isMoving()), 10000);
-                            Time.sleepUntil(() -> (!local.isMoving()), randomSleep());
-                        }
-                    }
-
+            if(coffin.containsAction("Open")){
+                Log.info("Opening the chest");
+                coffin.interact("Open");
+                Time.sleepUntil(()-> !coffin.containsAction("Open"), 5000);
+            }
         }
-        return 300;
+
+        return API.lowRandom();
     }
+
 }
-
-

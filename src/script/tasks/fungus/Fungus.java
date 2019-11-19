@@ -134,13 +134,13 @@ public class Fungus extends Task {
         if (gate != null) {
             if (gate.containsAction("Open")) {
                 if (gate.interact("Open")) {
-                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || Interfaces.getComponent(580, 17) != null, 30_000);
+                    Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local) || Interfaces.getComponent(580, 17) != null, 2000);
                     InterfaceComponent dontAskMeThisAgain = Interfaces.getComponent(580, 20);
                     if (dontAskMeThisAgain != null && dontAskMeThisAgain.getMaterialId() == 941) {
                         Log.info("dontAskMeThisAgain is visible");
                         if (dontAskMeThisAgain.interact("Off/On")) {
                             Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 5000);
+                            Time.sleepUntil(() -> dontAskMeThisAgain.getMaterialId() == 942, 2000);
                         }
                     }
                     InterfaceComponent enterTheSwamp = Interfaces.getComponent(580, 17);
@@ -149,7 +149,7 @@ public class Fungus extends Task {
                             Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
                             if (enterTheSwamp.interact("Yes")) {
                                 Log.info("Clicked enterTheSwamp");
-                                Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
+                                Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 2000);
                             }
                         }
                     }
@@ -157,7 +157,7 @@ public class Fungus extends Task {
                         Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
                         if (enterTheSwamp.interact("Yes")) {
                             Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 5000);
+                            Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 2000);
                         }
                     }
                 }

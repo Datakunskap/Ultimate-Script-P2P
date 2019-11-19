@@ -8,7 +8,7 @@ public class TheRestlessGhost {
     public static final Task[] TASKS = {
             new RestlessGhost_0(),
             new RestlessGhost_1(),
-            new RestlessGhost_2(),
+            new quests.the_restless_ghost.RestlessGhost_2(),
             new RestlessGhost_3(),
             new RestlessGhost_4()
     };
