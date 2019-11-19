@@ -1,4 +1,4 @@
-package quests.the_restless_ghost;
+package script.quests.the_restless_ghost.tasks;
 
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.SceneObject;

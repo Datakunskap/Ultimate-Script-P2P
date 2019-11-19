@@ -1,63 +1,48 @@
 package script.quests.the_restless_ghost.tasks;
 
-import org.rspeer.runetek.adapter.scene.Player;
-import org.rspeer.runetek.adapter.scene.SceneObject;
-import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
-import org.rspeer.runetek.api.scene.Players;
-import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
-
-import static script.quests.the_restless_ghost.data.Quest.THE_RESTLESS_GHOST;
+import api.API;
+import org.rspeer.ui.Log;
+import script.quests.the_restless_ghost.data.Quest;
+import script.wrappers.MovementBreaks;
 
 public class RestlessGhost_3 extends Task {
 
-    private static final Position LADDER_POSITION = new Position(3105, 3160, 0);
+    public static final Position LADDER_POSITION = new Position(3104, 3162, 0);
+    public static final Position ALTAR_POSITION = new Position(3120, 9566, 0);
+    public static final Area WIZARD_TOWER_DOWNSTAIRS = Area.rectangular(3092, 9581, 3125, 9551);
 
     @Override
     public boolean validate() {
-        return THE_RESTLESS_GHOST.getVarpValue() == 3;
+        return Quest.THE_RESTLESS_GHOST.getVarpValue() == 3;
     }
 
     @Override
     public int execute() {
-        Player local = Players.getLocal();
-        if (Movement.getRunEnergy() > 20 && !Movement.isRunEnabled()) { //Turn on run if it's off with over 20 energy
-            Movement.toggleRun(true);
 
+        Log.info("TheRestlessGhost_3");
+
+        API.runFromAttacker();
+
+        API.doDialog();
+
+        API.toggleRun();
+
+        API.drinkStaminaPotion();
+
+        if(API.playerIsAt(WIZARD_TOWER_DOWNSTAIRS)){
+            Log.info("Searching the altar for the skull");
+            API.interactWithSceneobject("Altar", "Search", ALTAR_POSITION);
         }
-        SceneObject altar = SceneObjects.getNearest(2146);
-        if (altar == null) {
-            SceneObject ladder = SceneObjects.getNearest(2147);
-            if (ladder == null) {
-                Movement.walkToRandomized(LADDER_POSITION);
-            }
-            if (ladder != null) {
-                if (!ladder.isPositionInteractable()) {
-                    Movement.walkToRandomized(ladder);
-                }
-                if (ladder.isPositionInteractable()) {
-                    if (ladder.interact("Climb-down")) {
-                        Time.sleepUntil(()-> altar != null, 5000);
-                    }
-                }
-            }
+        if (!API.playerIsAt(WIZARD_TOWER_DOWNSTAIRS)) {
+            Log.info("Walking to the altar");
+            Movement.walkTo(ALTAR_POSITION, MovementBreaks::shouldBreakOnRunenergy);
         }
-        if (altar != null) {
-            if (!Inventory.contains(553)) {
-                if (!altar.isPositionInteractable()) {
-                    Movement.walkToRandomized(altar);
-                }
-                if (altar.isPositionInteractable()) {
-                    altar.interact("Search");
-                }
-            }
-            if (Inventory.contains(553)) {
-                Movement.walkToRandomized(new Position(3105, 3160, 0));
-            }
-        }
-        return 300;
+
+        return API.lowRandom();
     }
+
 }

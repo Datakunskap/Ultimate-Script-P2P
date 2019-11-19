@@ -1,7 +1,6 @@
 package script;
 
 import org.rspeer.RSPeer;
-import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.scene.Players;
@@ -27,11 +26,8 @@ import script.tasks.training.magic.TrainTo13;
 import script.tasks.training.prayer.LeaveWilderness;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.BankWrapper;
-import script.wrappers.GEWrapper;
 import script.wrappers.PriceCheckService;
 import script.wrappers.SupplyMapWrapper;
-
-import java.util.HashMap;
 
 @ScriptMeta(developer = "Streagrem", name = "LOL", desc = "LOL")
 public class Main extends TaskScript implements RenderListener, DeathListener {

@@ -1,29 +1,34 @@
-package script.quests.witches_house.tasks;
+package quests.witches_house;
 
+import api.API;
+import org.rspeer.runetek.adapter.scene.Npc;
+import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.Interfaces;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
+import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
-import static org.rspeer.runetek.api.input.menu.ActionOpcodes.ITEM_ON_NPC;
-import static script.quests.witches_house.data.Quest.WITCHES_HOUSE;
-
+import static script.quests.nature_spirit.data.Quest.WITCHES_HOUSE;
 
 public class WitchesHouse_2 extends Task {
 
-    private static final Position Pot = new Position(2899, 3473);
-    private static final Position Ladder = new Position(2906, 3476);
+    private static final String LADDER_NAME = "Ladder";
+    private static final String GATE = "Gate";
 
-    private Area House = Area.rectangular(2901, 3476, 2937, 3459, 0);
-    private Area Basement = Area.rectangular(2901, 9890, 2937, 9850);
+    private static final Position LADDER_POSITION = new Position(2907, 9876);
+    private static final Position CHEESE_POSITION = new Position(2903, 3466);
+
+    private static final Area HOUSE_INSIDE = Area.rectangular(2901, 3476, 2937, 3459, 0);
+    private static final Area BASEMENT = Area.rectangular(2899, 9890, 2937, 9850);
+    private static final Area LADDER_AREA = Area.rectangular(2901, 3476, 2907, 3475);
+    private static final Area HOUSE_MAIN_PART = Area.rectangular(2901, 3474, 2907, 3468);
 
     @Override
     public boolean validate() {
@@ -33,102 +38,59 @@ public class WitchesHouse_2 extends Task {
     @Override
     public int execute() {
 
-        if (!Inventory.contains(2410)) {
-            SceneObject Cupboard = SceneObjects.newQuery().nameContains("Cupboard").actions("Open", "search").reachable().results().nearest();
-            if (Cupboard != null) {
-                Cupboard.click();
-                RandomSleep();
+        Log.info("WitchesHouse_2");
+
+        Player local = Players.getLocal();
+
+        API.runFromAttacker();
+
+        API.doDialog();
+
+        API.toggleRun();
+
+        API.drinkStaminaPotion();
+
+        if (BASEMENT.contains(local)) {
+            if (!LADDER_POSITION.isPositionInteractable()) {
+                SceneObjects.getNearest(GATE).interact("Open");
+                Time.sleepUntil(() -> !SceneObjects.getNearest(GATE).containsAction("Open"), 3000);
             }
-            if (SceneObjects.getNearest(2869) != null) {
-                SceneObjects.getNearest(2869).click();
-                RandomSleep();
-                if (Dialog.isOpen()) {
-                    Dialog.processContinue();
-                }
+            if (LADDER_POSITION.isPositionInteractable()) {
+                API.interactWithSceneobject(LADDER_NAME, "Climb-up", LADDER_POSITION);
             }
         }
-        if (Inventory.contains(2410)) {
-            SceneObject Ladder = SceneObjects.newQuery().nameContains("Ladder").actions("Climb-up").reachable().results().nearest();
-            if (Ladder == null) {
-                interactWithObject(2866);
-            }
-            if (Ladder != null) {
-                Ladder.click();
-                RandomSleep();
-            }
-            Position Cheese = new Position(2903, 3466);
-            if (SceneObjects.getNearest(24686) != null) {
-                if (SceneObjects.getNearest(24686).containsAction("Open")) {
-                    SceneObjects.getNearest(24686).click();
-                    RandomSleep();
+
+        if (HOUSE_INSIDE.contains(local)) {
+            if (!CHEESE_POSITION.isPositionInteractable()) {
+                if (LADDER_AREA.contains(local)) {
+                    SceneObject door = SceneObjects.getNearest(24686);
+                    door.interact("Open");
+                    Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
+                }
+                if (HOUSE_MAIN_PART.contains(local)) {
+                    SceneObject door = SceneObjects.getNearest(24686);
+                    door.interact("Open");
+                    Time.sleepUntil(() -> !door.containsAction("Open"), 3000);
                 }
             }
-            if (SceneObjects.getNearest(24686) == null) {
-                if (Cheese.distance() > 1) {
-                    Movement.setWalkFlag(Cheese);
-                    RandomSleep();
-                    RandomSleep();
+            if(CHEESE_POSITION.isPositionInteractable()){
+                if(CHEESE_POSITION.distance() > 1) {
+                    Movement.walkTo(CHEESE_POSITION);
                 }
-            }
-            if (Cheese.distance() < 1) {
-                if (!Interfaces.isOpen(229)) {
-                    if (Inventory.contains("Cheese")) {
+                if(CHEESE_POSITION.distance() <= 1){
+                    Npc mouse = Npcs.getNearest("Mouse");
+                    if(mouse == null)
                         Inventory.getFirst("Cheese").interact("Drop");
-                        RandomSleep();
-                        RandomSleep();
+                    Time.sleepUntil(()-> Npcs.getNearest("Mouse") != null, 5000);
+                    if(mouse != null){
+                        Inventory.use(x -> x.getName().equals("Magnet"), mouse);
                     }
                 }
-                if (Npcs.getNearest("Mouse") != null) {
-                    Inventory.getFirst(2410).interact("Use");
-                    RandomSleep();
-                    Npcs.getNearest("Mouse").interact(ITEM_ON_NPC);
-                    RandomSleep();
-                }
             }
         }
 
-        return 600;
+
+        return API.lowRandom();
     }
 
-    public void interactWithObject(int ID) {
-        if (SceneObjects.getNearest(ID) != null) {
-            SceneObjects.getNearest(ID).click();
-            RandomSleep();
-        }
-    }
-
-    public void clickDialogComponenet(int Option) {
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Interfaces.getComponent(219, 1, Option).click();
-            RandomSleep();
-        }
-    }
-
-    public String getComponentOptions(int Option) {
-        String Text = "Null";
-        if (Interfaces.getComponent(219, 1, Option) != null) {
-            Text = Interfaces.getComponent(219, 1, Option).getText();
-        }
-        return Text;
-    }
-
-    public String getDialogOptions() {
-        String Text = "Null";
-        if (Interfaces.getComponent(219, 1, 0) != null) {
-            Text = Interfaces.getComponent(219, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public String getDialog() {
-        String Text = "Null";
-        if (Interfaces.getComponent(263, 1, 0) != null) {
-            Text = Interfaces.getComponent(263, 1, 0).getText();
-        }
-        return Text;
-    }
-
-    public void RandomSleep() {
-        Time.sleep(Random.nextInt(250, 550));
-    }
 }
