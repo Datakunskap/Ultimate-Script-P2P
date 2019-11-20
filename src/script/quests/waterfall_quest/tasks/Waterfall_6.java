@@ -48,71 +48,71 @@ public class Waterfall_6 extends Task {
             Movement.walkTo(PILLAR_AREA.getCenter());
         }
 
-        final SceneObject PILLAR_ONE = SceneObjects.getFirstAt(new Position(2562, 9910));
-        final SceneObject PILLAR_TWO = SceneObjects.getFirstAt(new Position(2562, 9912));
-        final SceneObject PILLAR_THREE = SceneObjects.getFirstAt(new Position(2562, 9914));
-        final SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9910));
-        final SceneObject PILLAR_FIVE = SceneObjects.getFirstAt(new Position(2569, 9912));
-        final SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9914));
+        SceneObject PILLAR_ONE = SceneObjects.getFirstAt(new Position(2562, 9910));
+        SceneObject PILLAR_TWO = SceneObjects.getFirstAt(new Position(2562, 9912));
+        SceneObject PILLAR_THREE = SceneObjects.getFirstAt(new Position(2562, 9914));
+        SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9910));
+        SceneObject PILLAR_FIVE = SceneObjects.getFirstAt(new Position(2569, 9912));
+        SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9914));
 
-        if(API.playerIsAt(PILLAR_AREA)){
-            if(Inventory.contains(AIR_RUNE)){
-                if(Inventory.getCount(AIR_RUNE) == 6){
+        if (API.playerIsAt(PILLAR_AREA)) {
+            if (Inventory.contains(AIR_RUNE)) {
+                if (Inventory.getCount(AIR_RUNE) == 6) {
                     API.useItemOn(AIR_RUNE, PILLAR_ONE);
                 }
-                if(Inventory.getCount(AIR_RUNE) == 5){
+                if (Inventory.getCount(AIR_RUNE) == 5) {
                     API.useItemOn(AIR_RUNE, PILLAR_TWO);
                 }
-                if(Inventory.getCount(AIR_RUNE) == 4){
+                if (Inventory.getCount(AIR_RUNE) == 4) {
                     API.useItemOn(AIR_RUNE, PILLAR_THREE);
                 }
-                if(Inventory.getCount(AIR_RUNE) == 3){
+                if (Inventory.getCount(AIR_RUNE) == 3) {
                     API.useItemOn(AIR_RUNE, PILLAR_FOUR);
                 }
-                if(Inventory.getCount(AIR_RUNE) == 2){
+                if (Inventory.getCount(AIR_RUNE) == 2) {
                     API.useItemOn(AIR_RUNE, PILLAR_FIVE);
                 }
-                if(Inventory.getCount(AIR_RUNE) == 1){
+                if (Inventory.getCount(AIR_RUNE) == 1) {
                     API.useItemOn(AIR_RUNE, PILLAR_SIX);
                 }
             }
-            if(Inventory.contains(WATER_RUNE) && !Inventory.contains(AIR_RUNE)){
-                if(Inventory.getCount(WATER_RUNE) == 6){
+            if (Inventory.contains(WATER_RUNE) && !Inventory.contains(AIR_RUNE)) {
+                if (Inventory.getCount(WATER_RUNE) == 6) {
                     API.useItemOn(WATER_RUNE, PILLAR_ONE);
                 }
-                if(Inventory.getCount(WATER_RUNE) == 5){
+                if (Inventory.getCount(WATER_RUNE) == 5) {
                     API.useItemOn(WATER_RUNE, PILLAR_TWO);
                 }
-                if(Inventory.getCount(WATER_RUNE) == 4){
+                if (Inventory.getCount(WATER_RUNE) == 4) {
                     API.useItemOn(WATER_RUNE, PILLAR_THREE);
                 }
-                if(Inventory.getCount(WATER_RUNE) == 3){
+                if (Inventory.getCount(WATER_RUNE) == 3) {
                     API.useItemOn(WATER_RUNE, PILLAR_FOUR);
                 }
-                if(Inventory.getCount(WATER_RUNE) == 2){
+                if (Inventory.getCount(WATER_RUNE) == 2) {
                     API.useItemOn(WATER_RUNE, PILLAR_FIVE);
                 }
-                if(Inventory.getCount(WATER_RUNE) == 1){
+                if (Inventory.getCount(WATER_RUNE) == 1) {
                     API.useItemOn(WATER_RUNE, PILLAR_SIX);
                 }
             }
-            if(Inventory.contains(EARTH_RUNE) && !Inventory.contains(AIR_RUNE) && !Inventory.contains(WATER_RUNE)){
-                if(Inventory.getCount(EARTH_RUNE) == 6){
+            if (Inventory.contains(EARTH_RUNE) && !Inventory.contains(AIR_RUNE) && !Inventory.contains(WATER_RUNE)) {
+                if (Inventory.getCount(EARTH_RUNE) == 6) {
                     API.useItemOn(EARTH_RUNE, PILLAR_ONE);
                 }
-                if(Inventory.getCount(EARTH_RUNE) == 5){
+                if (Inventory.getCount(EARTH_RUNE) == 5) {
                     API.useItemOn(EARTH_RUNE, PILLAR_TWO);
                 }
-                if(Inventory.getCount(EARTH_RUNE) == 4){
+                if (Inventory.getCount(EARTH_RUNE) == 4) {
                     API.useItemOn(EARTH_RUNE, PILLAR_THREE);
                 }
-                if(Inventory.getCount(EARTH_RUNE) == 3){
+                if (Inventory.getCount(EARTH_RUNE) == 3) {
                     API.useItemOn(EARTH_RUNE, PILLAR_FOUR);
                 }
-                if(Inventory.getCount(EARTH_RUNE) == 2){
+                if (Inventory.getCount(EARTH_RUNE) == 2) {
                     API.useItemOn(EARTH_RUNE, PILLAR_FIVE);
                 }
-                if(Inventory.getCount(EARTH_RUNE) == 1){
+                if (Inventory.getCount(EARTH_RUNE) == 1) {
                     API.useItemOn(EARTH_RUNE, PILLAR_SIX);
                 }
             }
