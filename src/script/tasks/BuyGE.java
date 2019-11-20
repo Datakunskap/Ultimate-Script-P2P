@@ -169,7 +169,7 @@ public class BuyGE extends Task {
     }
 
     private int getQuantity(String item, boolean checkEnough) {
-        int quantity = items.get(item) - Inventory.getCount(true, item);
+        int quantity = items.get(item) /*- Inventory.getCount(true, item)*/;
 
         if (quantity > 0) {
             int price = 0;

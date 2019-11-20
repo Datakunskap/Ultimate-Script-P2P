@@ -191,7 +191,7 @@ public class Fungus extends Task {
                 Time.sleepUntil(() -> BLOOM_TILE.distance() == 0, 5000);
             }
         }
-        if (fungi != null) {
+        if (fungi != null && fungi.distance() < 6) {
             Log.info("Picking fungi");
             int fungiAmountBefore = Inventory.getCount("Mort myre funus");
             if (fungi.interact("Pick")) {
