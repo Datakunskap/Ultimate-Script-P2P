@@ -31,7 +31,7 @@ public class WitchesHouse_1 extends Task {
     private static final Position CUPBOARD_POSITION = new Position(2898, 9873);
 
     private static final Area HOUSE_OUTSIDE = Area.rectangular(2900, 3485, 2883, 3459);
-    private static final Area HOUSE_INSIDE = Area.rectangular(2901, 3476, 2937, 3459, 0);
+    private static final Area HOUSE_INSIDE = Area.rectangular(2901, 3476, 2907, 3468, 0);
     private static final Area LADDER_AREA = Area.rectangular(2901, 3476, 2907, 3475);
     private static final Area HOUSE_MAIN_PART = Area.rectangular(2901, 3474, 2907, 3468);
     private static final Area BASEMENT = Area.rectangular(2899, 9890, 2937, 9850);
