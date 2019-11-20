@@ -48,13 +48,9 @@ public class WitchesHouse_1 extends Task {
 
         Player local = Players.getLocal();
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         if (!Inventory.contains(KEY_NAME)) {
             Log.info("I don't have the key");

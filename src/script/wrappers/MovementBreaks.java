@@ -10,9 +10,9 @@ import org.rspeer.runetek.api.scene.Players;
 public class MovementBreaks {
 
     public static boolean shouldBreakOnRunenergy() {
-        return !Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 20)
-                || Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 10)
-                || !Movement.isRunEnabled() && Movement.getRunEnergy() > Random.mid(5, 25);
+        return !Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < 5
+                || Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < 5
+                || !Movement.isRunEnabled() && Movement.getRunEnergy() >= 5;
     }
 
     public static boolean shouldBreakOnTarget() {

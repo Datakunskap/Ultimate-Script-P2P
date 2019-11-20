@@ -46,13 +46,9 @@ public class WitchesHouse_Preparation extends Task {
 
         Log.info("WitchHouse_Preparation");
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         if (!hasGear) {
             if (!Equipment.contains(x -> x.getName().contains(GLORY))) {

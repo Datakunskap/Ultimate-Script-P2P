@@ -39,13 +39,9 @@ public class WitchesHouse_4 extends Task {
 
         Player local = Players.getLocal();
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         if (!Inventory.contains(BALL)) {
             Pickable ball = Pickables.getNearest(BALL);

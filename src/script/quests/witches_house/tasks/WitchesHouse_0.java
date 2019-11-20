@@ -36,13 +36,9 @@ public class WitchesHouse_0 extends Task {
 
         Log.info("WitchesHouse_0");
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         API.talkTo(BOY_NAME, BOY_POSITION);
         Dialog.process("What's the matter?");

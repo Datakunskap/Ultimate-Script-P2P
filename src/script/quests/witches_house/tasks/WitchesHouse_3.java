@@ -47,13 +47,9 @@ public class WitchesHouse_3 extends Task {
 
         Log.info("WitchesHouse_3");
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         Npc Witch = Npcs.getNearest(3995);
         if (!GARDEN_ONE.contains(Players.getLocal()) && !GARDEN_TWO.contains(Players.getLocal())) {

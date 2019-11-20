@@ -42,13 +42,9 @@ public class WitchesHouse_2 extends Task {
 
         Player local = Players.getLocal();
 
-        API.runFromAttacker();
-
         API.doDialog();
 
         API.toggleRun();
-
-        API.drinkStaminaPotion();
 
         if (BASEMENT.contains(local)) {
             if (!LADDER_POSITION.isPositionInteractable()) {
