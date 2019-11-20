@@ -421,7 +421,7 @@ public class Fungus extends Task {
                 } else {
                     map = new HashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
                 }
-                GEWrapper.setBuySupplies(true, true, map);
+                GEWrapper.setBuySupplies(true, false, map);
             }
         }
     }
