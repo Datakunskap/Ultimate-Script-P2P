@@ -113,7 +113,7 @@ public class TrainTo13 extends Task {
                     Log.info("Wielded the glory");
                 }
             }
-            if (!Equipment.contains(x -> x.getName().contains(GLORY))) {
+            if (!Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
                 if (!Inventory.contains(STAFF_OF_AIR)) {
                     API.withdrawItem(false, STAFF_OF_AIR, 1);
                 }
@@ -121,7 +121,7 @@ public class TrainTo13 extends Task {
                     API.wearItem(STAFF_OF_AIR);
                 }
             }
-            if (Equipment.contains(x -> x.getName().contains(GLORY))
+            if (Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))
                     && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
                 Log.info("Setting hasGear to true");
                 hasGear = true;
