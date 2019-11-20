@@ -142,6 +142,39 @@ public class API {
         }
     }
 
+    public static void useItemOn(String itemName, String interactableTarget) {
+        Interactable target = SceneObjects.getNearest(interactableTarget);
+        if (Inventory.contains(itemName)) {
+            if (!Inventory.isItemSelected()) {
+                Inventory.getFirst(itemName).interact("Use");
+                Time.sleep(API.mediumRandom());
+            }
+            if (Inventory.isItemSelected()) {
+                if (target != null) {
+                    if (target.interact("Use")) {
+                        Time.sleep(API.mediumRandom());
+                    }
+                }
+            }
+        }
+    }
+
+    public static void useItemOn(int itemName, SceneObject interactableTarget) {
+        if (Inventory.contains(itemName)) {
+            if (!Inventory.isItemSelected()) {
+                Inventory.getFirst(itemName).interact("Use");
+                Time.sleep(API.mediumRandom());
+            }
+            if (Inventory.isItemSelected()) {
+                if (interactableTarget != null) {
+                    if (interactableTarget.interact("Use")) {
+                        Time.sleep(API.mediumRandom());
+                    }
+                }
+            }
+        }
+    }
+
     public static boolean playerIsAt(Area areaYouNeedToBe) {
         return areaYouNeedToBe.contains(Players.getLocal());
     }

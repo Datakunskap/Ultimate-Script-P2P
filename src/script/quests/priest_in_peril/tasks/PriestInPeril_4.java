@@ -29,7 +29,7 @@ public class PriestInPeril_4 extends Task {
     private static final String RUNE_ESSENCE = "Rune essence";
     private static final String VARROCK_TELEPORT = "Varrock teleport";
     private static final String EMPTY_BUCKET = "Bucket";
-    private static final String MONKFISH = "Tuna";
+    private static final String TUNA = "Tuna";
 
     private static final Position TEMPLE_DOOR = new Position(3407, 3488, 0);
 
@@ -79,8 +79,8 @@ public class PriestInPeril_4 extends Task {
                         if (Bank.withdraw(EMPTY_BUCKET, 1)) {
                             Time.sleepUntil(() -> Inventory.contains(EMPTY_BUCKET), 5000);
                         }
-                        if (Bank.withdraw(MONKFISH, 2)) {
-                            Time.sleepUntil(() -> Inventory.contains(MONKFISH), 5000);
+                        if (Bank.withdraw(TUNA, 2)) {
+                            Time.sleepUntil(() -> Inventory.contains(TUNA), 5000);
                         }
                         if (Bank.withdraw(RUNE_ESSENCE, 24)) {
                             Time.sleepUntil(() -> Inventory.contains(RUNE_ESSENCE), 5000);
@@ -107,10 +107,10 @@ public class PriestInPeril_4 extends Task {
                                     monk.interact("Attack");
                                 }
                                 if (Health.getPercent() < 40) {
-                                    int amountOfFoodBeforeEating = Inventory.getCount(MONKFISH);
-                                    Item tuna = Inventory.getFirst(MONKFISH);
+                                    int amountOfFoodBeforeEating = Inventory.getCount(TUNA);
+                                    Item tuna = Inventory.getFirst(TUNA);
                                     if (tuna.interact("Eat")) {
-                                        Time.sleepUntil(() -> Inventory.getCount(MONKFISH) == amountOfFoodBeforeEating - 1, 2000);
+                                        Time.sleepUntil(() -> Inventory.getCount(TUNA) == amountOfFoodBeforeEating - 1, 2000);
                                     }
                                 }
                             }
@@ -120,7 +120,7 @@ public class PriestInPeril_4 extends Task {
             }
             if (Pickables.getNearest("Golden key") != null) {
                 if (Inventory.isFull()) {
-                    Item tuna = Inventory.getFirst(MONKFISH);
+                    Item tuna = Inventory.getFirst(TUNA);
                     if (tuna.interact("Eat")) {
                         Time.sleepUntil(() -> !Inventory.isFull(), 5000);
                     }

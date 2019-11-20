@@ -21,9 +21,6 @@ public class Waterfall_6 extends Task {
     private static final int AIR_RUNE = 556;
     private static final int EARTH_RUNE = 557;
     private static final int WATER_RUNE = 555;
-    private static final int AIR_RUNES = 6;
-    private static final int EARTH_RUNES = 6;
-    private static final int WATER_RUNES = 6;
     private static final int GLARIALS_AMULET = 295;
     private static final int GLARIALS_STATUE = 2006;
 
@@ -51,24 +48,74 @@ public class Waterfall_6 extends Task {
             Movement.walkTo(PILLAR_AREA.getCenter());
         }
 
-        if (API.playerIsAt(PILLAR_AREA)) {
+        final SceneObject PILLAR_ONE = SceneObjects.getFirstAt(new Position(2562, 9910));
+        final SceneObject PILLAR_TWO = SceneObjects.getFirstAt(new Position(2562, 9912));
+        final SceneObject PILLAR_THREE = SceneObjects.getFirstAt(new Position(2562, 9914));
+        final SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9910));
+        final SceneObject PILLAR_FIVE = SceneObjects.getFirstAt(new Position(2569, 9912));
+        final SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9914));
 
-            final SceneObject PILLAR_ONE = SceneObjects.getFirstAt(new Position(2562, 9910));
-            final SceneObject PILLAR_TWO = SceneObjects.getFirstAt(new Position(2562, 9912));
-            final SceneObject PILLAR_THREE = SceneObjects.getFirstAt(new Position(2562, 9914));
-            final SceneObject PILLAR_FOUR = SceneObjects.getFirstAt(new Position(2569, 9910));
-            final SceneObject PILLAR_FIVE = SceneObjects.getFirstAt(new Position(2569, 9912));
-            final SceneObject PILLAR_SIX = SceneObjects.getFirstAt(new Position(2569, 9914));
-
-            if (Inventory.contains(AIR_RUNE) || Inventory.contains(WATER_RUNE) || Inventory.contains(EARTH_RUNE)) {
-                useAllRunesOnPillar(PILLAR_ONE, 0);
-                useAllRunesOnPillar(PILLAR_TWO, 1);
-                useAllRunesOnPillar(PILLAR_THREE, 2);
-                useAllRunesOnPillar(PILLAR_FOUR, 3);
-                useAllRunesOnPillar(PILLAR_FIVE, 4);
-                useAllRunesOnPillar(PILLAR_SIX, 5);
+        if(API.playerIsAt(PILLAR_AREA)){
+            if(Inventory.contains(AIR_RUNE)){
+                if(Inventory.getCount(AIR_RUNE) == 6){
+                    API.useItemOn(AIR_RUNE, PILLAR_ONE);
+                }
+                if(Inventory.getCount(AIR_RUNE) == 5){
+                    API.useItemOn(AIR_RUNE, PILLAR_TWO);
+                }
+                if(Inventory.getCount(AIR_RUNE) == 4){
+                    API.useItemOn(AIR_RUNE, PILLAR_THREE);
+                }
+                if(Inventory.getCount(AIR_RUNE) == 3){
+                    API.useItemOn(AIR_RUNE, PILLAR_FOUR);
+                }
+                if(Inventory.getCount(AIR_RUNE) == 2){
+                    API.useItemOn(AIR_RUNE, PILLAR_FIVE);
+                }
+                if(Inventory.getCount(AIR_RUNE) == 1){
+                    API.useItemOn(AIR_RUNE, PILLAR_SIX);
+                }
             }
-
+            if(Inventory.contains(WATER_RUNE) && !Inventory.contains(AIR_RUNE)){
+                if(Inventory.getCount(WATER_RUNE) == 6){
+                    API.useItemOn(WATER_RUNE, PILLAR_ONE);
+                }
+                if(Inventory.getCount(WATER_RUNE) == 5){
+                    API.useItemOn(WATER_RUNE, PILLAR_TWO);
+                }
+                if(Inventory.getCount(WATER_RUNE) == 4){
+                    API.useItemOn(WATER_RUNE, PILLAR_THREE);
+                }
+                if(Inventory.getCount(WATER_RUNE) == 3){
+                    API.useItemOn(WATER_RUNE, PILLAR_FOUR);
+                }
+                if(Inventory.getCount(WATER_RUNE) == 2){
+                    API.useItemOn(WATER_RUNE, PILLAR_FIVE);
+                }
+                if(Inventory.getCount(WATER_RUNE) == 1){
+                    API.useItemOn(WATER_RUNE, PILLAR_SIX);
+                }
+            }
+            if(Inventory.contains(EARTH_RUNE) && !Inventory.contains(AIR_RUNE) && !Inventory.contains(WATER_RUNE)){
+                if(Inventory.getCount(EARTH_RUNE) == 6){
+                    API.useItemOn(EARTH_RUNE, PILLAR_ONE);
+                }
+                if(Inventory.getCount(EARTH_RUNE) == 5){
+                    API.useItemOn(EARTH_RUNE, PILLAR_TWO);
+                }
+                if(Inventory.getCount(EARTH_RUNE) == 4){
+                    API.useItemOn(EARTH_RUNE, PILLAR_THREE);
+                }
+                if(Inventory.getCount(EARTH_RUNE) == 3){
+                    API.useItemOn(EARTH_RUNE, PILLAR_FOUR);
+                }
+                if(Inventory.getCount(EARTH_RUNE) == 2){
+                    API.useItemOn(EARTH_RUNE, PILLAR_FIVE);
+                }
+                if(Inventory.getCount(EARTH_RUNE) == 1){
+                    API.useItemOn(EARTH_RUNE, PILLAR_SIX);
+                }
+            }
             if (!Inventory.contains(AIR_RUNE, WATER_RUNE, EARTH_RUNE)) {
                 if (Equipment.contains(GLARIALS_AMULET)) {
                     EquipmentSlot.NECK.unequip();
@@ -81,26 +128,6 @@ public class Waterfall_6 extends Task {
         }
 
         return API.lowRandom();
-    }
-
-    public void useOneRuneOnPillar(int runeName, int runeStack, SceneObject pillarForOne, int amountOfRunes) {
-        if (Inventory.getFirst(runeName) != null) {
-            if (Inventory.getFirst(runeName).getStackSize() == runeStack - amountOfRunes) {
-                Inventory.getFirst(runeName).interact(USE_ACTION);
-                API.highRandom();
-                pillarForOne.interact(USE_ACTION);
-                API.highRandom();
-            }
-        }
-    }
-
-    public void useAllRunesOnPillar(SceneObject pillarForAll, int amountOfRunesToSubtract) {
-        useOneRuneOnPillar(AIR_RUNE, AIR_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.highRandom());
-        useOneRuneOnPillar(WATER_RUNE, WATER_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.highRandom());
-        useOneRuneOnPillar(EARTH_RUNE, EARTH_RUNES, pillarForAll, amountOfRunesToSubtract);
-        Time.sleep(API.highRandom());
     }
 
 }
