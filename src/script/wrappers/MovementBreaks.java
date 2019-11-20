@@ -22,9 +22,9 @@ public class MovementBreaks {
                 && attacker != null
                 && attacker.getTarget() != null
                 && attacker.getTarget().equals(local)
-                || !Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 20)
-                || Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < Random.mid(5, 10)
-                || !Movement.isRunEnabled() && Movement.getRunEnergy() > Random.mid(5, 25);
+                || !Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < 5
+                || Movement.isStaminaEnhancementActive() && Movement.getRunEnergy() < 5
+                || !Movement.isRunEnabled() && Movement.getRunEnergy() >= 5;
     }
 
 }

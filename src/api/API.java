@@ -36,7 +36,7 @@ public class API {
     public static final String EAT_ACTION = "Eat";
 
     public static void drinkStaminaPotion() {
-        if (Movement.getRunEnergy() < Random.mid(5, 10)) {
+        if (Movement.getRunEnergy() < 5) {
             Log.info("I should drink a stamina potion");
             if (Inventory.contains(x -> x.getName().contains(STAMINA_POTION))) {
                 Log.info("I do have a stamina potion in my inventory");

@@ -29,7 +29,7 @@ public class PriestInPeril_4 extends Task {
     private static final String RUNE_ESSENCE = "Rune essence";
     private static final String VARROCK_TELEPORT = "Varrock teleport";
     private static final String EMPTY_BUCKET = "Bucket";
-    private static final String MONKFISH = "Monkfish";
+    private static final String MONKFISH = "Tuna";
 
     private static final Position TEMPLE_DOOR = new Position(3407, 3488, 0);
 
