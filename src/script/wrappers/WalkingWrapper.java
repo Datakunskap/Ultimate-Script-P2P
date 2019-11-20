@@ -58,7 +58,7 @@ public class WalkingWrapper {
     }
 
     public static boolean consumeFirstConsumable() {
-        if (Inventory.isFull() && Inventory.contains("Rotten food")) {
+        if (Inventory.isFull() && Inventory.contains("Rotten food") && Players.getLocal().getHealthPercent() > 35) {
             Inventory.getFirst("Rotten food").interact("Drop");
             return true;
         }
