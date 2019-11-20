@@ -45,7 +45,12 @@ public class RestlessGhost_4 extends Task {
         if (GHOST_POSITION.distance() <= 10) {
             SceneObject coffin = SceneObjects.getNearest("Coffin");
             if (coffin.containsAction("Close")) {
-                API.useItemOn(GHOSTS_SKULL, "Coffin", GHOST_POSITION);
+                if (coffin.getPosition().isPositionInteractable()) {
+                    Movement.walkTo(coffin.getPosition());
+                }
+                if (coffin.getPosition().isPositionInteractable()) {
+                    API.useItemOn(GHOSTS_SKULL, "Coffin", GHOST_POSITION);
+                }
             }
             if (coffin.containsAction("Open")) {
                 Log.info("Opening the chest");
