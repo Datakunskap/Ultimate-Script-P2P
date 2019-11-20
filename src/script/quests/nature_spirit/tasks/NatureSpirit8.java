@@ -33,7 +33,7 @@ public class NatureSpirit8 extends Task {
     @Override
     public int execute() {
         if (!Inventory.contains("Silver sickle")) {
-            Fungus.getSilverSickleB();
+            WalkingWrapper.getSilverSickleB();
             return NatureSpirit.getLoopReturn();
         }
 

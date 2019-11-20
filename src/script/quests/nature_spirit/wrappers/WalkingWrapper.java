@@ -4,6 +4,8 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.commons.Time;
+import org.rspeer.runetek.api.commons.math.Random;
+import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.Dialog;
 import org.rspeer.runetek.api.component.tab.*;
 import org.rspeer.runetek.api.local.Health;
@@ -15,10 +17,15 @@ import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
 import script.data.Locations;
+import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
+import script.quests.nature_spirit.data.Quest;
 import script.tasks.fungus.Fungus;
 import script.wrappers.BankWrapper;
+import script.wrappers.GEWrapper;
 import script.wrappers.SupplyMapWrapper;
+
+import java.util.HashMap;
 
 public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
@@ -147,5 +154,62 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
     private static boolean inSalveGravyardArea() {
         Player local = Players.getLocal();
         return Fungus.AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local);
+    }
+
+    public static void getSilverSickleB() {
+        if (!Inventory.contains("Silver sickle") && !Inventory.contains("Silver sickle (b)")) {
+            Log.info("Checking bank for sickle");
+            if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()) || Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+                WalkingWrapper.exitAndLeaveGrotto();
+                return;
+            } else {
+                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                } else {
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                }
+            }
+        }
+        if (!Inventory.contains("Silver sickle (b)")) {
+            if (Bank.isOpen() && Bank.contains("Silver sickle")) {
+                Bank.withdraw("Silver sickle", 1);
+                Time.sleepUntil(() -> Inventory.contains("Silver sickle"), 2000);
+            }
+            if (Inventory.contains("Silver sickle")) {
+                Log.info("Blessing sickle");
+                if (Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+                    NatureSpirit.useItemOnObject("Silver sickle", 3520);
+                    if (Time.sleepUntil(() -> Inventory.contains("Silver sickle (b)"), 8000)) {
+                        Log.fine("Sickle Blessed!");
+                        if (Inventory.contains("Salve graveyard teleport")) {
+                            Fungus.useTeleportTab("Salve graveyard teleport");
+                        } else {
+                            WalkingWrapper.exitAndLeaveGrotto();
+                            Time.sleepUntilForDuration(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
+                            WalkingWrapper.exitAndLeaveGrotto();
+                            Time.sleepUntilForDuration(() -> !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
+                            BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                        }
+                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                    } else {
+                        Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
+                    }
+                } else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                    WalkingWrapper.walkToNatureGrotto();
+                }
+                WalkingWrapper.enterGrotto();
+            } else {
+                Log.info("Buying sickle");
+                HashMap<String, Integer> map;
+                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+                    map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
+                    map.remove("Silver sickle (b)");
+                    map.put("Silver sickle", 1);
+                } else {
+                    map = new HashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
+                }
+                GEWrapper.setBuySupplies(true, false, map);
+            }
+        }
     }
 }

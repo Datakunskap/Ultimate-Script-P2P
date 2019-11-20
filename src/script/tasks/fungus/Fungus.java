@@ -55,7 +55,7 @@ public class Fungus extends Task {
                 Log.info("Sickle equipped");
                 Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
             } else {
-                getSilverSickleB();
+                WalkingWrapper.getSilverSickleB();
                 return SleepWrapper.mediumSleep1000();
             }
         }
@@ -366,63 +366,6 @@ public class Fungus extends Task {
         if (Bank.isOpen() && Bank.contains(RESTOCK_TELEPORTS)) {
             Bank.withdraw(RESTOCK_TELEPORTS, 1);
             Time.sleepUntilForDuration(() -> Inventory.contains(RESTOCK_TELEPORTS), Random.nextInt(500, 800), 10_000);
-        }
-    }
-
-    public static void getSilverSickleB() {
-        if (!Inventory.contains("Silver sickle") && !Inventory.contains("Silver sickle (b)")) {
-            Log.info("Checking bank for sickle");
-            if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()) || Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
-                WalkingWrapper.exitAndLeaveGrotto();
-                return;
-            } else {
-                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
-                } else {
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
-                }
-            }
-        }
-        if (!Inventory.contains("Silver sickle (b)")) {
-            if (Bank.isOpen() && Bank.contains("Silver sickle")) {
-                Bank.withdraw("Silver sickle", 1);
-                Time.sleepUntil(() -> Inventory.contains("Silver sickle"), 2000);
-            }
-            if (Inventory.contains("Silver sickle")) {
-                Log.info("Blessing sickle");
-                if (Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
-                    NatureSpirit.useItemOnObject("Silver sickle", 3520);
-                    if (Time.sleepUntil(() -> Inventory.contains("Silver sickle (b)"), 8000)) {
-                        Log.fine("Sickle Blessed!");
-                        if (Inventory.contains("Salve graveyard teleport")) {
-                            useTeleportTab("Salve graveyard teleport");
-                        } else {
-                            WalkingWrapper.exitAndLeaveGrotto();
-                            Time.sleepUntilForDuration(() -> Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
-                            WalkingWrapper.exitAndLeaveGrotto();
-                            Time.sleepUntilForDuration(() -> !Locations.NATURE_GROTTO_AREA.contains(Players.getLocal()), Random.nextInt(800, 1200), 10_000);
-                            BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
-                        }
-                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
-                    } else {
-                        Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
-                    }
-                } else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
-                    WalkingWrapper.walkToNatureGrotto();
-                }
-                WalkingWrapper.enterGrotto();
-            } else {
-                Log.info("Buying sickle");
-                HashMap<String, Integer> map;
-                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
-                    map.remove("Silver sickle (b)");
-                    map.put("Silver sickle", 1);
-                } else {
-                    map = new HashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
-                }
-                GEWrapper.setBuySupplies(true, false, map);
-            }
         }
     }
 }

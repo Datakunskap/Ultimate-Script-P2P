@@ -24,7 +24,8 @@ public class NatureSpirit9 extends Task {
     @Override
     public int execute() {
         if (!Inventory.contains("Silver sickle")) {
-            Fungus.getSilverSickleB();
+            WalkingWrapper.getSilverSickleB();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
