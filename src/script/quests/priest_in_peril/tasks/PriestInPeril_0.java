@@ -35,7 +35,7 @@ public class PriestInPeril_0 extends Task {
     private static final String BUCKET = "Bucket";
     private static final String RUNE_ESSENCE = "Rune essence";
     private static final String VARROCK_TELEPORT = "Varrock teleport";
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final String COINS = "Coins";
     private static final String STAMINA_POTION = "Stamina potion(4)";
     private static final Predicate<String> SURE = o -> o.contains("Sure.");

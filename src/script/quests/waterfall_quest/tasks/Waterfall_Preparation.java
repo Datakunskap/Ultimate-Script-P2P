@@ -30,7 +30,7 @@ public class Waterfall_Preparation extends Task {
     private static final String GLORY = "Amulet of glory(";
     private static final String STAFF_OF_AIR = "Staff of air";
     private static final String GAMES_NECKLACE = "Games necklace(";
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final String[] GEAR = {GLORY, STAFF_OF_AIR};
     private static final String WIELD = "Wield";
     private static final String WEAR = "Wear";
@@ -94,7 +94,7 @@ public class Waterfall_Preparation extends Task {
             if (Equipment.contains(x -> x.getName().contains(GLORY))
                     && Equipment.contains(STAFF_OF_AIR)
                     && Inventory.getCount(false, x -> x.getName().contains(GAMES_NECKLACE)) == 1
-                    && Inventory.getCount(false, TUNA) >= 12
+                    && Inventory.getCount(false, Monkfish) >= 12
                     && Inventory.getCount(false, x -> x.getName().contains(STAMINA_POTION)) >= 4) {
                 Log.info("Setting readyToStartWaterfallQuest to true");
                 readyToStartWaterfall = true;
@@ -137,7 +137,7 @@ public class Waterfall_Preparation extends Task {
                 }
                 if (!Inventory.contains(COINS)) {
                     API.withdrawItem(false, GAMES_NECKLACE, 1);
-                    API.withdrawItem(false, TUNA, 12);
+                    API.withdrawItem(false, Monkfish, 12);
                     API.withdrawItem(false, STAMINA_POTION, 4);
                 }
             }

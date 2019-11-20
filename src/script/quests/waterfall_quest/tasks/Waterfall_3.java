@@ -22,7 +22,7 @@ public class Waterfall_3 extends Task {
     private static final int GOLRIE_DOOR = 1991;
     private static final int TOMB = 1992;
 
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final String GAMES_NECKLACE = "Games necklace(";
     private static final String STAMINA_POTION = "Stamina potion(";
     private static final String GLARIALS_PEBBLE = "Glarial's pebble";
@@ -94,7 +94,7 @@ public class Waterfall_3 extends Task {
             }
             if (BankLocation.BARBARIAN_ASSAULT.getPosition().distance() <= 50) {
                 if (Inventory.containsAnyExcept(x -> x.getName().contains(GLARIALS_PEBBLE)
-                        || x.getName().contains(TUNA)
+                        || x.getName().contains(Monkfish)
                         || x.getName().contains(GAMES_NECKLACE)
                         || x.getName().contains(STAMINA_POTION))
                         || Equipment.getOccupiedSlots().length > 0) {
@@ -114,20 +114,20 @@ public class Waterfall_3 extends Task {
                             Time.sleepUntilForDuration(Inventory::isEmpty, Random.nextInt(600, 800), 5000);
                         }
                         if (!Inventory.contains(x -> x.getName().contains(GLARIALS_PEBBLE)
-                                && x.getName().contains(TUNA)
+                                && x.getName().contains(Monkfish)
                                 && x.getName().contains(GAMES_NECKLACE)
                                 && x.getName().contains(STAMINA_POTION))) {
                             API.withdrawItem(false,GLARIALS_PEBBLE, 1);
                             API.withdrawItem(false,GAMES_NECKLACE, 1);
                             API.withdrawItem(false,STAMINA_POTION, 4);
-                            API.withdrawItem(false,TUNA, 10);
+                            API.withdrawItem(false,Monkfish, 10);
                         }
                     }
                 }
             }
         }
         if (Inventory.containsOnly(x -> x.getName().contains(GLARIALS_PEBBLE)
-                || x.getName().contains(TUNA)
+                || x.getName().contains(Monkfish)
                 || x.getName().contains(GAMES_NECKLACE)
                 || x.getName().contains(STAMINA_POTION))
                 && Equipment.getOccupiedSlots().length == 0) {

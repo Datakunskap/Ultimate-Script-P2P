@@ -35,7 +35,7 @@ public class PriestInPeril_Preparation extends Task {
     private static final String RING_OF_RECOIL = "Ring of recoil";
     private static final String VARROCK_TELEPORT = "Varrock teleport";
     private static final String STAMINA_POTION = "Stamina potion(4)";
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final String[] GEAR = {GLORY, ADAMANT_SCIMITAR, RING_OF_RECOIL};
     private static final String WIELD = "Wield";
     private static final String WEAR = "Wear";
@@ -88,7 +88,7 @@ public class PriestInPeril_Preparation extends Task {
             if (Equipment.contains(GEAR)
                     && Inventory.getCount(false, STAMINA_POTION) == 3
                     && Inventory.getCount(true, VARROCK_TELEPORT) == 5
-                    && Inventory.getCount(false, TUNA) > 3) {
+                    && Inventory.getCount(false, Monkfish) > 3) {
                 Log.info("Setting readyToStartWitchesHouse to true");
                 readyToStartPriestInPeril = true;
             }
@@ -159,7 +159,7 @@ public class PriestInPeril_Preparation extends Task {
                     if (!Inventory.contains(COINS)) {
                         withdrawItem(STAMINA_POTION, 3, false);
                         withdrawItem(VARROCK_TELEPORT, 5, true);
-                        withdrawItem(TUNA, 10, false);
+                        withdrawItem(Monkfish, 10, false);
                     }
                 }
             }

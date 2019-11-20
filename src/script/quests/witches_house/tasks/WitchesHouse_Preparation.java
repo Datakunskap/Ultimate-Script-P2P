@@ -30,8 +30,8 @@ public class WitchesHouse_Preparation extends Task {
     private static final String FIRE_RUNE = "Fire rune";
     private static final String FALADOR_TELEPORT = "Falador teleport";
     private static final String LEATHER_GLOVES = "Leather gloves";
-    private static final String TUNA = "Tuna";
-    private static final String[] ITEMS_NEEDED = {STAFF_OF_AIR, RING_OF_WEALTH, CHEESE, MIND_RUNE, FIRE_RUNE, FALADOR_TELEPORT, LEATHER_GLOVES, TUNA};
+    private static final String Monkfish = "Monkfish";
+    private static final String[] ITEMS_NEEDED = {STAFF_OF_AIR, RING_OF_WEALTH, CHEESE, MIND_RUNE, FIRE_RUNE, FALADOR_TELEPORT, LEATHER_GLOVES, Monkfish};
 
     @Override
     public boolean validate() {
@@ -95,7 +95,7 @@ public class WitchesHouse_Preparation extends Task {
                     withdrawItem(true,MIND_RUNE, 100);
                     withdrawItem(true,FIRE_RUNE, 300);
                     withdrawItem(true,FALADOR_TELEPORT, 5);
-                    withdrawItem(false,TUNA, 15);
+                    withdrawItem(false,Monkfish, 15);
                     withdrawItem(false,LEATHER_GLOVES, 1);
                     Log.info("Setting hasItems to true");
                     hasItems = true;
@@ -110,7 +110,7 @@ public class WitchesHouse_Preparation extends Task {
                     && API.inventoryHasItem(true, MIND_RUNE, 100)
                     && API.inventoryHasItem(true, FIRE_RUNE, 300)
                     && API.inventoryHasItem(true, FALADOR_TELEPORT, 5)
-                    && API.inventoryHasItem(false, TUNA, 15)
+                    && API.inventoryHasItem(false, Monkfish, 15)
                     && API.inventoryHasItem(false, LEATHER_GLOVES, 1)) {
                 Log.info("Setting readyToStartWitchesHouse to true");
                 readyToStartWitchesHouse = true;

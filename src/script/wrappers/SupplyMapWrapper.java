@@ -43,7 +43,7 @@ public class SupplyMapWrapper {
         map.put("Mind rune", 100);
         map.put("Fire rune", 300);
         map.put("Falador teleport", 5);
-        map.put("Tuna", 10);
+        map.put("Monkfish", 10);
         map.put("Leather gloves", 1);
         return map;
     }
@@ -65,7 +65,7 @@ public class SupplyMapWrapper {
         map.put("Silver sickle", 1);
         map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 10);
-        map.put("Tuna", 5);
+        map.put("Monkfish", 5);
         map.put("Mort myre fungus", 1);
         map.put("Druidic spell", 1);
         map.put("A used spell", 1);
@@ -78,7 +78,7 @@ public class SupplyMapWrapper {
         map.put("Silver sickle", 1);
         map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 10);
-        map.put("Tuna", 5);
+        map.put("Monkfish", 5);
         return map;
     }
 
@@ -102,7 +102,7 @@ public class SupplyMapWrapper {
         map.put("Water rune", 200);
         map.put("Fire rune", 300);
         map.put("Earth rune", 200);
-        map.put("Tuna", 100);
+        map.put("Monkfish", 100);
         map.put("Stamina potion(4)", 10);
         map.put("Cheese", 2);
         map.put("Leather gloves", 1);

@@ -22,7 +22,7 @@ import static script.quests.waterfall_quest.data.Quest.WATERFALL;
 public class PriestInPeril_2 extends Task {
 
     private static final String STAMINA_POTION = "Stamina potion(";
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final Predicate<String> YES = o -> o.contains("Yes");
 
     @Override
@@ -87,10 +87,10 @@ public class PriestInPeril_2 extends Task {
                 templeGuardian.interact("Attack");
             }
             if (Health.getPercent() < 40) {
-                int amountOfFoodBeforeEating = Inventory.getCount(TUNA);
-                Item tuna = Inventory.getFirst(TUNA);
-                if (tuna.interact("Eat")) {
-                    Time.sleepUntil(() -> Inventory.getCount(TUNA) == amountOfFoodBeforeEating - 1, 2000);
+                int amountOfFoodBeforeEating = Inventory.getCount(Monkfish);
+                Item food = Inventory.getFirst(Monkfish);
+                if (food.interact("Eat")) {
+                    Time.sleepUntil(() -> Inventory.getCount(Monkfish) == amountOfFoodBeforeEating - 1, 2000);
                 }
             }
         }
