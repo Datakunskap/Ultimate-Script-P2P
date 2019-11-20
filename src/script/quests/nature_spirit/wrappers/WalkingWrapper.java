@@ -119,11 +119,11 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 exitAndLeaveGrotto();
             }
             if (AMULET_POSITION.distance() > 5) {
+                Log.info("Checking bank for Ghostspeak amulet");
                 BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
-                if (Inventory.contains("Ghostspeak amulet")) {
-                    return;
+                if (!Inventory.contains("Ghostspeak amulet")) {
+                    walkToPosition(AMULET_POSITION);
                 }
-                walkToPosition(AMULET_POSITION);
             }
             if (!Dialog.isOpen()) {
                 Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
