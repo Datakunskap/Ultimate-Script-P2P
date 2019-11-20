@@ -104,8 +104,8 @@ public class BuyGE extends Task {
 
         if (itemsIterator != null && !GEWrapper.itemsStillActive(RSGrandExchangeOffer.Type.BUY)) {
             if (stillNeedsItem(itemToBuy)) {
-                if (GEWrapper.buy(itemToBuy, getQuantity(itemToBuy, true), getPrice(itemToBuy), false)) {
-                    Log.info("Buying: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
+                if (GEWrapper.buy(itemToBuy, getQuantityToBuy(itemToBuy, true), getPrice(itemToBuy), false)) {
+                    Log.info("Buying: " + getQuantityToBuy(itemToBuy, true) + " " + itemToBuy);
                     if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().toLowerCase().equals(itemToBuy.toLowerCase())) != null, 20_000)) {
                         if (itemsIterator.hasNext()) {
                             itemToBuy = itemsIterator.next().getKey();
@@ -115,7 +115,7 @@ public class BuyGE extends Task {
                     }
                 }
             } else {
-                Log.info("Already has: " + getQuantity(itemToBuy, true) + " " + itemToBuy);
+                Log.info("Already has: " + items.get(itemToBuy) + " " + itemToBuy);
                 if (itemsIterator.hasNext()) {
                     itemToBuy = itemsIterator.next().getKey();
                 } else {
@@ -165,30 +165,31 @@ public class BuyGE extends Task {
     }
 
     private boolean stillNeedsItem(String itemToBuy) {
-        return Inventory.getCount(true, itemToBuy) < getQuantity(itemToBuy, true) && !Equipment.contains(itemToBuy);
+        return getQuantityToBuy(itemToBuy, true) > 0 && !Equipment.contains(itemToBuy);
     }
 
-    private int getQuantity(String item, boolean checkEnough) {
-        int quantity = items.get(item) /*- Inventory.getCount(true, item)*/;
+    private int getQuantityToBuy(String item, boolean checkEnough) {
+        int quantity = items.get(item) - Inventory.getCount(true, item);
 
         if (quantity > 0) {
-            int price = 0;
             if (checkEnough) {
-                price = getPrice(item);
-            }
+                int price = getPrice(item);
 
-            if (quantity > 0) {
                 if ((price * quantity) > coinsToSpend) {
                     Log.severe("Not enough gp for" + quantity + " " + item + ": Buying AMAP");
                     return coinsToSpend / price;
                 }
-                return quantity;
             }
+            return quantity;
         }
-        return 1;
+        return 0;
     }
 
     private int getPrice(String item) {
-        return coinsToSpend / getQuantity(item, false);
+        int q = getQuantityToBuy(item, false);
+        if (q > 0) {
+            return coinsToSpend / q;
+        }
+        return coinsToSpend;
     }
 }
