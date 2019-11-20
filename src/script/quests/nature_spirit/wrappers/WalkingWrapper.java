@@ -126,6 +126,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 Log.info("Checking bank for Ghostspeak amulet");
                 BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
                 if (!Inventory.contains("Ghostspeak amulet")) {
+                    Log.info("Getting a new Ghostspeak amulet");
                     walkToPosition(AMULET_POSITION);
                 }
             }
@@ -139,8 +140,15 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             if (Dialog.canContinue()) {
                 Dialog.processContinue();
             }
-            // add dialog options
-            Dialog.process("");
+            Dialog.process("I've lost the Amulet of Ghostspeak.");
+            while (Dialog.isOpen() && (Dialog.canContinue() || Dialog.isProcessing())) {
+                Dialog.processContinue();
+                Time.sleep(1200, 1800);
+            }
+            if (Inventory.contains("Ghostspeak amulet")) {
+                Inventory.getFirst("Ghostspeak amulet").interact("Wear");
+                Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+            }
         } else {
 
             SceneObject grotto = SceneObjects.getNearest("Grotto");
