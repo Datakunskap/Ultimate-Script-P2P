@@ -4,6 +4,7 @@ import api.API;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
@@ -34,7 +35,11 @@ public class WitchesHouse_1 extends Task {
     private static final Area HOUSE_INSIDE = Area.rectangular(2901, 3476, 2907, 3468, 0);
     private static final Area LADDER_AREA = Area.rectangular(2901, 3476, 2907, 3475);
     private static final Area HOUSE_MAIN_PART = Area.rectangular(2901, 3474, 2907, 3468);
-    private static final Area BASEMENT = Area.rectangular(2899, 9890, 2937, 9850);
+    private static final Area BASEMENT = Area.rectangular(2898, 9877, 2908, 9870);
+    private static final Area GARDEN_MAIN = Area.rectangular(2937, 3467, 2900, 3459);
+    private static final Area GARDEN_FOUNTAIN = Area.rectangular(2908, 3475, 2913, 3467);
+    private static final Area MOUSE_AREA = Area.rectangular(2900, 3467, 2903, 3466);
+
 
     @Override
     public boolean validate() {
@@ -52,6 +57,11 @@ public class WitchesHouse_1 extends Task {
 
         API.toggleRun();
 
+        if (Inventory.contains(KEY_NAME)) {
+            if (!BASEMENT.contains(local) || !HOUSE_OUTSIDE.contains(local) || !GARDEN_FOUNTAIN.contains(local) || !HOUSE_INSIDE.contains(local) || !MOUSE_AREA.contains(local) || !GARDEN_FOUNTAIN.contains(local)) {
+                Movement.walkTo(HOUSE_OUTSIDE.getCenter());
+            }
+        }
         if (!Inventory.contains(KEY_NAME)) {
             Log.info("I don't have the key");
             API.interactWithSceneobject(POT_NAME, "Look-under", POT_POSITION);
@@ -65,10 +75,10 @@ public class WitchesHouse_1 extends Task {
         }
         if (HOUSE_INSIDE.contains(local)) {
             if (!Inventory.contains(MAGNET)) {
-                if (API.playerIsAt(HOUSE_MAIN_PART) && !LADDER_POSITION.isPositionWalkable()){
+                if (API.playerIsAt(HOUSE_MAIN_PART) && !LADDER_POSITION.isPositionWalkable()) {
                     API.interactWithSceneobject(24686, "Open", DOOR_TO_LADDER_POSITION);
                 }
-                if (API.playerIsAt(HOUSE_MAIN_PART) && LADDER_POSITION.isPositionWalkable()){
+                if (API.playerIsAt(HOUSE_MAIN_PART) && LADDER_POSITION.isPositionWalkable()) {
                     API.interactWithSceneobject(LADDER_NAME, "Climb-down", LADDER_POSITION);
                 }
                 if (API.playerIsAt(LADDER_AREA)) {
@@ -79,7 +89,7 @@ public class WitchesHouse_1 extends Task {
         }
         if (BASEMENT.contains(local)) {
             if (!Inventory.contains(MAGNET)) {
-                if(!API.isWearingItem(LEATHER_GLOVES)){
+                if (!API.isWearingItem(LEATHER_GLOVES)) {
                     API.wearItem(LEATHER_GLOVES);
                 }
                 if (API.isWearingItem(LEATHER_GLOVES)) {
