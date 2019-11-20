@@ -59,8 +59,7 @@ public class TrainTo13 extends Task {
 
     private static final Area TRAINING_AREA = Area.rectangular(3194, 3299, 3209, 3285);
 
-    public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Staff of air", "Amulet of glory(6)", "Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Tuna"};
-
+    public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Tuna"};
 
     @Override
     public boolean validate() {
@@ -101,6 +100,10 @@ public class TrainTo13 extends Task {
         }
 
         if (!hasGear) {
+            if(Equipment.contains(x -> x.getName().contains(GLORY)) && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))){
+                Log.info("Setting hasGear to true");
+                hasGear = true;
+            }
             if (!Equipment.contains(x -> x.getName().contains(GLORY))) {
                 if (!Inventory.contains(x -> x.getName().contains(GLORY))) {
                     Log.info("I don't have a glory");
@@ -123,8 +126,6 @@ public class TrainTo13 extends Task {
             }
             if (Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))
                     && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
-                Log.info("Setting hasGear to true");
-                hasGear = true;
             }
         }
 
