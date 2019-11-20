@@ -116,7 +116,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 if (Inventory.contains("Ghostspeak amulet")) {
                     return;
                 }
-                script.wrappers.WalkingWrapper.walkToPosition(AMULET_POSITION);
+                walkToPosition(AMULET_POSITION);
             }
             if (!Dialog.isOpen()) {
                 Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));

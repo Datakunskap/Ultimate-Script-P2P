@@ -34,6 +34,7 @@ public class NatureSpirit8 extends Task {
     public int execute() {
         if (!Inventory.contains("Silver sickle")) {
             Fungus.getSilverSickleB();
+            return NatureSpirit.getLoopReturn();
         }
 
         if (needsToPick) {
@@ -47,7 +48,9 @@ public class NatureSpirit8 extends Task {
 
         if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())
                 && !Locations.INSIDE_GROTTO_AREA.contains(Players.getLocal())) {
+
             WalkingWrapper.walkToNatureGrotto();
+            return NatureSpirit.getLoopReturn();
         }
 
         SceneObject orangeStone = SceneObjects.getNearest(3528);
@@ -68,10 +71,6 @@ public class NatureSpirit8 extends Task {
                 Dialog.process("I think I've solved the puzzle!");
             }
             return NatureSpirit.getLoopReturn();
-        }
-
-        if (!Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
-            WalkingWrapper.walkToNatureGrotto();
         }
 
         if (Location.NATURE_GROTTO_AREA.contains(Players.getLocal())) {

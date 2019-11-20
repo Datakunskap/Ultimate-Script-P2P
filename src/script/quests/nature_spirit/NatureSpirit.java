@@ -123,7 +123,7 @@ public class NatureSpirit {
             Item spell = Inventory.getFirst("Druidic spell");
 
             if (SceneObjects.getNearest(3509) == null && log != null && log.getPosition().equals(Players.getLocal().getPosition())) {
-                Movement.walkTo(Location.ROTTING_LOG_POSITION.translate(Random.nextInt(-1, 1), Random.nextInt(-1, 1)));
+                Movement.setWalkFlag(Location.ROTTING_LOG_POSITION.translate(Random.nextInt(-1, 1), Random.nextInt(-1, 1)));
             }
 
             if (log != null && log.distance() <= 1 && spell != null && spell.interact(ActionOpcodes.ITEM_ACTION_0)) {
