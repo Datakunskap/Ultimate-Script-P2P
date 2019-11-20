@@ -51,7 +51,11 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                             if (inSalveGravyardArea()) {
                                 if (Inventory.getCount(true, f -> f.containsAction("Drink") || f.containsAction("Eat")) < 3) {
                                     Log.info("Getting more foods");
-                                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                                    if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
+                                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
+                                    } else {
+                                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                                    }
                                     return true;
                                 } else {
                                     Log.fine("Handling Gate");
