@@ -21,9 +21,9 @@ public class SupplyMapWrapper {
     public static HashMap<String, Integer> getMortMyreFungusItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Ring of dueling(8)", 11);
-        map.put("Salve graveyard teleport", 80);
         map.put("Silver sickle (b)", 1);
         map.put("Varrock teleport", 1);
+        map.put("Salve graveyard teleport", 80);
         return map;
     }
 
@@ -76,9 +76,9 @@ public class SupplyMapWrapper {
     public static HashMap<String, Integer> getNatureSpiritItemsMap() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Silver sickle", 1);
-        map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 10);
         map.put("Monkfish", 5);
+        map.put("Salve graveyard teleport", 3);
         return map;
     }
 
@@ -117,8 +117,8 @@ public class SupplyMapWrapper {
         map.put("Silver sickle", 1);
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
-        map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 20);
+        map.put("Salve graveyard teleport", 3);
         return map;
     }
 }
