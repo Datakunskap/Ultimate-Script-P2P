@@ -58,7 +58,7 @@ public class WitchesHouse_1 extends Task {
         API.toggleRun();
 
         if (Inventory.contains(KEY_NAME)) {
-            if (!BASEMENT.contains(local) || !HOUSE_OUTSIDE.contains(local) || !GARDEN_FOUNTAIN.contains(local) || !HOUSE_INSIDE.contains(local) || !MOUSE_AREA.contains(local) || !GARDEN_FOUNTAIN.contains(local)) {
+            if (!BASEMENT.contains(local) && !HOUSE_OUTSIDE.contains(local) && !GARDEN_FOUNTAIN.contains(local) && !HOUSE_INSIDE.contains(local) && !MOUSE_AREA.contains(local) && !GARDEN_FOUNTAIN.contains(local)) {
                 if (local.getAnimation() == -1) {
                     Movement.walkTo(HOUSE_OUTSIDE.getCenter());
                 }
