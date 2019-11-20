@@ -78,6 +78,8 @@ public class WitchesHouse_Preparation extends Task {
             if (Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))
                     && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
                 Log.info("Setting hasGear to true");
+            }
+            if (Equipment.contains(x -> x.getName().contains(GLORY)) && Equipment.contains(x -> x.getName().contains(STAFF_OF_AIR))) {
                 hasGear = true;
             }
         }
