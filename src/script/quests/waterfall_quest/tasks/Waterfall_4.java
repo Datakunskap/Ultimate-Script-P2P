@@ -31,7 +31,7 @@ public class Waterfall_4 extends Task {
     private static final String WATER_RUNE = "Water rune";
     private static final String EARTH_RUNE = "Earth rune";
     private static final String AIR_RUNE = "Air rune";
-    private static final String TUNA = "Tuna";
+    private static final String Monkfish = "Monkfish";
     private static final String ROPE = "Rope";
     private static final String STAMINA_POTION = "Stamina potion(";
     private static final String LUMBRIDGE_TELEPORT = "Lumbridge teleport";
@@ -101,7 +101,7 @@ public class Waterfall_4 extends Task {
                 || API.inventoryHasItem(false, GLARIALS_URN, 1)
                 && API.isWearingItem(GLARIALS_AMULET)) {
             if (!API.playerIsAt(CAVE_AREA)) {
-                if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, LUMBRIDGE_TELEPORT) || !Equipment.contains(GLARIALS_AMULET)) {
+                if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, Monkfish, ROPE, LUMBRIDGE_TELEPORT) || !Equipment.contains(GLARIALS_AMULET)) {
                     if (BankLocation.BARBARIAN_ASSAULT.getPosition().distance() > 50) {
                         Movement.walkTo(BankLocation.BARBARIAN_ASSAULT.getPosition(), MovementBreaks::shouldBreakOnTarget);
                     }
@@ -111,16 +111,16 @@ public class Waterfall_4 extends Task {
                             Bank.open();
                         }
                         if (Bank.isOpen()) {
-                            if (Inventory.containsAnyExcept(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
+                            if (Inventory.containsAnyExcept(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, Monkfish, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
                                 Bank.depositInventory();
                                 Time.sleepUntil(() -> Inventory.isEmpty(), 5000);
                             }
-                            if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
+                            if (!Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, Monkfish, ROPE, STAMINA_POTION, LUMBRIDGE_TELEPORT)) {
                                 API.withdrawItem(false, GLARIALS_URN, 1);
                                 API.withdrawItem(true, WATER_RUNE, 6);
                                 API.withdrawItem(true, AIR_RUNE, 6);
                                 API.withdrawItem(true, EARTH_RUNE, 6);
-                                API.withdrawItem(false, TUNA, 15);
+                                API.withdrawItem(false, Monkfish, 15);
                                 API.withdrawItem(false, ROPE, 1);
                                 API.withdrawItem(false, STAMINA_POTION, 2);
                                 API.withdrawItem(false, LUMBRIDGE_TELEPORT, 1);
@@ -128,7 +128,7 @@ public class Waterfall_4 extends Task {
                         }
                     }
                 }
-                if (Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, TUNA, ROPE, LUMBRIDGE_TELEPORT) && Equipment.contains(GLARIALS_AMULET)) {
+                if (Inventory.containsAll(GLARIALS_URN, WATER_RUNE, AIR_RUNE, EARTH_RUNE, Monkfish, ROPE, LUMBRIDGE_TELEPORT) && Equipment.contains(GLARIALS_AMULET)) {
                     if (!API.playerIsAt(ISLAND_ONE_AREA) && !API.playerIsAt(ISLAND_TWO_AREA) && LEDGE_POSITION.distance() > 0) {
                         Movement.walkTo(ISLAND_ONE_AREA.getCenter(), MovementBreaks::shouldBreakOnTarget);
                     }

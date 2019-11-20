@@ -38,7 +38,7 @@ public class TrainTo13 extends Task {
             "Mind rune",
             "Water rune",
             "Earth rune",
-            "Tuna",
+            "Monkfish",
             "Stamina potion(4)",
             "Cheese",
             "Leather gloves",
@@ -53,13 +53,13 @@ public class TrainTo13 extends Task {
             "Silver sickle"
     };
 
-    public static final String TUNA = "Tuna";
+    public static final String Monkfish = "Monkfish";
     public static final String STAFF_OF_AIR = "Staff of air";
     public static final String GLORY = "Amulet of glory(6)";
 
     private static final Area TRAINING_AREA = Area.rectangular(3194, 3299, 3209, 3285);
 
-    public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Tuna"};
+    public static final String[] ALL_ITEMS_NEEDED_FOR_MAGIC_TRAINING = {"Ring of wealth (5)", "Stamina potion(4)", "Mind rune", "Water rune", "Earth rune", "Lumbridge teleport", "Monkfish"};
 
     @Override
     public boolean validate() {
@@ -147,7 +147,7 @@ public class TrainTo13 extends Task {
                     withdrawItem("Water rune", 200,true);
                     withdrawItem("Earth rune", 200,true );
                     withdrawItem("Lumbridge teleport", 5, true);
-                    withdrawItem("Tuna", 15,false);
+                    withdrawItem("Monkfish", 15,false);
                 }
             }
         }
@@ -161,7 +161,7 @@ public class TrainTo13 extends Task {
                     if (Bank.depositAll(362)) {
                         if (Time.sleepUntil(() -> Bank.contains(361), 5000)) {
                             if (Bank.withdrawAll(361)) {
-                                Time.sleepUntil(() -> Inventory.getCount(false, TUNA) >= 15, 5000);
+                                Time.sleepUntil(() -> Inventory.getCount(false, Monkfish) >= 15, 5000);
                             }
                         }
                     }
@@ -223,8 +223,8 @@ public class TrainTo13 extends Task {
                             Time.sleepUntil(() -> local.getTargetIndex() != -1, 5000);
                     }
                     if (Players.getLocal().getHealthPercent() <= 30) {
-                        if (Inventory.contains(TUNA)) {
-                            Inventory.getFirst(TUNA).interact("Eat");
+                        if (Inventory.contains(Monkfish)) {
+                            Inventory.getFirst(Monkfish).interact("Eat");
                             Time.sleepUntil(() -> Players.getLocal().getHealthPercent() > 40, Random.mid(2500, 5850));
                             Time.sleep(449, 740);
                         }

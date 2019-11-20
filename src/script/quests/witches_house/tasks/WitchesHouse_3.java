@@ -144,8 +144,8 @@ public class WitchesHouse_3 extends Task {
         }
         if (SHED.contains(Players.getLocal())) {
             if (Skills.getCurrentLevel(Skill.HITPOINTS) < Skills.getLevel(Skill.HITPOINTS) - 5) {
-                if (Inventory.contains("Tuna")) {
-                    Inventory.getFirst("Tuna").interact("Eat");
+                if (Inventory.contains("Monkfish")) {
+                    Inventory.getFirst("Monkfish").interact("Eat");
                     API.lowRandom();
                     API.lowRandom();
                 }
