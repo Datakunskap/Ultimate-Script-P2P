@@ -71,8 +71,8 @@ public class BuyGE extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
-        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
-            if (Inventory.contains("Varrock teleport")) {
+        if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+            if (Inventory.contains("Varrock teleport") && BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
