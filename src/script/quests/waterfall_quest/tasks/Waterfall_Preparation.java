@@ -40,6 +40,7 @@ public class Waterfall_Preparation extends Task {
         return WITCHES_HOUSE.getVarpValue() == 7
                 && WATERFALL.getVarpValue() == 0
                 && Skills.getLevel(Skill.MAGIC) >= 13
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && !Waterfall_Preparation.readyToStartWaterfall;
     }
 

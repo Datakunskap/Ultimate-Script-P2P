@@ -46,6 +46,7 @@ public class PriestInPeril_Preparation extends Task {
     public boolean validate() {
         return WATERFALL.getVarpValue() == 10
                 && PRIEST_IN_PERIL.getVarpValue() == 0
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && Skills.getLevel(Skill.MAGIC) >= 13
                 && !PriestInPeril_Preparation.readyToStartPriestInPeril;
     }

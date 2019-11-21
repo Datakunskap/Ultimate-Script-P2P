@@ -2,6 +2,7 @@ package script.tasks.training.prayer;
 
 import api.component.ExWilderness;
 import org.rspeer.runetek.adapter.component.Item;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Dialog;
@@ -28,7 +29,7 @@ public class LeaveWilderness extends Task {
 
     @Override
     public boolean validate() {
-        return Skills.getLevel(Skill.PRAYER) == 50 && ExWilderness.getLevel() > 30 && WILDERNESS_AREA.contains(Players.getLocal());
+        return Skills.getLevel(Skill.PRAYER) == 50 && ExWilderness.getLevel() >= 30 && WILDERNESS_AREA.contains(Players.getLocal());
     }
 
     @Override
@@ -50,11 +51,13 @@ public class LeaveWilderness extends Task {
                 }
                 if (Dialog.isViewingChatOptions()) {
                     if (Dialog.process(o -> o.toLowerCase().contains("edgevil"))) {
-                        Time.sleepUntil(() -> !WILDERNESS_AREA.contains(Players.getLocal()), SleepWrapper.longSleep7500());
+                        Time.sleepUntil(() -> !WILDERNESS_AREA.contains(Players.getLocal()) && !Game.isLoadingRegion(), SleepWrapper.longSleep7500());
                     }
                 }
             }
+
             GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
+
             if (WILDERNESS_AREA.contains(Players.getLocal())) {
                 Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition());
             }

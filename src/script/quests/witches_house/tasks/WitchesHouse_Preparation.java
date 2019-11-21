@@ -38,6 +38,7 @@ public class WitchesHouse_Preparation extends Task {
         return THE_RESTLESS_GHOST.getVarpValue() == 5
                 && WITCHES_HOUSE.getVarpValue() == 0
                 && Skills.getLevel(Skill.MAGIC) >= 13
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && !readyToStartWitchesHouse;
     }
 

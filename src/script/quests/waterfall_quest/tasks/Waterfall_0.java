@@ -2,6 +2,8 @@ package script.quests.waterfall_quest.tasks;
 
 import api.API;
 import org.rspeer.runetek.api.component.Dialog;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
@@ -20,6 +22,7 @@ public class Waterfall_0 extends Task {
     public boolean validate() {
         return WITCHES_HOUSE.getVarpValue() == 7
                 && WATERFALL.getVarpValue() == 0
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && Waterfall_Preparation.readyToStartWaterfall;
     }
 

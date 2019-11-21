@@ -10,6 +10,8 @@ import org.rspeer.runetek.api.component.GrandExchange;
 import org.rspeer.runetek.api.component.GrandExchangeSetup;
 import org.rspeer.runetek.api.component.tab.Equipment;
 import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
@@ -48,6 +50,7 @@ public class PriestInPeril_0 extends Task {
     public boolean validate() {
         return WATERFALL.getVarpValue() == 10
                 && PRIEST_IN_PERIL.getVarpValue() == 0
+                && Skills.getLevel(Skill.PRAYER) < 50
                 && PriestInPeril_Preparation.readyToStartPriestInPeril;
     }
 
