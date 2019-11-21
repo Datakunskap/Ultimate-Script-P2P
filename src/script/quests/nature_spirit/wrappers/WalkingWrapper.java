@@ -25,7 +25,7 @@ import script.wrappers.BankWrapper;
 import script.wrappers.GEWrapper;
 import script.wrappers.SupplyMapWrapper;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class WalkingWrapper extends script.wrappers.WalkingWrapper {
 
@@ -208,13 +208,13 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 WalkingWrapper.enterGrotto();
             } else {
                 Log.info("Buying sickle");
-                HashMap<String, Integer> map;
+                LinkedHashMap<String, Integer> map;
                 if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    map = new HashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
+                    map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
                     map.remove("Silver sickle (b)");
                     map.put("Silver sickle", 1);
                 } else {
-                    map = new HashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
+                    map = new LinkedHashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
                 }
                 GEWrapper.setBuySupplies(true, false, map);
             }

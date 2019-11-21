@@ -172,13 +172,13 @@ public class Mule extends Task {
                             BankWrapper.setMuleing(false);
                             BankWrapper.resetStartingValue();
                             banked = false;
-                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             if (begWorld != -1) {
                                 ExWorldHopper.instaHopTo(begWorld);
                             } else {
                                 ExWorldHopper.randomInstaHopInPureP2p();
                             }
-                            return 500;
+                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                            return 3000;
                         }
                         Time.sleep(700);
                     }

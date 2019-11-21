@@ -17,7 +17,7 @@ import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.ui.Log;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -30,10 +30,10 @@ public class PriceCheckService {
     private static final String RSBUDDY_EXCHANGE_SUMMARY_URL = "https://rsbuddy.com/exchange/summary.json";
     private static final String OLDSCHOOL_RUNESCAPE_API_URL = "http://services.runescape.com/m=itemdb_oldschool/api/";
     private static Gson g = new Gson();
-    private static Map<String, Integer> itemNameMapping = new HashMap<>();
-    private static Map<Integer, ItemPrice> prices = new HashMap<>();
+    private static Map<String, Integer> itemNameMapping = new LinkedHashMap<>();
+    private static Map<Integer, ItemPrice> prices = new LinkedHashMap<>();
     private static int reloadMinutes = 30;
-    private static boolean isReloadEnabled = true;
+    private static boolean isReloadEnabled = false;
     private static HashSet<String> failedItemPriceNames = new HashSet<>();
     private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
     private static final Gson GSON = new Gson().newBuilder().create();
@@ -63,15 +63,17 @@ public class PriceCheckService {
         for (Item item : items) {
             if (item.isExchangeable() && !item.isNoted() && item.getId() != 995) {
                 int itemValue = 0;
+
                 try {
                     itemValue = PriceCheckService.getPrice(item.getId()).getSellAverage() * item.getStackSize();
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
 
                 if (itemValue <= 0 && prices.get(item.getId()) != null) {
                     itemValue = prices.get(item.getId()).getSellAverage() * item.getStackSize();
                 }
 
-                if (itemValue <= 0 && !failedItemPriceNames.contains(item.getName())) {
+                /*if (itemValue <= 0 && !failedItemPriceNames.contains(item.getName())) {
                     reload(OSBUDDY_EXCHANGE_SUMMARY_URL);
                     try {
                         itemValue = PriceCheckService.getPrice(item.getId()).getSellAverage() * item.getStackSize();
@@ -90,7 +92,7 @@ public class PriceCheckService {
                         failedItemPriceNames.add(item.getName());
                         reload();
                     }
-                }
+                }*/
 
                 total += itemValue;
             }

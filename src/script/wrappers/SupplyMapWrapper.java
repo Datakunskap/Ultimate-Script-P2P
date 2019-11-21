@@ -1,25 +1,25 @@
 package script.wrappers;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SupplyMapWrapper {
-    private static HashMap<String, Integer> supplyMap;
+    private static LinkedHashMap<String, Integer> supplyMap;
 
-    public static HashMap<String, Integer> getCurrentSupplyMap() {
+    public static LinkedHashMap<String, Integer> getCurrentSupplyMap() {
         return supplyMap;
     }
     
-    public static void setSupplyMap(HashMap<String, Integer> supplyMap) {
+    public static void setSupplyMap(LinkedHashMap<String, Integer> supplyMap) {
         SupplyMapWrapper.supplyMap = supplyMap;
     } 
 
-    public static HashMap<String, Integer> getRestlessGhostItemsMap() {
-        supplyMap = new HashMap<>();
-        return new HashMap<>();
+    public static LinkedHashMap<String, Integer> getRestlessGhostItemsMap() {
+        supplyMap = new LinkedHashMap<>();
+        return new LinkedHashMap<>();
     }
 
-    public static HashMap<String, Integer> getMortMyreFungusItemsMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getMortMyreFungusItemsMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Ring of dueling(8)", 11);
         map.put("Silver sickle (b)", 1);
         map.put("Varrock teleport", 1);
@@ -27,16 +27,16 @@ public class SupplyMapWrapper {
         return map;
     }
 
-    public static HashMap<String, Integer> getMortMyreFungusKeepMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getMortMyreFungusKeepMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Ring of dueling(8)", 1);
         map.put("Salve graveyard teleport", 1000);
         map.put("Silver sickle (b)", 1);
         return map;
     }
 
-    public static HashMap<String, Integer> getWitchesHouseItemsMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getWitchesHouseItemsMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Amulet of glory(6)", 1);
         map.put("Staff of air", 1);
         map.put("Cheese", 2);
@@ -48,20 +48,20 @@ public class SupplyMapWrapper {
         return map;
     }
 
-    public static HashMap<String, Integer> getWaterfallItemsMap() {
+    public static LinkedHashMap<String, Integer> getWaterfallItemsMap() {
         //TODO: Add items
-        HashMap<String, Integer> map = new HashMap<>();
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         return map;
     }
 
-    public static HashMap<String, Integer> getPriestInPerilItemsMap() {
+    public static LinkedHashMap<String, Integer> getPriestInPerilItemsMap() {
         //TODO: Add items
-        HashMap<String, Integer> map = new HashMap<>();
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         return map;
     }
 
-    public static HashMap<String, Integer> getNatureSpiritKeepMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getNatureSpiritKeepMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Silver sickle", 1);
         map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 10);
@@ -73,8 +73,8 @@ public class SupplyMapWrapper {
         return map;
     }
 
-    public static HashMap<String, Integer> getNatureSpiritItemsMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getNatureSpiritItemsMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Silver sickle", 1);
         map.put("Jug of wine", 10);
         map.put("Monkfish", 5);
@@ -82,16 +82,16 @@ public class SupplyMapWrapper {
         return map;
     }
 
-    public static HashMap<String, Integer> getPrayerItemsMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getPrayerItemsMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Dragon Bones", 300);
         map.put("Amulet of glory(6)", 1);
         map.put("Burning amulet(5)", 1);
         return map;
     }
 
-    public static HashMap<String, Integer> getStartingItemsMap() {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static LinkedHashMap<String, Integer> getStartingItemsMap() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Lumbridge teleport", 10);
         map.put("Staff of air", 1);
         map.put("Staff of fire", 1);

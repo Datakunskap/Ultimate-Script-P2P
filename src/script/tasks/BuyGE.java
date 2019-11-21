@@ -1,6 +1,7 @@
 package script.tasks;
 
 import api.component.ExWorldHopper;
+import org.rspeer.runetek.api.Definitions;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
@@ -13,6 +14,7 @@ import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.input.Keyboard;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.providers.RSGrandExchangeOffer;
+import org.rspeer.runetek.providers.RSItemDefinition;
 import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
@@ -24,9 +26,9 @@ import java.util.*;
 
 public class BuyGE extends Task {
 
-    private HashMap<String, Integer> SUPPLIES;
+    private LinkedHashMap<String, Integer> SUPPLIES;
     private Iterator<Map.Entry<String, Integer>> itemsIterator;
-    private HashMap<String, Integer> items;
+    private LinkedHashMap<String, Integer> items;
     private String itemToBuy;
     private int coinsToSpend;
 
@@ -51,7 +53,7 @@ public class BuyGE extends Task {
         if (SUPPLIES != null && !GEWrapper.hasSupplies(SUPPLIES) && itemsIterator == null) {
 
             Log.fine("Buying Supplies");
-            items = new HashMap<>(SUPPLIES);
+            items = new LinkedHashMap<>(SUPPLIES);
 
             itemsIterator = items.entrySet().iterator();
             itemToBuy = itemsIterator.next().getKey();
@@ -66,8 +68,10 @@ public class BuyGE extends Task {
 
     @Override
     public int execute() {
+        if (!Game.isLoggedIn() || Players.getLocal() == null)
+            return 2000;
 
-        if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
+        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
             if (Inventory.contains("Varrock teleport")) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
@@ -142,13 +146,19 @@ public class BuyGE extends Task {
 
     private void doneRestockingHelper() {
         Log.fine("Done Restocking");
-        int totalQuantity = 0;
-        for (Integer quantity : SUPPLIES.values()) {
-            totalQuantity += quantity;
-        }
         if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
             BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
         } else {
+            int totalQuantity = 0;
+            for (Map.Entry<String, Integer> entry : SUPPLIES.entrySet()) {
+                RSItemDefinition item = Definitions.getItem(entry.getKey(), RSItemDefinition::isTradable);
+                if (item.isStackable()) {
+                    totalQuantity += 1;
+                } else {
+                    totalQuantity += entry.getValue();
+                }
+            }
+
             boolean withdrawNoted = totalQuantity > Inventory.getFreeSlots();
             BankWrapper.doBanking(false, withdrawNoted, SUPPLIES);
         }

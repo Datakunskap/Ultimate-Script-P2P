@@ -65,7 +65,7 @@ public class BankWrapper {
     }
 
     private static void doBanking(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted,
-                                  Set<String> set, HashMap<String, Integer> map, String... itemsToKeep) {
+                                  Set<String> set, LinkedHashMap<String, Integer> map, String... itemsToKeep) {
         if (BankLocation.getNearest().getPosition().distance() > 5) {
             Log.fine("Walking To Nearest Bank");
             Movement.getDaxWalker().walkToBank();
@@ -172,7 +172,7 @@ public class BankWrapper {
         doBanking(keepAllCoins, 0, true, itemsToKeepSet, null);
     }
 
-    public static void doBanking(boolean keepAllCoins, HashMap<String, Integer> map) {
+    public static void doBanking(boolean keepAllCoins, LinkedHashMap<String, Integer> map) {
         doBanking(keepAllCoins, 0, true, null, map);
     }
 
@@ -184,7 +184,7 @@ public class BankWrapper {
         doBanking(keepAllCoins, 0, withdrawNoted, set, null);
     }
 
-    public static void doBanking(boolean keepAllCoins, boolean withdrawNoted, HashMap<String, Integer> map) {
+    public static void doBanking(boolean keepAllCoins, boolean withdrawNoted, LinkedHashMap<String, Integer> map) {
         doBanking(keepAllCoins, 0, withdrawNoted, null, map);
     }
 
@@ -227,7 +227,7 @@ public class BankWrapper {
         updateInventoryValue();
     }
 
-    public static HashSet<String> getItemsNeeded(HashMap<String, Integer> itemsToBuy) {
+    public static HashSet<String> getItemsNeeded(LinkedHashMap<String, Integer> itemsToBuy) {
         HashSet<String> set = new HashSet<>();
         if (itemsToBuy != null && itemsToBuy.size() > 0) {
 

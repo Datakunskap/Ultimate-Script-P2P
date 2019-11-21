@@ -33,7 +33,7 @@ public final class ScriptPaint implements RenderListener {
 
     public ScriptPaint(Main context) {
         this.context = context;
-        stats = new LinkedHashMap<>();
+        stats = new HashMap<>();
         outline = new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255));
 
         stats.put("SS Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));

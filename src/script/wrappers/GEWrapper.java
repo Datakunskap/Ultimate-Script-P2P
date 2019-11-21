@@ -18,7 +18,7 @@ import org.rspeer.runetek.providers.RSGrandExchangeOffer;
 import org.rspeer.runetek.providers.RSItemDefinition;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class GEWrapper {
 
@@ -47,7 +47,7 @@ public class GEWrapper {
         return sellItems;
     }
 
-    public static void setBuySupplies(boolean buySupplies, boolean sellItems, HashMap<String, Integer> supplyMap) {
+    public static void setBuySupplies(boolean buySupplies, boolean sellItems, LinkedHashMap<String, Integer> supplyMap) {
         GEWrapper.buySupplies = buySupplies;
         BankWrapper.setHasCheckedBank(false);
         SupplyMapWrapper.setSupplyMap(supplyMap);
@@ -58,7 +58,7 @@ public class GEWrapper {
         return buySupplies;
     }
 
-    public static boolean hasSupplies(HashMap<String, Integer> map) {
+    public static boolean hasSupplies(LinkedHashMap<String, Integer> map) {
         return hasSupplies(map.keySet().toArray(new String[0]));
     }
 

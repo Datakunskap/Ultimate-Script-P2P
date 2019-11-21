@@ -4,6 +4,7 @@ import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -58,9 +59,10 @@ public class SellGE extends Task {
 
     @Override
     public int execute() {
-        Player me = Players.getLocal();
+        if (!Game.isLoggedIn() || Players.getLocal() == null)
+            return 2000;
 
-        if (!GEWrapper.GE_AREA_LARGE.contains(me)) {
+        if (BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
             if (Inventory.contains("Varrock teleport")) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
