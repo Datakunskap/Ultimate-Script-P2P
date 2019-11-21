@@ -22,12 +22,6 @@ public class BankWrapper {
     private static int amountMuled;
     private static boolean hasCheckedBank;
 
-    public static void resetStartingValue() {
-        startingValue = 0;
-        bankValue = -1;
-        inventoryValue = -1;
-    }
-
     public static int getTotalValue() {
         return getBankValue() + getInventoryValue();
     }
@@ -41,7 +35,7 @@ public class BankWrapper {
     }
 
     public static int getTotalValueGained() {
-        return (getTotalValue() - (startingValue > 0 ? startingValue : getTotalValue()));
+        return (getTotalValue() - (startingValue > 0 ? startingValue : getTotalValue()) + getAmountMuled());
     }
 
     public static void updateBankValue() {

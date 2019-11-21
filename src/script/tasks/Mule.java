@@ -170,7 +170,6 @@ public class Mule extends Task {
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
                             Time.sleep(8000, 10000);
                             BankWrapper.setMuleing(false);
-                            BankWrapper.resetStartingValue();
                             banked = false;
                             if (begWorld != -1) {
                                 ExWorldHopper.instaHopTo(begWorld);

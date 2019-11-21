@@ -33,18 +33,12 @@ public final class ScriptPaint implements RenderListener {
 
     public ScriptPaint(Main context) {
         this.context = context;
-        stats = new HashMap<>();
+        stats = new LinkedHashMap<>();
         outline = new Color(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255));
 
         stats.put("SS Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));
         stats.put("Runtime", new PaintStatistic(() -> context.getRuntime().toElapsedString()));
         stats.put("Task", new PaintStatistic(() -> context.getCurrent() != null ? context.getCurrent().getClass().getSimpleName() : "None"));
-        stats.put("Inventory Value", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getInventoryValue())));
-        stats.put("Bank Value", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getBankValue())));
-        stats.put("Total Value", new PaintStatistic(()
-                -> formatNumber.format(BankWrapper.getTotalValue())));
         stats.put("Value Gained", new PaintStatistic(()
                 -> formatNumber.format(BankWrapper.getTotalValueGained())));
         stats.put("Value / H", new PaintStatistic(()
