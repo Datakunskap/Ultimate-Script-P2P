@@ -256,7 +256,7 @@ public class Fungus extends Task {
                         }
                     }
                 }
-                if (!Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
+                else {
                     Log.info("Walking to clan wars since I don't have a dueling ring");
                     Movement.walkTo(BankLocation.CLAN_WARS.getPosition());
                 }
