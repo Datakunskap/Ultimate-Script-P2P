@@ -217,6 +217,11 @@ public class BankWrapper {
             Time.sleep(200, 400);
         }
 
+        if (itemsToKeep.contains("Silver sickle") && Inventory.getCount(true, "Coins") < 10_000 && Bank.getCount("Coins") < 10_000) {
+            Bank.withdrawAll("Salve graveyard teleport");
+            Time.sleepUntilForDuration(() -> Inventory.contains("Salve graveyard teleport"), Random.mid(500, 800), 10_000);
+        }
+
         updateBankValue();
         updateInventoryValue();
     }

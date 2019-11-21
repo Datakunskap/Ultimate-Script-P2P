@@ -208,15 +208,14 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 WalkingWrapper.enterGrotto();
             } else {
                 Log.info("Buying sickle");
-                LinkedHashMap<String, Integer> map;
                 if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
+                    LinkedHashMap<String, Integer> map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
                     map.remove("Silver sickle (b)");
                     map.put("Silver sickle", 1);
+                    GEWrapper.setBuySupplies(true, Skills.getLevel(Skill.PRAYER) >= 50, SupplyMapWrapper.getNatureSpiritItemsMap());
                 } else {
-                    map = new LinkedHashMap<>(SupplyMapWrapper.getNatureSpiritItemsMap());
+                    GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getNatureSpiritItemsMap());
                 }
-                GEWrapper.setBuySupplies(true, false, map);
             }
         }
     }

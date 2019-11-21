@@ -241,7 +241,7 @@ public class Fungus extends Task {
     public void doBanking() {
         if (BankLocation.CLAN_WARS.getPosition().distance() > 50) {
             if (Inventory.containsAnyExcept(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport"))) {
-                if (Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
+                if (Inventory.contains(x -> x.getName().contains("Ring of dueling(") && !x.isNoted())) {
                     if (!Dialog.isViewingChatOptions()) {
                         Item row = Inventory.getFirst(x -> x.getName().contains("Ring of dueling("));
                         Log.info("Rubbing the dueling ring to teleport to clan wars");
