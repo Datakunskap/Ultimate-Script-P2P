@@ -61,11 +61,11 @@ public class Fungus extends Task {
 
         if (!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()) {
             Log.info("idk");
-            if (BankLocation.GRAND_EXCHANGE.getPosition().distance() < 10 && Inventory.contains(i -> i.getName().contains("Ring of dueling("))) {
+            if (BankLocation.GRAND_EXCHANGE.getPosition().distance() < 15 && Inventory.contains(i -> i.getName().contains("Ring of dueling("))) {
                 Inventory.getFirst(i -> i.getName().contains("Ring of dueling(")).interact("Rub");
                 Time.sleepUntil(Dialog::isViewingChatOptions, 5000);
                 Dialog.process(o -> o.contains("Clan Wars"));
-                Time.sleepUntil(() -> !Dialog.isProcessing() && !Game.isLoadingRegion(), 8000);
+                Time.sleepUntil(() -> BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15 && !Game.isLoadingRegion(), 8000);
             }
             Movement.walkTo(BankLocation.CLAN_WARS.getPosition());
         }
