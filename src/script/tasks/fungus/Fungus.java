@@ -270,6 +270,10 @@ public class Fungus extends Task {
                     }
                 }
                 if (Bank.isOpen()) {
+                    if(Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())){
+                        Bank.depositInventory();
+                        Time.sleepUntil(Inventory::isEmpty, 8000);
+                    }
                     if (!Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
                         if (Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                             if (Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1)) {
@@ -313,38 +317,8 @@ public class Fungus extends Task {
                 if (Bank.isOpen()) {
                     if(Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())){
                         Bank.depositInventory();
+                        Time.sleepUntil(Inventory::isEmpty, 8000);
                     }
-                    //TODO: DELETE (unecessary)
-                   /* if (!Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.getName().contains("Salve graveyard teleport"))) {
-                        if (!Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
-                            if (Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
-                                if (Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1)) {
-                                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of dueling(")), 5000);
-                                }
-                            }
-                            if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
-                                //restock
-                                Log.info("I need to restock ring of duelings");
-                                withdrawGrandExchangeTeleport();
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
-                                return;
-                            }
-                        }
-                        if (!Inventory.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
-                            if (Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
-                                if (Bank.withdrawAll(x -> x.getName().contains("Salve graveyard teleport"))) {
-                                    Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Salve graveyard teleport")), 5000);
-                                }
-                            }
-                            if (!Bank.contains(x -> x.getName().contains("Salve graveyard teleport"))) {
-                                //restock
-                                Log.info("I need to restock salve graveyard teleports");
-                                withdrawGrandExchangeTeleport();
-                                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
-                                return;
-                            }
-                        }
-                    }*/
                     Log.info("Deposting everything expect teleports");
                     if (Bank.depositAllExcept(x -> x.getName().contains("Ring of dueling(") && !x.isNoted() || x.getName().contains("Salve graveyard teleport"))) {
                         Time.sleepUntil(() -> Inventory.containsOnly(x -> x.getName().contains("Ring of dueling(") || x.getName().contains("Salve graveyard teleport")), 5000);

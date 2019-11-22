@@ -118,7 +118,7 @@ public class SupplyMapWrapper {
         map.put("Dragon bones", 300);
         map.put("Burning amulet(5)", 5);
         map.put("Jug of wine", 20);
-        map.put("Salve graveyard teleport", 3);
+        map.put("Salve graveyard teleport", 4);
         return map;
     }
 }

@@ -12,13 +12,22 @@ import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.ui.Log;
+import script.quests.nature_spirit.data.Location;
 import script.tasks.fungus.Fungus;
 
 public class WalkingWrapper {
 
     private static Area MORTANIA = Area.rectangular(3410, 3454, 3534, 3319);
+    public static final Position GATE_POSITION = new Position(3443, 3459, 0);
 
     public static boolean walkToPosition(Position position) {
+        if (!position.equals(GATE_POSITION) && MORTANIA.contains(position) && !MORTANIA.contains(Players.getLocal()) && !Fungus.inSalveGravyardArea() && GATE_POSITION.distance() > 6) {
+            if (Inventory.contains("Salve graveyard teleport") && GATE_POSITION.distance() > 10 && !Location.DUNGEON_AREA.contains(Players.getLocal())) {
+                Fungus.useTeleportTab("Salve graveyard teleport");
+            }
+            walkToPosition(GATE_POSITION);
+        }
+
         return Movement.walkTo(position,
                 () -> {
                     if (shouldBreakOnTarget() || shouldEnableRun() || (Fungus.inSalveGravyardArea() && (MORTANIA.contains(position)))) {

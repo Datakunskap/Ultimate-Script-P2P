@@ -3,6 +3,7 @@ package script.quests.nature_spirit.wrappers;
 import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
+import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
@@ -118,32 +119,35 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 exitAndLeaveGrotto();
             }
-            if (AMULET_POSITION.distance() > 5) {
-                Log.info("Checking bank for Ghostspeak amulet");
-                BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
-                if (!Inventory.contains("Ghostspeak amulet")) {
-                    Log.info("Getting a new Ghostspeak amulet");
-                    walkToPosition(AMULET_POSITION);
+            while (!Equipment.contains("Ghostspeak amulet") && Game.isLoggedIn()) {
+                if (AMULET_POSITION.distance() > 5) {
+                    Log.info("Checking bank for Ghostspeak amulet");
+                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                    if (!Inventory.contains("Ghostspeak amulet")) {
+                        Log.info("Getting a new Ghostspeak amulet");
+                        walkToPosition(AMULET_POSITION);
+                    }
                 }
-            }
-            if (!Dialog.isOpen()) {
-                Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
-                if (man != null) {
-                    man.interact("Talk-to");
-                    Time.sleepUntil(Dialog::isOpen, 6000);
+                if (!Dialog.isOpen()) {
+                    Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
+                    if (man != null) {
+                        man.interact("Talk-to");
+                        Time.sleepUntil(Dialog::isOpen, 10_000);
+                    }
                 }
-            }
-            if (Dialog.canContinue()) {
-                Dialog.processContinue();
-            }
-            Dialog.process("I've lost the Amulet of Ghostspeak.");
-            while (Dialog.isOpen() && (Dialog.canContinue() || Dialog.isProcessing())) {
-                Dialog.processContinue();
-                Time.sleep(1200, 1800);
-            }
-            if (Inventory.contains("Ghostspeak amulet")) {
-                Inventory.getFirst("Ghostspeak amulet").interact("Wear");
-                Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+                if (Dialog.canContinue()) {
+                    Dialog.processContinue();
+                }
+                Dialog.process(o -> o.contains("lost"));
+                while (Dialog.isOpen()) {
+                    Time.sleep(1200, 1800);
+                    Dialog.processContinue();
+                }
+                if (Inventory.contains("Ghostspeak amulet")) {
+                    Inventory.getFirst("Ghostspeak amulet").interact("Wear");
+                    Time.sleepUntil(() -> Equipment.contains("Ghostspeak amulet"), 5000);
+                }
+                Time.sleep(1000);
             }
         } else {
 

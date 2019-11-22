@@ -27,6 +27,10 @@ public class WorldhopWrapper {
     private static final int WORLD_HOP_SECONDS = 20;
     private static final Area FUNGUS_AREA = Area.rectangular(3417, 3441, 3425, 3434);
 
+    public static int getCurrentWorld() {
+        return currentWorld;
+    }
+
     public static void resetChecker() {
         worldHopTimer = null;
         worlds = null;

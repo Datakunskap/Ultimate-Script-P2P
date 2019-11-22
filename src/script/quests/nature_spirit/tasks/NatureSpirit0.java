@@ -22,6 +22,7 @@ import org.rspeer.ui.Log;
 import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Location;
 import script.quests.nature_spirit.data.Quest;
+import script.tasks.fungus.Fungus;
 import script.wrappers.BankWrapper;
 import script.wrappers.SleepWrapper;
 import script.wrappers.SupplyMapWrapper;
@@ -51,6 +52,11 @@ public class NatureSpirit0 extends Task {
             } else {
                 hasSupplies = true;
                 SupplyMapWrapper.setSupplyMap(SupplyMapWrapper.getNatureSpiritKeepMap());
+                Bank.close();
+                Time.sleepUntil(Bank::isClosed, 5000);
+                if (Inventory.contains("Salve graveyard teleport") && WalkingWrapper.GATE_POSITION.distance() > 10 && !Location.DUNGEON_AREA.contains(Players.getLocal())) {
+                    Fungus.useTeleportTab("Salve graveyard teleport");
+                }
             }
             return SleepWrapper.shortSleep600();
         }
