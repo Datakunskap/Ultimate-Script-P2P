@@ -271,4 +271,14 @@ public class BankWrapper {
     public static void setHasCheckedBank(boolean hasCheckedBank) {
         BankWrapper.hasCheckedBank = hasCheckedBank;
     }
+
+    private static boolean hasBanTimeMuled;
+
+    public static void setHasBanTimeMuled(boolean muled) {
+        hasBanTimeMuled = muled;
+    }
+
+    public static boolean hasBanTimeMuled() {
+        return hasBanTimeMuled;
+    }
 }

@@ -35,7 +35,7 @@ public class SellGE extends Task {
 
     @Override
     public boolean validate() {
-        if (!GEWrapper.isSellItems())
+        if (!GEWrapper.isSellItems() || BankWrapper.isMuleing())
             return false;
 
         if (itemsToSell == null) {

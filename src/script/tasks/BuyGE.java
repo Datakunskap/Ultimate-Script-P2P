@@ -38,7 +38,7 @@ public class BuyGE extends Task {
 
     @Override
     public boolean validate() {
-        if (!GEWrapper.isBuySupplies() || !Game.isLoggedIn() || Players.getLocal() == null) {
+        if (!GEWrapper.isBuySupplies() || !Game.isLoggedIn() || Players.getLocal() == null || BankWrapper.isMuleing()) {
             if (BankWrapper.hasCheckedBank()) {
                 BankWrapper.setHasCheckedBank(false);
             }

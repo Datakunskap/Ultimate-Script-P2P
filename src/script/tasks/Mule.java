@@ -21,6 +21,7 @@ import org.rspeer.ui.Log;
 import script.wrappers.*;
 
 import java.io.*;
+import java.util.Calendar;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -37,6 +38,7 @@ public class Mule extends Task {
     private final int muleWorld;
     private final String muleName;
     private static final String CRLF = "\r\n";
+    private Calendar calendar;
 
     public Mule(int muleAmount, String muleName, Position mulePosition, int muleWorld, int muleKeep) {
         this.muleAmount = muleAmount;
@@ -48,9 +50,12 @@ public class Mule extends Task {
 
     @Override
     public boolean validate() {
-        return Skills.getLevel(Skill.PRAYER) > 49 && !GEWrapper.isSellItems()
-                && (Inventory.getCount(true, "Coins") >= muleAmount || Bank.getCount("Coins") >= muleAmount || trading);
-        //return (!GEWrapper.isSellItems() && BankWrapper.getTotalValue() >= muleAmount) || trading;
+        java.util.TimeZone tz = java.util.TimeZone.getTimeZone("GMT");
+        calendar = java.util.Calendar.getInstance(tz);
+
+        return Skills.getLevel(Skill.PRAYER) >= 50 && !GEWrapper.isSellItems()
+                && ((Inventory.getCount(true, "Coins") >= muleAmount || Bank.getCount("Coins") >= muleAmount || trading)
+                || (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 && !BankWrapper.hasBanTimeMuled()));
     }
 
     @Override
@@ -163,14 +168,18 @@ public class Mule extends Task {
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
                             //main.setRandMuleKeep(main.minKeep, main.maxKeep);
                             Time.sleep(8000, 10000);
-                            BankWrapper.setMuleing(false);
                             banked = false;
                             if (begWorld != -1) {
                                 ExWorldHopper.instaHopTo(begWorld);
                             } else {
                                 ExWorldHopper.randomInstaHopInPureP2p();
                             }
+
                             GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                            if (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 || calendar.get(java.util.Calendar.HOUR_OF_DAY) == 9) {
+                                BankWrapper.setHasBanTimeMuled(true);
+                            }
+                            BankWrapper.setMuleing(false);
                             return 3000;
                         }
                         Time.sleep(700);
