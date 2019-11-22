@@ -90,7 +90,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
         }
         if ((toGrotto && Location.NATURE_GROTTO_AREA.contains(Players.getLocal()))
                 || (!toGrotto && !Location.NATURE_GROTTO_AREA.contains(Players.getLocal())))
-                return;
+            return;
 
         SceneObject bridge = SceneObjects.getNearest("Bridge");
         if (bridge != null && bridge.interact(a -> true)) {
@@ -138,8 +138,8 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 if (Dialog.canContinue()) {
                     Dialog.processContinue();
                 }
-                Dialog.process(o -> o.contains("lost"));
                 while (Dialog.isOpen()) {
+                    Dialog.process(o -> o.contains("lost"));
                     Time.sleep(1200, 1800);
                     Dialog.processContinue();
                 }
@@ -175,11 +175,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 WalkingWrapper.exitAndLeaveGrotto();
                 return;
             } else {
-                if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getMortMyreFungusKeepMap());
-                } else {
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
-                }
+                BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
             }
         }
         if (!Inventory.contains("Silver sickle (b)")) {
@@ -216,7 +212,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                     LinkedHashMap<String, Integer> map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
                     map.remove("Silver sickle (b)");
                     map.put("Silver sickle", 1);
-                    GEWrapper.setBuySupplies(true, Skills.getLevel(Skill.PRAYER) >= 50, SupplyMapWrapper.getNatureSpiritItemsMap());
+                    GEWrapper.setBuySupplies(true, Skills.getLevel(Skill.PRAYER) >= 50, map);
                 } else {
                     GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getNatureSpiritItemsMap());
                 }

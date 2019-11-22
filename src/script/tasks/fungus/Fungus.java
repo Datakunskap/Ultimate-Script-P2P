@@ -270,17 +270,17 @@ public class Fungus extends Task {
                     }
                 }
                 if (Bank.isOpen()) {
-                    if(Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())){
-                        Bank.depositInventory();
-                        Time.sleepUntil(Inventory::isEmpty, 8000);
-                    }
                     if (!Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
+                        if(Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())){
+                            Bank.depositInventory();
+                            Time.sleepUntil(Inventory::isEmpty, 8000);
+                        }
                         if (Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
                             if (Bank.withdraw(x -> x.getName().contains("Ring of dueling("), 1)) {
                                 Time.sleepUntil(() -> Inventory.contains(x -> x.getName().contains("Ring of dueling(")), 5000);
                             }
                         }
-                        if (!Bank.contains(x -> x.getName().contains("Ring of dueling("))) {
+                        if (!Bank.contains(x -> x.getName().contains("Ring of dueling(")) && !Inventory.contains(x -> x.getName().contains("Ring of dueling("))) {
                             //restock
                             Log.info("I need to restock ring of duelings");
                             withdrawGrandExchangeTeleport();

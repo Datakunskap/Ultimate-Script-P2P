@@ -129,31 +129,25 @@ public class Mule extends Task {
                         trading = true;
                         // handle first trade window...
                         int attempts = 0;
-                        while (Trade.isOpen(false)) {
-                            attempts++;
+                        while (Trade.isOpen(false) && attempts < 7) {
                             Log.info("Entering trade offer");
-                            Item[] tradeItems = Inventory.getItems();
+                            Item tradeItem = Inventory.getFirst("Coins");
 
-                            for (Item o : tradeItems) {
-                                if (o.getId() == 995) {
-                                    Trade.offer("Coins", x -> x.contains("X"));
-                                    Time.sleepUntil(EnterInput::isOpen, 8000);
-                                    EnterInput.initiate(o.getStackSize() - muleKeep);
-                                    Keyboard.pressEnter();
-                                } else {
-                                    Trade.offerAll(i -> i.getId() == o.getId());
+                            if (tradeItem != null) {
+                                Trade.offer("Coins", x -> x.contains("X"));
+                                Time.sleepUntil(EnterInput::isOpen, 5000);
+                                EnterInput.initiate(tradeItem.getStackSize() - muleKeep);
+                                Keyboard.pressEnter();
+
+                                if (Time.sleepUntil(() -> Trade.contains(true, tradeItem.getName()), 6000)) {
+                                    Log.info("Trade entered & accepted");
+                                    Trade.accept();
+                                    Time.sleepUntil(() -> Trade.isOpen(true), 6000);
+                                    break;
                                 }
-                                Time.sleepUntil(() -> Trade.contains(true, i -> i.getId() == o.getId() && i.getStackSize() == o.getStackSize()), 2000, 8000);
                             }
-                            if (Trade.contains(true, "Coins")) {
-                                Log.info("Trade entered & accepted");
-                                Trade.accept();
-                                Time.sleepUntil(() -> Trade.isOpen(true), 5000);
-                                break;
-                            }
-                            if (attempts > 6) {
-                                break;
-                            }
+                            Time.sleep(400, 800);
+                            attempts++;
                         }
                     }
                     if (Trade.isOpen(true)) {

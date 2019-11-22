@@ -39,6 +39,8 @@ public final class ScriptPaint implements RenderListener {
         stats.put("SS Fungi", new PaintStatistic(true, () -> " by " + "Streagrem & DrScatman"));
         stats.put("Runtime", new PaintStatistic(() -> context.getRuntime().toElapsedString()));
         stats.put("Task", new PaintStatistic(() -> context.getCurrent() != null ? context.getCurrent().getClass().getSimpleName() : "None"));
+        stats.put("Deaths", new PaintStatistic(()
+                -> String.valueOf(context.playerDeaths)));
         stats.put("Value Gained", new PaintStatistic(()
                 -> formatNumber.format(BankWrapper.getTotalValueGained())));
         stats.put("Value / H", new PaintStatistic(()
