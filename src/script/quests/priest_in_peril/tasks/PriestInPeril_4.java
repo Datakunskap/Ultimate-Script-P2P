@@ -35,7 +35,7 @@ public class PriestInPeril_4 extends Task {
 
     @Override
     public boolean validate() {
-        return WATERFALL.getVarpValue() == 10 && PRIEST_IN_PERIL.getVarpValue() == 4;
+        return WATERFALL.getVarpValue() == 10 && (PRIEST_IN_PERIL.getVarpValue() == 4 || PRIEST_IN_PERIL.getVarpValue() == 5 && !Inventory.contains("Golden key"));
     }
 
     @Override

@@ -86,13 +86,13 @@ public class BankWrapper {
         }
         if (keepAllCoins) {
             Bank.withdrawAll("Coins");
-            Time.sleepUntilForDuration(() -> Inventory.contains("Coins"), Random.nextInt(1000, 1200),10_000);
+            Time.sleepUntilForDuration(() -> Inventory.contains("Coins"), Random.nextInt(1000, 1200), 10_000);
         }
 
         if (withdrawNoted) {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.NOTE) {
                 Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-                Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800),10_000);
+                Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800), 10_000);
             }
         } else {
             if (Bank.getWithdrawMode() != Bank.WithdrawMode.ITEM) {
@@ -149,7 +149,7 @@ public class BankWrapper {
                     Log.info("Withdrawing: " + item);
                     Bank.withdraw(i -> i.getName().equalsIgnoreCase(item), amount);
                     Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().equalsIgnoreCase(item))
-                            && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount),
+                                    && (Inventory.getCount(true, x -> x.getName().equalsIgnoreCase(item)) >= amount),
                             Random.nextInt(500, 800), 10_000);
                 } else if (Bank.contains(item.substring(0, item.length() - 3))) {
                     Bank.withdraw(i -> i.getName().contains(item.substring(0, item.length() - 3)), amount);
