@@ -136,9 +136,8 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                             Time.sleep(20_000, 22_000);
                         }
                     }
-                    continue;
                 }
-                if (!Dialog.isOpen()) {
+                if (!Dialog.isOpen() && AMULET_POSITION.distance() < 8) {
                     Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
                     if (man != null) {
                         man.interact("Talk-to");
