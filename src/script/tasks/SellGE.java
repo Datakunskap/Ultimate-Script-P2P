@@ -117,7 +117,7 @@ public class SellGE extends Task {
                         quantity = 9999;
                     }
 
-                    if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
+                    if (GEWrapper.sell(itemsToSell[i].getId(), quantity, Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
                         if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().equalsIgnoreCase(itemsToSell[index].getName())) != null,12_000)) {
