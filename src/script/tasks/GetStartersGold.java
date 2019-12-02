@@ -2,9 +2,9 @@ package script.tasks;
 
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Dialog;
@@ -14,13 +14,14 @@ import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
+import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
 import script.Main;
 import script.data.IDs;
 import script.data.Strings;
-import script.wrappers.WalkingWrapper;
 import script.wrappers.SleepWrapper;
+import script.wrappers.WalkingWrapper;
 
 public class GetStartersGold extends Task {
 
@@ -29,7 +30,7 @@ public class GetStartersGold extends Task {
 
     private static final String MULE_FOR_STARTERS_GOLD = Main.MULE_NAME;
 
-    private static final Position MULE_POSITION = Main.MULE_AREA.getCenter();
+    private static final Position MULE_POSITION = Main.MULE_POSITION;
     private boolean hasStartingGold;
 
     @Override
@@ -74,9 +75,18 @@ public class GetStartersGold extends Task {
         }
 
         if (Worlds.getCurrent() == MULE_WORLD) {
-            if (MULE_POSITION.distance() > 5) {
+            if (MULE_POSITION.distance() > 5 || Players.getLocal().getFloorLevel() != MULE_POSITION.getFloorLevel()) {
                 Log.info("I am walking to the mule");
-                WalkingWrapper.walkToPosition(MULE_POSITION);
+                if (!WalkingWrapper.walkToPosition(MULE_POSITION)) {
+
+                    WalkingWrapper.walkToPosition(new Position(MULE_POSITION.getX(), MULE_POSITION.getY(), Players.getLocal().getFloorLevel()));
+
+                    SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Up"));
+                    if (ladder != null) {
+                        ladder.interact("Climb-Up");
+                    }
+                }
+                return  SleepWrapper.shortSleep600();
             }
 
             if (MULE_POSITION.distance() <= 5) {
@@ -118,6 +128,11 @@ public class GetStartersGold extends Task {
                 if (Inventory.contains(Strings.COINS)) {
                     if (Inventory.getCount(true, Strings.COINS) >= AMOUNT_TO_RECEIVE) {
                         Log.info("I did receive enough starters gold");
+                        SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
+                        if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
+                            ladder.interact("Climb-Down");
+                            Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 18_000);
+                        }
                         hasStartingGold = true;
                     }
                     if (Inventory.getCount(true, Strings.COINS) < AMOUNT_TO_RECEIVE) {
