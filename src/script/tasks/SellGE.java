@@ -111,6 +111,12 @@ public class SellGE extends Task {
             for (int i = 0; i < itemsToSell.length; i++) {
                 status = "Selling";
                 if (itemsToSell[i] != null && GrandExchange.getOffers(RSGrandExchangeOffer.Type.SELL).length < 3) {
+
+                    int quantity = Inventory.getFirst(itemsToSell[i].getName()).getStackSize();
+                    if (quantity == 1) {
+                        quantity = 9999;
+                    }
+
                     if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
