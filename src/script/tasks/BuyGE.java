@@ -79,6 +79,13 @@ public class BuyGE extends Task {
             return SleepWrapper.shortSleep600();
         }
 
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            Log.info("World Hopping to P2P");
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return SleepWrapper.mediumSleep1000();
+        }
+
         if (!BankWrapper.hasCheckedBank()) {
             Log.info("Checking Bank");
             BankWrapper.doBanking(true, SUPPLIES);
@@ -89,13 +96,6 @@ public class BuyGE extends Task {
             if (Inventory.contains("Coins")) {
                 BankWrapper.setHasCheckedBank(true);
             }
-        }
-
-        RSWorld world = Worlds.get(Worlds.getCurrent());
-        if (world != null && !world.isMembers()) {
-            Log.info("World Hopping to P2P");
-            ExWorldHopper.randomInstaHopInPureP2p();
-            return SleepWrapper.mediumSleep1000();
         }
 
         coinsToSpend = Inventory.getCount(true, "Coins");
