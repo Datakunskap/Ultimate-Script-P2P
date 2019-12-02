@@ -74,6 +74,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
         submit(new GetStartersGold(),
                 new SellGE(),
                 new Mule(MULE_AMOUNT, MULE_NAME, MULE_POSITION, MULE_WORLD, MULE_AMOUNT_TO_KEEP),
+                new MemberWorldChecker(),
                 new BuyGE(),
                 new BuyItemsNeeded(),
                 new TrainTo13()
