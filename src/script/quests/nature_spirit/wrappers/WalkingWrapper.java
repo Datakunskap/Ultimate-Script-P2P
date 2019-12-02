@@ -4,6 +4,7 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
@@ -119,13 +120,19 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 exitAndLeaveGrotto();
             }
+            boolean checkedBank = false;
             while (!Equipment.contains("Ghostspeak amulet") && Game.isLoggedIn()) {
                 if (AMULET_POSITION.distance() > 5) {
-                    Log.info("Checking bank for Ghostspeak amulet");
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                    if (!checkedBank) {
+                        Log.info("Checking bank for Ghostspeak amulet");
+                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                        checkedBank = true;
+                    }
                     if (!Inventory.contains("Ghostspeak amulet")) {
                         Log.info("Getting a new Ghostspeak amulet");
-                        walkToPosition(AMULET_POSITION);
+                        if (!walkToPosition(AMULET_POSITION)) {
+                            walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
+                        }
                     }
                 }
                 if (!Dialog.isOpen()) {
@@ -203,14 +210,15 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                         Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
                     }
                 } else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
-                    WalkingWrapper.walkToNatureGrotto();
+                    walkToNatureGrotto();
                 }
-                WalkingWrapper.enterGrotto();
+                else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                    enterGrotto();
+                }
             } else {
                 Log.info("Buying sickle");
                 if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
                     LinkedHashMap<String, Integer> map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
-                    map.remove("Silver sickle (b)");
                     map.put("Silver sickle", 1);
                     GEWrapper.setBuySupplies(true, Skills.getLevel(Skill.PRAYER) >= 50, map);
                 } else {

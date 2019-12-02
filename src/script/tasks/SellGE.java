@@ -3,7 +3,6 @@ package script.tasks;
 import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
-import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;

@@ -167,6 +167,7 @@ public class Mule extends Task {
                             Time.sleep(3000);
                             Log.fine("Trade completed shutting down mule");
                             trading = false;
+                            banked = false;
                             logoutMule();
 
                             SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
@@ -177,19 +178,19 @@ public class Mule extends Task {
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
-                            Time.sleep(8000, 10000);
-                            banked = false;
-                            if (begWorld != -1) {
-                                ExWorldHopper.instaHopTo(begWorld);
-                            } else {
-                                ExWorldHopper.randomInstaHopInPureP2p();
-                            }
 
                             GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             if (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 || calendar.get(java.util.Calendar.HOUR_OF_DAY) == 9) {
                                 BankWrapper.setHasBanTimeMuled(true);
                             }
                             BankWrapper.setMuleing(false);
+
+                            Time.sleep(8000, 10000);
+                            if (begWorld != -1) {
+                                ExWorldHopper.instaHopTo(begWorld);
+                            } else {
+                                ExWorldHopper.randomInstaHopInPureP2p();
+                            }
                             return 3000;
                         }
                         Time.sleep(700);
