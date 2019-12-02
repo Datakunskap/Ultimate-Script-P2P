@@ -136,6 +136,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                             Time.sleep(20_000, 22_000);
                         }
                     }
+                    continue;
                 }
                 if (!Dialog.isOpen()) {
                     Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
