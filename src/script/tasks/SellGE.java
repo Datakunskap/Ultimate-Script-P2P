@@ -61,18 +61,18 @@ public class SellGE extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            Log.info("World Hopping to P2P");
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return SleepWrapper.mediumSleep1000();
+        }
+
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
             if (Inventory.contains("Varrock teleport") && BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.mediumSleep1000();
-        }
-
-        RSWorld world = Worlds.get(Worlds.getCurrent());
-        if (world != null && !world.isMembers()) {
-            Log.info("World Hopping to P2P");
-            ExWorldHopper.randomInstaHopInPureP2p();
             return SleepWrapper.mediumSleep1000();
         }
 

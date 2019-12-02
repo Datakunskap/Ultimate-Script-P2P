@@ -21,13 +21,10 @@ import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
-import script.data.Locations;
-import script.quests.nature_spirit.NatureSpirit;
 import script.quests.nature_spirit.data.Quest;
 import script.quests.nature_spirit.wrappers.WalkingWrapper;
 import script.wrappers.*;
 
-import java.util.LinkedHashMap;
 import java.util.function.Predicate;
 
 @ScriptMeta(developer = "Streagrem", name = "AntiPker", desc = "AntiPker")
@@ -154,7 +151,7 @@ public class Fungus extends Task {
                             Log.info("enterTheSwamp is visible and dontAskMeAgain is toggled");
                             if (enterTheSwamp.interact("Yes")) {
                                 Log.info("Clicked enterTheSwamp");
-                                Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 2000);
+                                Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 4000);
                             }
                         }
                     }
@@ -163,7 +160,7 @@ public class Fungus extends Task {
                         Log.info("enterTheSwamp is visible, but dontAskMeAgain isn't");
                         if (enterTheSwamp.interact("Yes")) {
                             Log.info("Clicked enterTheSwamp");
-                            Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 2000);
+                            Time.sleepUntil(() -> !AFTER_SALVE_GRAVEYARD_TELEPORT_AREA.contains(local), 4000);
                         }
                     }
                 }

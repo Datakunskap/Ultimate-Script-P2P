@@ -22,7 +22,9 @@ import script.quests.nature_spirit.data.Quest;
 import script.tasks.fungus.Fungus;
 import script.wrappers.*;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class BuyGE extends Task {
 
@@ -71,19 +73,19 @@ public class BuyGE extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            Log.info("World Hopping to P2P");
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return SleepWrapper.mediumSleep1000();
+        }
+
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
             if (Inventory.contains("Varrock teleport") && BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
             return SleepWrapper.shortSleep600();
-        }
-
-        RSWorld world = Worlds.get(Worlds.getCurrent());
-        if (world != null && !world.isMembers()) {
-            Log.info("World Hopping to P2P");
-            ExWorldHopper.randomInstaHopInPureP2p();
-            return SleepWrapper.mediumSleep1000();
         }
 
         if (!BankWrapper.hasCheckedBank()) {

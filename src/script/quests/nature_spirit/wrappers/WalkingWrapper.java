@@ -4,7 +4,6 @@ import org.rspeer.runetek.adapter.scene.Npc;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
@@ -131,7 +130,10 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                     if (!Inventory.contains("Ghostspeak amulet")) {
                         Log.info("Getting a new Ghostspeak amulet");
                         if (!walkToPosition(AMULET_POSITION)) {
-                            walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
+                            Tabs.open(Tab.MAGIC);
+                            Time.sleepUntil(() -> Tabs.getOpen() == Tab.MAGIC, 6000);
+                            Magic.cast(Spell.Modern.HOME_TELEPORT);
+                            Time.sleep(20_000, 22_000);
                         }
                     }
                 }
@@ -145,7 +147,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 if (Dialog.canContinue()) {
                     Dialog.processContinue();
                 }
-                while (Dialog.isOpen()) {
+                while (Dialog.isOpen() && Game.isLoggedIn()) {
                     Dialog.process(o -> o.contains("lost"));
                     Time.sleep(1200, 1800);
                     Dialog.processContinue();
