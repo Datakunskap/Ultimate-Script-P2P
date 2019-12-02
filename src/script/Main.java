@@ -5,7 +5,8 @@ import api.bot_management.data.LaunchedClient;
 import org.rspeer.RSPeer;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.tab.Inventory;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.event.listeners.DeathListener;
@@ -125,7 +126,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
 
             int varp = Quest.NATURE_SPIRIT.getVarpValue();
 
-            if (varp <= 75 || !Inventory.contains(i -> i.getName().contains("Burning amulet"))) {
+            if (varp <= 75 || Skills.getLevel(Skill.PRAYER) == 50) {
                 playerDeaths ++;
             }
 
