@@ -168,12 +168,6 @@ public class Mule extends Task {
                             banked = false;
                             logoutMule();
 
-                            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
-                            if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
-                                ladder.interact("Climb-Down");
-                                Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
-                            }
-
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
 
@@ -181,9 +175,17 @@ public class Mule extends Task {
                             if (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 || calendar.get(java.util.Calendar.HOUR_OF_DAY) == 9) {
                                 BankWrapper.setHasBanTimeMuled(true);
                             }
+
                             BankWrapper.setMuleing(false);
 
-                            Time.sleep(8000, 10000);
+                            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
+                            if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
+                                ladder.interact("Climb-Down");
+                                Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
+                            }
+
+
+                            Time.sleep(4000, 6500);
                             if (begWorld != -1) {
                                 ExWorldHopper.instaHopTo(begWorld);
                             } else {
