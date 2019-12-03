@@ -35,7 +35,6 @@ public class PriestInPeril_3 extends Task {
 
     @Override
     public int execute() {
-        Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
             Dialog.processContinue();
@@ -65,7 +64,7 @@ public class PriestInPeril_3 extends Task {
             }
         }
 
-        if (!talkedToDoor) {
+        if (!talkedToDoor && KING_ROALD_POSITION.distance() > 200) {
             SceneObject door = SceneObjects.getNearest("Large door");
             if (door == null) {
                 SceneObject ladder = SceneObjects.getNearest("Ladder");

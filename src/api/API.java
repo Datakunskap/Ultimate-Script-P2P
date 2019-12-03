@@ -366,7 +366,7 @@ public class API {
         if (!Dialog.isOpen()) {
             if (!npcPosition.isPositionInteractable() || npcPosition.distance() > 10) {
                 Log.info("I am walking to" + " " + npcName);
-                Movement.walkTo(npcPosition, MovementBreaks::shouldBreakOnRunenergy);
+                Movement.walkTo(npcPosition);
             }
             if (npcPosition.isPositionInteractable()) {
                 if (npc != null) {

@@ -50,6 +50,8 @@ public class PriestInPeril_5 extends Task {
     @Override
     public int execute() {
 
+        Log.info("5");
+
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {
@@ -71,13 +73,13 @@ public class PriestInPeril_5 extends Task {
             }
         }
 
-        if (Inventory.contains("Golden key")) {
+        if (Inventory.contains("Golden key") && !Inventory.contains("Iron key")) {
             if (!DOWNSTAIRS.contains(local)) {
                 if (local.getFloorLevel() == 2) {
                     SceneObject ladder = SceneObjects.getNearest(16679);
                     if (ladder != null) {
                         if (ladder.interact("Climb-down")) {
-                            Time.sleepUntil(() -> local.getFloorLevel() == 1, 1000);
+                            Time.sleepUntil(() -> local.getFloorLevel() == 1, 5000);
                         }
                     }
                 }
@@ -85,7 +87,7 @@ public class PriestInPeril_5 extends Task {
                     SceneObject staircase = SceneObjects.getNearest(16673);
                     if (staircase != null) {
                         if (staircase.interact("Climb-down")) {
-                            Time.sleepUntil(() -> local.getFloorLevel() == 1, 1000);
+                            Time.sleepUntil(() -> local.getFloorLevel() == 1, 5000);
                         }
                     }
                 }
@@ -340,50 +342,124 @@ public class PriestInPeril_5 extends Task {
                     }
                 }
             }
-            if (local.getFloorLevel() == 0) {
-                SceneObject staircase = SceneObjects.getNearest(16671);
-                if (staircase != null) {
-                    if (!staircase.isPositionInteractable()) {
-                        Movement.walkToRandomized(staircase);
-                    }
-                    if (staircase.isPositionInteractable()) {
-                        if (staircase.interact("Climb-up")) {
-                            Time.sleepUntil(() -> local.getFloorLevel() == 1, 1000);
+            if (Inventory.contains("Murky water")) {
+                if (local.getFloorLevel() == 0) {
+                    SceneObject staircase = SceneObjects.getNearest(16671);
+                    if (staircase != null) {
+                        if (!staircase.isPositionInteractable()) {
+                            Movement.walkToRandomized(staircase);
                         }
-                    }
-                }
-            }
-            if (local.getFloorLevel() == 1) {
-                SceneObject ladder = SceneObjects.getNearest(16683);
-                if (ladder != null) {
-                    if (ladder.interact("Climb-up")) {
-                        Time.sleepUntil(() -> local.getFloorLevel() == 2, 1000);
-                    }
-                }
-            }
-            if (local.getFloorLevel() == 2) {
-                Predicate<Item> ironKey = i -> i.getName().equals("Iron key");
-                SceneObject jailDoor = SceneObjects.getNearest(3463);
-                if (!Dialog.isOpen()) {
-                    if (jailDoor != null) {
-                        Npc drezel = Npcs.getNearest(3488);
-                        if (!drezel.isPositionWalkable()) {
-                            if (Inventory.use(ironKey, jailDoor)) {
-                                Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+                        if (staircase.isPositionInteractable()) {
+                            if (staircase.interact("Climb-up")) {
+                                Time.sleepUntil(() -> local.getFloorLevel() == 1, 5000);
                             }
                         }
-                        if (drezel.isPositionWalkable()) {
-                            if (drezel != null) {
-                                if (!Dialog.isOpen()) {
-                                    if (drezel.interact("Talk-to")) {
-                                        Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+                    }
+                }
+                if (local.getFloorLevel() == 1) {
+                    SceneObject ladder = SceneObjects.getNearest(16683);
+                    if (ladder != null) {
+                        if (ladder.interact("Climb-up")) {
+                            Time.sleepUntil(() -> local.getFloorLevel() == 2, 5000);
+                        }
+                    }
+                }
+                if (local.getFloorLevel() == 2) {
+                    Predicate<Item> ironKey = i -> i.getName().equals("Iron key");
+                    SceneObject jailDoor = SceneObjects.getNearest(3463);
+                    if (!Dialog.isOpen()) {
+                        if (jailDoor != null) {
+                            Npc drezel = Npcs.getNearest(3488);
+                            if (!drezel.isPositionWalkable()) {
+                                if (Inventory.use(ironKey, jailDoor)) {
+                                    Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+                                }
+                            }
+                            if (drezel.isPositionWalkable()) {
+                                if (drezel != null) {
+                                    if (!Dialog.isOpen()) {
+                                        if (drezel.interact("Talk-to")) {
+                                            Time.sleepUntil(() -> Dialog.isOpen(), 5000);
+                                        }
+                                    }
+                                    if (Dialog.isOpen()) {
+                                        if (Dialog.canContinue()) {
+                                            Dialog.processContinue();
+                                        }
                                     }
                                 }
-                                if (Dialog.isOpen()) {
-                                    if (Dialog.canContinue()) {
-                                        Dialog.processContinue();
+                            }
+                        }
+                    }
+                }
+            }
+            if (!Inventory.contains("Murky water") && Inventory.contains("Iron key")) {
+                if (!DOWNSTAIRS.contains(local)) {
+                    if (local.getFloorLevel() == 2) {
+                        SceneObject ladder = SceneObjects.getNearest(16679);
+                        if (ladder != null) {
+                            if (ladder.interact("Climb-down")) {
+                                Time.sleepUntil(() -> local.getFloorLevel() == 1, 5000);
+                            }
+                        }
+                    }
+                    if (local.getFloorLevel() == 1) {
+                        SceneObject staircase = SceneObjects.getNearest(16673);
+                        if (staircase != null) {
+                            if (staircase.interact("Climb-down")) {
+                                Time.sleepUntil(() -> local.getFloorLevel() == 1, 5000);
+                            }
+                        }
+                    }
+                    if (local.getFloorLevel() == 0) {
+                        SceneObject trapDoorClosed = SceneObjects.getNearest(1579);
+                        SceneObject trapDoorOpen = SceneObjects.getNearest(1581);
+                        if (INSIDE_TEMPLE.contains(local)) {
+                            SceneObject door = SceneObjects.getNearest("Large door");
+                            if (door != null) {
+                                if (door.interact("Open")) {
+                                    Time.sleepUntil(() -> !INSIDE_TEMPLE.contains(local), 10000);
+                                }
+                            }
+                        }
+                        if (!INSIDE_TEMPLE.contains(local)) {
+                            if (trapDoorClosed != null) {
+                                if (trapDoorClosed.containsAction("Open")) {
+                                    if (trapDoorClosed.interact("Open")) {
+                                        Time.sleepUntil(() -> trapDoorOpen.containsAction("Climb-down"), 10000);
                                     }
                                 }
+                            }
+                            if (trapDoorOpen != null) {
+                                if (trapDoorOpen.containsAction("Climb-down")) {
+                                    if (!Dialog.isOpen()) {
+                                        if (trapDoorOpen.interact("Climb-down")) {
+                                            Time.sleepUntil(() -> Dialog.isOpen(), 10000);
+                                        }
+                                    }
+                                    if (Dialog.isOpen()) {
+                                        if (Dialog.canContinue()) {
+                                            Dialog.processContinue();
+                                        }
+                                        if (Dialog.getChatOption(YES).isVisible()) {
+                                            Dialog.process(YES);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (DOWNSTAIRS.contains(local)) {
+                    if (WELL_POSITION.distance() > 10) {
+                        Movement.walkToRandomized(WELL_POSITION);
+                    }
+                    if (WELL_POSITION.distance() < 10) {
+                        if (Inventory.contains("Bucket")) {
+                            Predicate<Item> bucket = i -> i.getName().equals("Bucket");
+                            SceneObject well = SceneObjects.getNearest(3485);
+                            if (Inventory.use(bucket, well)) {
+                                Time.sleepUntil(() -> Inventory.contains("Murky water"), 10000);
                             }
                         }
                     }
