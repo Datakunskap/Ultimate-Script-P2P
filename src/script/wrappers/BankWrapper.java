@@ -198,7 +198,7 @@ public class BankWrapper {
         return Bank.open();
     }
 
-    public static void withdrawSellableItems(Set<String> itemsToKeep) {
+    public static Item[] withdrawSellableItems(Set<String> itemsToKeep) {
         if (!Bank.isOpen() || Bank.getItems().length < 1) {
             Bank.open();
             Time.sleepUntilForDuration(Bank::isOpen, 800,8000);
@@ -229,6 +229,7 @@ public class BankWrapper {
 
         updateBankValue();
         updateInventoryValue();
+        return sellables;
     }
 
     public static HashSet<String> getItemsNeeded(LinkedHashMap<String, Integer> itemsToBuy) {

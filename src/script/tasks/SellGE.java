@@ -84,10 +84,7 @@ public class SellGE extends Task {
             }
 
             BankWrapper.doBanking(true);
-            // Items to keep will be in bank after
-            BankWrapper.withdrawSellableItems(itemsToKeep);
-
-            Item[] sellableItems = Inventory.getItems(i -> i.getId() != 995);
+            Item[] sellableItems = BankWrapper.withdrawSellableItems(itemsToKeep);
 
             if (sellableItems != null && sellableItems.length > 0) {
                 Log.info("Selling");
@@ -108,7 +105,7 @@ public class SellGE extends Task {
         }
 
         if (itemsLeftToSell()) {
-            for (int i = 0; i < itemsToSell.length; i++) {
+            for (int i = 0; i < itemsToSell.length; i ++) {
                 status = "Selling";
                 if (itemsToSell[i] != null && GrandExchange.getOffers(RSGrandExchangeOffer.Type.SELL).length < 3) {
 
@@ -122,9 +119,13 @@ public class SellGE extends Task {
                         final int index = i;
                         if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().equalsIgnoreCase(itemsToSell[index].getName())) != null,12_000)) {
                             itemsToSell[i] = null;
+                        } else {
+                            Log.severe("Failed to sell");
+                            i --;
                         }
                     } else {
-                        itemsToSell = Inventory.getItems(x -> x.getId() != 995 && x.isExchangeable());
+                        Log.severe("Failed to sell");
+                        i --;
                     }
                 }
             }
