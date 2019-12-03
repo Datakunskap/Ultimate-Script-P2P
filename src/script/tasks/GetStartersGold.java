@@ -79,9 +79,10 @@ public class GetStartersGold extends Task {
                 Log.info("I am walking to the mule");
                 if (!WalkingWrapper.walkToPosition(MULE_POSITION)) {
 
-                    WalkingWrapper.walkToPosition(new Position(MULE_POSITION.getX(), MULE_POSITION.getY(), Players.getLocal().getFloorLevel()));
+                    Position down = new Position(MULE_POSITION.getX(), MULE_POSITION.getY(), Players.getLocal().getFloorLevel());
+                    WalkingWrapper.walkToPosition(down);
 
-                    if (MULE_POSITION.distance() <= 3 && Players.getLocal().getFloorLevel() != MULE_POSITION.getFloorLevel()) {
+                    if (down.distance() <= 3 && Players.getLocal().getFloorLevel() != MULE_POSITION.getFloorLevel()) {
                         SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
                         if (ladder != null) {
                             ladder.interact("Climb-up");
@@ -89,7 +90,7 @@ public class GetStartersGold extends Task {
                         }
                     }
                 }
-                return  SleepWrapper.shortSleep600();
+                return SleepWrapper.shortSleep600();
             }
 
             if (MULE_POSITION.distance() <= 5) {

@@ -107,9 +107,10 @@ public class Mule extends Task {
         if (mulePosition.distance() > 3 || Players.getLocal().getFloorLevel() != mulePosition.getFloorLevel()) {
             if (!WalkingWrapper.walkToPosition(mulePosition)) {
 
-                WalkingWrapper.walkToPosition(new Position(mulePosition.getX(), mulePosition.getY(), Players.getLocal().getFloorLevel()));
+                Position down = new Position(mulePosition.getX(), mulePosition.getY(), Players.getLocal().getFloorLevel());
+                WalkingWrapper.walkToPosition(down);
 
-                if (mulePosition.distance() <= 3 && Players.getLocal().getFloorLevel() != mulePosition.getFloorLevel()) {
+                if (down.distance() <= 3 && Players.getLocal().getFloorLevel() != mulePosition.getFloorLevel()) {
                     SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
                     if (ladder != null) {
                         ladder.interact("Climb-up");
@@ -168,13 +169,12 @@ public class Mule extends Task {
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
-
-                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
+                            BankWrapper.setMuleing(false);
                             if (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 || calendar.get(java.util.Calendar.HOUR_OF_DAY) == 9) {
                                 BankWrapper.setHasBanTimeMuled(true);
                             }
 
-                            BankWrapper.setMuleing(false);
+                            GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
 
                             SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-down"));
                             if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
