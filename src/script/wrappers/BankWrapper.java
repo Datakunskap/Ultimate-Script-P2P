@@ -195,9 +195,9 @@ public class BankWrapper {
 
 
     private static boolean openNearest() {
-        if (Players.getLocal().getFloorLevel() == 1) {
-            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
-            if (ladder != null && ladder.interact("Climb-Down")) {
+        if (Players.getLocal().getFloorLevel() != 1) {
+            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-down"));
+            if (ladder != null && ladder.interact("Climb-down")) {
                 Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
             }
         }

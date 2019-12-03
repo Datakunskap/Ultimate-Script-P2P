@@ -80,8 +80,6 @@ public class Mule extends Task {
 
             BankWrapper.doBanking(false);
             Time.sleepUntil(Inventory::isEmpty, 2000, 8000);
-            Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-            Time.sleepUntil(() -> Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE), 2000, 8000);
 
             Log.fine("Withdrawing Coins");
             Item coins = Bank.getFirst("Coins");
