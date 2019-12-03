@@ -1,6 +1,7 @@
 package script.wrappers;
 
 import org.rspeer.runetek.adapter.component.Item;
+import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
@@ -8,6 +9,8 @@ import org.rspeer.runetek.api.commons.math.Random;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.movement.Movement;
+import org.rspeer.runetek.api.scene.Players;
+import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.ui.Log;
 import script.quests.nature_spirit.data.Quest;
 
@@ -191,7 +194,13 @@ public class BankWrapper {
     }
 
 
-    public static boolean openNearest() {
+    private static boolean openNearest() {
+        if (Players.getLocal().getFloorLevel() == 1) {
+            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
+            if (ladder != null && ladder.interact("Climb-Down")) {
+                Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
+            }
+        }
         if (Bank.isOpen()) {
             return true;
         }
