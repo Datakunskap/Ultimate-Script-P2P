@@ -66,17 +66,12 @@ public class Mule extends Task {
     public int execute() {
         BankWrapper.setMuleing(true);
 
-        if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal()) && !banked) {
-            WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.shortSleep350();
-        }
         if (GrandExchange.isOpen()) {
             GEWrapper.closeGE();
         }
 
         if (!banked) {
             Log.info("Withdrawing Items To Mule");
-            banked = true;
 
             BankWrapper.doBanking(false);
             Time.sleepUntil(Inventory::isEmpty, 2000, 8000);
@@ -84,6 +79,7 @@ public class Mule extends Task {
             Log.fine("Withdrawing Coins");
             Item coins = Bank.getFirst("Coins");
             if (coins != null) {
+                banked = true;
                 gp = coins.getStackSize()/* - Script.OGRESS_START_GP*/;
                 Bank.withdraw("Coins", gp);
             } else {
