@@ -6,7 +6,6 @@ import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
-import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.component.Bank;
 import org.rspeer.runetek.api.component.EnterInput;
@@ -110,9 +109,10 @@ public class Mule extends Task {
 
                 WalkingWrapper.walkToPosition(new Position(mulePosition.getX(), mulePosition.getY(), Players.getLocal().getFloorLevel()));
 
-                SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Up"));
+                SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
                 if (ladder != null) {
-                    ladder.interact("Climb-Up");
+                    ladder.interact("Climb-up");
+                    Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == mulePosition.getFloorLevel(), 5000);
                 }
             }
             return SleepWrapper.shortSleep600();
@@ -174,9 +174,9 @@ public class Mule extends Task {
 
                             BankWrapper.setMuleing(false);
 
-                            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
+                            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-down"));
                             if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
-                                ladder.interact("Climb-Down");
+                                ladder.interact("Climb-down");
                                 Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
                             }
 

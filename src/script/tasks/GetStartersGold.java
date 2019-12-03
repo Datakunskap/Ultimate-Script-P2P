@@ -81,9 +81,10 @@ public class GetStartersGold extends Task {
 
                     WalkingWrapper.walkToPosition(new Position(MULE_POSITION.getX(), MULE_POSITION.getY(), Players.getLocal().getFloorLevel()));
 
-                    SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Up"));
+                    SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
                     if (ladder != null) {
-                        ladder.interact("Climb-Up");
+                        ladder.interact("Climb-up");
+                        Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == MULE_POSITION.getFloorLevel(), 5000);
                     }
                 }
                 return  SleepWrapper.shortSleep600();
