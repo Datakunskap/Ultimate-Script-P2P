@@ -109,10 +109,12 @@ public class Mule extends Task {
 
                 WalkingWrapper.walkToPosition(new Position(mulePosition.getX(), mulePosition.getY(), Players.getLocal().getFloorLevel()));
 
-                SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
-                if (ladder != null) {
-                    ladder.interact("Climb-up");
-                    Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == mulePosition.getFloorLevel(), 5000);
+                if (mulePosition.distance() <= 3 && Players.getLocal().getFloorLevel() != mulePosition.getFloorLevel()) {
+                    SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-up"));
+                    if (ladder != null) {
+                        ladder.interact("Climb-up");
+                        Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == mulePosition.getFloorLevel(), 5000);
+                    }
                 }
             }
             return SleepWrapper.shortSleep600();
