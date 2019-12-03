@@ -3,18 +3,22 @@ package script.tasks;
 import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
+import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
-import org.rspeer.runetek.api.component.*;
+import org.rspeer.runetek.api.component.Bank;
+import org.rspeer.runetek.api.component.EnterInput;
+import org.rspeer.runetek.api.component.GrandExchange;
+import org.rspeer.runetek.api.component.Trade;
 import org.rspeer.runetek.api.component.tab.Inventory;
 import org.rspeer.runetek.api.component.tab.Skill;
 import org.rspeer.runetek.api.component.tab.Skills;
 import org.rspeer.runetek.api.input.Keyboard;
-import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
+import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.Script;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
@@ -50,7 +54,7 @@ public class Mule extends Task {
 
     @Override
     public boolean validate() {
-        java.util.TimeZone tz = java.util.TimeZone.getTimeZone("GMT");
+        java.util.TimeZone tz = java.util.TimeZone.getTimeZone("GMT-1");
         calendar = java.util.Calendar.getInstance(tz);
 
         return Skills.getLevel(Skill.PRAYER) >= 50 && !GEWrapper.isSellItems()
@@ -98,8 +102,8 @@ public class Mule extends Task {
 
         loginMule();
 
-        if (Worlds.getCurrent() != muleWorld && Game.isLoggedIn()) {
-            if (begWorld < 1) {
+        if (mulePosition.distance() < 8 && Worlds.getCurrent() != muleWorld && Game.isLoggedIn()) {
+            if (begWorld < 1 && Worlds.getCurrent() != muleWorld) {
                 begWorld = Worlds.getCurrent();
             }
 
@@ -107,17 +111,18 @@ public class Mule extends Task {
             return SleepWrapper.shortSleep600();
         }
 
-        if (Dialog.canContinue()) {
-            Dialog.processContinue();
-            Time.sleep(1000);
-        }
+        if (mulePosition.distance() > 3 || Players.getLocal().getFloorLevel() != mulePosition.getFloorLevel()) {
+            if (!WalkingWrapper.walkToPosition(mulePosition)) {
 
-        if (mulePosition.distance() > 3) {
-            WalkingWrapper.walkToPosition(mulePosition);
-            Movement.toggleRun(true);
+                WalkingWrapper.walkToPosition(new Position(mulePosition.getX(), mulePosition.getY(), Players.getLocal().getFloorLevel()));
+
+                SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Up"));
+                if (ladder != null) {
+                    ladder.interact("Climb-Up");
+                }
+            }
             return SleepWrapper.shortSleep600();
         }
-
 
         Player mulePlayer = Players.getNearest(muleName);
 
@@ -162,24 +167,30 @@ public class Mule extends Task {
                             Time.sleep(3000);
                             Log.fine("Trade completed shutting down mule");
                             trading = false;
+                            banked = false;
                             logoutMule();
+
+                            SceneObject ladder = SceneObjects.getNearest(o -> o.containsAction("Climb-Down"));
+                            if (Players.getLocal().getFloorLevel() != 0 && ladder != null) {
+                                ladder.interact("Climb-Down");
+                                Time.sleepUntil(() -> Players.getLocal().getFloorLevel() == 0, 8000);
+                            }
 
                             BankWrapper.updateInventoryValue();
                             BankWrapper.setAmountMuled(BankWrapper.getAmountMuled() + (gp - muleKeep));
-                            //main.setRandMuleKeep(main.minKeep, main.maxKeep);
-                            Time.sleep(8000, 10000);
-                            banked = false;
-                            if (begWorld != -1) {
-                                ExWorldHopper.instaHopTo(begWorld);
-                            } else {
-                                ExWorldHopper.randomInstaHopInPureP2p();
-                            }
 
                             GEWrapper.setBuySupplies(true, false, SupplyMapWrapper.getMortMyreFungusItemsMap());
                             if (calendar.get(java.util.Calendar.HOUR_OF_DAY) == 8 || calendar.get(java.util.Calendar.HOUR_OF_DAY) == 9) {
                                 BankWrapper.setHasBanTimeMuled(true);
                             }
                             BankWrapper.setMuleing(false);
+
+                            Time.sleep(8000, 10000);
+                            if (begWorld != -1) {
+                                ExWorldHopper.instaHopTo(begWorld);
+                            } else {
+                                ExWorldHopper.randomInstaHopInPureP2p();
+                            }
                             return 3000;
                         }
                         Time.sleep(700);

@@ -119,16 +119,25 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
             } else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
                 exitAndLeaveGrotto();
             }
+            boolean checkedBank = false;
             while (!Equipment.contains("Ghostspeak amulet") && Game.isLoggedIn()) {
                 if (AMULET_POSITION.distance() > 5) {
-                    Log.info("Checking bank for Ghostspeak amulet");
-                    BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                    if (!checkedBank) {
+                        Log.info("Checking bank for Ghostspeak amulet");
+                        BankWrapper.doBanking(false, false, SupplyMapWrapper.getNatureSpiritKeepMap());
+                        checkedBank = true;
+                    }
                     if (!Inventory.contains("Ghostspeak amulet")) {
                         Log.info("Getting a new Ghostspeak amulet");
-                        walkToPosition(AMULET_POSITION);
+                        if (!walkToPosition(AMULET_POSITION)) {
+                            Tabs.open(Tab.MAGIC);
+                            Time.sleepUntil(() -> Tabs.getOpen() == Tab.MAGIC, 6000);
+                            Magic.cast(Spell.Modern.HOME_TELEPORT);
+                            Time.sleep(20_000, 22_000);
+                        }
                     }
                 }
-                if (!Dialog.isOpen()) {
+                if (!Dialog.isOpen() && AMULET_POSITION.distance() < 8) {
                     Npc man = Npcs.getNearest(n -> n.containsAction("Talk-to"));
                     if (man != null) {
                         man.interact("Talk-to");
@@ -138,7 +147,7 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                 if (Dialog.canContinue()) {
                     Dialog.processContinue();
                 }
-                while (Dialog.isOpen()) {
+                while (Dialog.isOpen() && Game.isLoggedIn()) {
                     Dialog.process(o -> o.contains("lost"));
                     Time.sleep(1200, 1800);
                     Dialog.processContinue();
@@ -203,14 +212,15 @@ public class WalkingWrapper extends script.wrappers.WalkingWrapper {
                         Movement.setWalkFlag(Locations.INSIDE_GROTTO_AREA.getCenter());
                     }
                 } else if (!Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
-                    WalkingWrapper.walkToNatureGrotto();
+                    walkToNatureGrotto();
                 }
-                WalkingWrapper.enterGrotto();
+                else if (Locations.NATURE_GROTTO_AREA.contains(Players.getLocal())) {
+                    enterGrotto();
+                }
             } else {
                 Log.info("Buying sickle");
                 if (Quest.NATURE_SPIRIT.getVarpValue() >= 75) {
                     LinkedHashMap<String, Integer> map = new LinkedHashMap<>(SupplyMapWrapper.getMortMyreFungusItemsMap());
-                    map.remove("Silver sickle (b)");
                     map.put("Silver sickle", 1);
                     GEWrapper.setBuySupplies(true, Skills.getLevel(Skill.PRAYER) >= 50, map);
                 } else {

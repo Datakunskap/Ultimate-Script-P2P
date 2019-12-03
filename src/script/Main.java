@@ -5,8 +5,9 @@ import api.bot_management.data.LaunchedClient;
 import org.rspeer.RSPeer;
 import org.rspeer.runetek.api.commons.StopWatch;
 import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.tab.Inventory;
-import org.rspeer.runetek.api.movement.position.Area;
+import org.rspeer.runetek.api.component.tab.Skill;
+import org.rspeer.runetek.api.component.tab.Skills;
+import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.event.listeners.DeathListener;
 import org.rspeer.runetek.event.listeners.LoginResponseListener;
@@ -34,8 +35,6 @@ import script.tasks.training.prayer.LeaveWilderness;
 import script.tasks.training.prayer.TrainTo50;
 import script.wrappers.*;
 
-import java.io.IOException;
-
 import static org.rspeer.runetek.event.types.LoginResponseEvent.Response.INVALID_CREDENTIALS;
 import static org.rspeer.runetek.event.types.LoginResponseEvent.Response.RUNESCAPE_UPDATE_2;
 
@@ -44,10 +43,10 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
 
     public static final String MULE_NAME = "ScatGrem";
     private static final int MULE_AMOUNT = 1_000_000;
-    public static final int MULE_WORLD = 393;
+    public static final int MULE_WORLD = 454;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
-    public static final Area MULE_AREA = Area.rectangular(3176, 3470, 3179, 3468);
-    public static final String API_KEY = "S1Z8S8QHPE0LST3E2H07T8YABM63L17AW738NN61LAT0CT9NQG38JLDUDY7FCX5YG0ZVZ4";
+    public static final Position MULE_POSITION = new Position(3203, 3388, 1);
+    public static final String API_KEY = "S1Z8S8QHPE0LST3E2H07T8YABM63L17AW738NN61LAT0CT9NQG38JLDUDY7FCX5YG0ZVZ4"; // Not used atm
 
     private ScriptPaint paint;
     private StopWatch runtime;
@@ -75,7 +74,8 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
 
         submit(new GetStartersGold(),
                 new SellGE(),
-                new Mule(MULE_AMOUNT, MULE_NAME, MULE_AREA.getCenter(), MULE_WORLD, MULE_AMOUNT_TO_KEEP),
+                new Mule(MULE_AMOUNT, MULE_NAME, MULE_POSITION, MULE_WORLD, MULE_AMOUNT_TO_KEEP),
+                new MemberWorldChecker(),
                 new BuyGE(),
                 new BuyItemsNeeded(),
                 new TrainTo13()
@@ -126,7 +126,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
 
             int varp = Quest.NATURE_SPIRIT.getVarpValue();
 
-            if (varp <= 75 || !Inventory.contains(i -> i.getName().contains("Burning amulet"))) {
+            if (varp <= 75 || Skills.getLevel(Skill.PRAYER) == 50) {
                 playerDeaths ++;
             }
 

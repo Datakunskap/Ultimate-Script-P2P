@@ -24,12 +24,12 @@ import java.util.function.Predicate;
 public class LeaveWilderness extends Task {
 
     private static final Position LVL_30_POSITION = new Position(3069, 3746, 0);
-    private static final Area WILDERNESS_AREA = Area.rectangular(2933, 3872, 3360, 3522);
+    private static final Area WILDERNESS_AREA = Area.rectangular(2938, 3852, 3141, 3523);
     private static final Predicate<Item> GLORY = x -> x.getName().contains("Amulet of glory(");
 
     @Override
     public boolean validate() {
-        return Skills.getLevel(Skill.PRAYER) == 50 && ExWilderness.getLevel() >= 30 && WILDERNESS_AREA.contains(Players.getLocal());
+        return Skills.getLevel(Skill.PRAYER) == 50 && WILDERNESS_AREA.contains(Players.getLocal());
     }
 
     @Override
@@ -46,17 +46,20 @@ public class LeaveWilderness extends Task {
         } else {
             if (!Movement.getDaxWalker().isUseTeleports()) {
                 Movement.getDaxWalker().setUseTeleports(true);
-                if (Inventory.getFirst(GLORY).interact("Rub")) {
-                    Time.sleepUntil(Dialog::isViewingChatOptions, SleepWrapper.longSleep7500());
-                }
-                if (Dialog.isViewingChatOptions()) {
-                    if (Dialog.process(o -> o.toLowerCase().contains("edgevil"))) {
-                        Time.sleepUntil(() -> !WILDERNESS_AREA.contains(Players.getLocal()) && !Game.isLoadingRegion(), SleepWrapper.longSleep7500());
-                    }
+            }
+
+            if (Inventory.getFirst(GLORY).interact("Rub")) {
+                Time.sleepUntil(Dialog::isViewingChatOptions, SleepWrapper.longSleep7500());
+            }
+            if (Dialog.isViewingChatOptions()) {
+                if (Dialog.process(o -> o.toLowerCase().contains("edgevil"))) {
+                    Time.sleepUntil(() -> !WILDERNESS_AREA.contains(Players.getLocal()) && !Game.isLoadingRegion(), SleepWrapper.longSleep7500());
                 }
             }
 
-            GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
+            if (!GEWrapper.isBuySupplies()) {
+                GEWrapper.setBuySupplies(true, true, SupplyMapWrapper.getMortMyreFungusItemsMap());
+            }
 
             if (WILDERNESS_AREA.contains(Players.getLocal())) {
                 Movement.walkTo(BankLocation.GRAND_EXCHANGE.getPosition());

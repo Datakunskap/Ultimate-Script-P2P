@@ -201,11 +201,7 @@ public class BankWrapper {
     public static void withdrawSellableItems(Set<String> itemsToKeep) {
         if (!Bank.isOpen() || Bank.getItems().length < 1) {
             Bank.open();
-            Time.sleepUntil(() -> Bank.getItems().length > 0, 8000);
-        }
-        if (!Bank.getWithdrawMode().equals(Bank.WithdrawMode.NOTE)) {
-            Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
-            Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800), 12_500);
+            Time.sleepUntilForDuration(Bank::isOpen, 800,8000);
         }
 
         Item[] sellables = Bank.getItems(s
@@ -216,6 +212,11 @@ public class BankWrapper {
                 && (PriceCheckService.getPrice(s.getId()).getSellAverage() * s.getStackSize() > 5000)));
 
         for (Item s : sellables) {
+            if (Bank.getWithdrawMode() != Bank.WithdrawMode.NOTE) {
+                Bank.setWithdrawMode(Bank.WithdrawMode.NOTE);
+                Time.sleepUntilForDuration(() -> Bank.getWithdrawMode() == Bank.WithdrawMode.NOTE, Random.nextInt(500, 800), 12_500);
+            }
+
             Bank.withdrawAll(i -> i.getName().equalsIgnoreCase(s.getName()));
             Time.sleepUntilForDuration(() -> Inventory.contains(s.getName()), Random.mid(500, 800), 10_000);
             Time.sleep(200, 400);

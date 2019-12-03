@@ -3,7 +3,6 @@ package script.tasks;
 import api.component.ExWorldHopper;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
-import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.api.Game;
 import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
@@ -62,18 +61,18 @@ public class SellGE extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
+        RSWorld world = Worlds.get(Worlds.getCurrent());
+        if (world != null && !world.isMembers()) {
+            Log.info("World Hopping to P2P");
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return SleepWrapper.mediumSleep1000();
+        }
+
         if (!GEWrapper.GE_AREA_LARGE.contains(Players.getLocal())) {
             if (Inventory.contains("Varrock teleport") && BankLocation.GRAND_EXCHANGE.getPosition().distance() > 15) {
                 Fungus.useTeleportTab("Varrock teleport");
             }
             WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
-            return SleepWrapper.mediumSleep1000();
-        }
-
-        RSWorld world = Worlds.get(Worlds.getCurrent());
-        if (world != null && !world.isMembers()) {
-            Log.info("World Hopping to P2P");
-            ExWorldHopper.randomInstaHopInPureP2p();
             return SleepWrapper.mediumSleep1000();
         }
 
@@ -112,7 +111,13 @@ public class SellGE extends Task {
             for (int i = 0; i < itemsToSell.length; i++) {
                 status = "Selling";
                 if (itemsToSell[i] != null && GrandExchange.getOffers(RSGrandExchangeOffer.Type.SELL).length < 3) {
-                    if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
+
+                    int quantity = Inventory.getFirst(itemsToSell[i].getName()).getStackSize();
+                    if (quantity == 1) {
+                        quantity = 9999;
+                    }
+
+                    if (GEWrapper.sell(itemsToSell[i].getId(), quantity, Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
                         if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().equalsIgnoreCase(itemsToSell[index].getName())) != null,12_000)) {

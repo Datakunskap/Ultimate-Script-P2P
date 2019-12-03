@@ -21,7 +21,6 @@ public class SupplyMapWrapper {
     public static LinkedHashMap<String, Integer> getMortMyreFungusItemsMap() {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Ring of dueling(8)", 11);
-        map.put("Silver sickle (b)", 1);
         map.put("Varrock teleport", 1);
         map.put("Salve graveyard teleport", 80);
         return map;
@@ -63,6 +62,7 @@ public class SupplyMapWrapper {
     public static LinkedHashMap<String, Integer> getNatureSpiritKeepMap() {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Silver sickle", 1);
+        map.put("Silver sickle (b)", 1);
         map.put("Salve graveyard teleport", 3);
         map.put("Jug of wine", 10);
         map.put("Monkfish", 5);
