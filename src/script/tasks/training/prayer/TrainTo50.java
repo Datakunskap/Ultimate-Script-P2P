@@ -86,47 +86,50 @@ public class TrainTo50 extends Task {
                         }
                     }
                     if (Bank.isOpen()) {
-                        if(Inventory.containsAnyExcept(x -> x.getName().contains("Dragon bones") || x.getName().contains("Amulet of glory(") || x.getName().contains("Burning amulet("))){
+                        if (Inventory.containsAnyExcept(x -> x.getName().contains("Dragon bones") || x.getName().contains("Amulet of glory(") || x.getName().contains("Burning amulet("))) {
                             Bank.depositInventory();
                         }
-                        if (Inventory.contains("Silver sickle (b)")) {
-                            if (Bank.depositAllExcept(x -> x.getName().contains("Dragon bones") || x.getName().contains("Amulet of glory(") || x.getName().contains("Burning amulet("))) {
-                                Time.sleepUntil(() -> !Inventory.contains("Silver sickle (b)"), SleepWrapper.longSleep7500());
+                        if (Inventory.contains("Silver sickle (b)") || Equipment.contains("Silver sickle (b)")) {
+                            Bank.depositInventory();
+                            Time.sleep(2000);
+                            Bank.depositEquipment();
+                            Time.sleep(2000);
+                            Time.sleepUntil(() -> !Inventory.contains("Silver sickle (b)") && !Equipment.contains("Silver sickle (b)"), SleepWrapper.longSleep7500());
+                        }
+                    }
+                    if (Inventory.contains("Amulet of glory")) {
+                        if (Bank.depositAll("Amulet of glory")) {
+                            Time.sleepUntil(() -> !Inventory.contains("Amulet of glory"), SleepWrapper.longSleep7500());
+                        }
+                    }
+                    if (!Inventory.contains(glory)) {
+                        Log.info("Withdrawing glory");
+                        if (Bank.contains(glory)) {
+                            if (Bank.withdraw(glory, 1)) {
+                                Time.sleepUntil(() -> Inventory.contains(glory), SleepWrapper.longSleep7500());
                             }
                         }
-                        if (Inventory.contains("Amulet of glory")) {
-                            if (Bank.depositAll("Amulet of glory")) {
-                                Time.sleepUntil(() -> !Inventory.contains("Amulet of glory"), SleepWrapper.longSleep7500());
+                    }
+                    if (!Inventory.contains(burningAmulet)) {
+                        if (Bank.contains(burningAmulet)) {
+                            Log.info("Withdrawing burning amulet");
+                            if (Bank.withdraw(burningAmulet, 1)) {
+                                Time.sleepUntil(() -> Inventory.contains(burningAmulet), SleepWrapper.longSleep7500());
                             }
                         }
-                        if (!Inventory.contains(glory)) {
-                            Log.info("Withdrawing glory");
-                            if (Bank.contains(glory)) {
-                                if (Bank.withdraw(glory, 1)) {
-                                    Time.sleepUntil(() -> Inventory.contains(glory), SleepWrapper.longSleep7500());
-                                }
-                            }
-                        }
-                        if (!Inventory.contains(burningAmulet)) {
-                            if (Bank.contains(burningAmulet)) {
-                                Log.info("Withdrawing burning amulet");
-                                if (Bank.withdraw(burningAmulet, 1)) {
-                                    Time.sleepUntil(() -> Inventory.contains(burningAmulet), SleepWrapper.longSleep7500());
-                                }
-                            }
-                        }
-                        if (!Inventory.contains(dragonBones)) {
-                            if (Bank.contains(dragonBones)) {
-                                Log.info("Withdrawing dragon bones");
-                                if (Bank.withdraw(dragonBones, 26)) {
-                                    Time.sleepUntil(() -> Inventory.contains(dragonBones), SleepWrapper.longSleep7500());
-                                }
+                    }
+                    if (!Inventory.contains(dragonBones)) {
+                        if (Bank.contains(dragonBones)) {
+                            Log.info("Withdrawing dragon bones");
+                            if (Bank.withdraw(dragonBones, 26)) {
+                                Time.sleepUntil(() -> Inventory.contains(dragonBones), SleepWrapper.longSleep7500());
                             }
                         }
                     }
                 }
             }
         }
+
 
         if (Inventory.contains(dragonBones)
                 && Inventory.contains(glory)
@@ -237,11 +240,11 @@ public class TrainTo50 extends Task {
         }
     }
 
-    public void toggleRun(){
-        if(!Movement.isRunEnabled()){
-            if(Movement.getRunEnergy() > Random.mid(5,20)){
-                if(Movement.toggleRun(true)){
-                    Time.sleepUntil(()-> Movement.isRunEnabled(), SleepWrapper.mediumSleep1500());
+    public void toggleRun() {
+        if (!Movement.isRunEnabled()) {
+            if (Movement.getRunEnergy() > Random.mid(5, 20)) {
+                if (Movement.toggleRun(true)) {
+                    Time.sleepUntil(() -> Movement.isRunEnabled(), SleepWrapper.mediumSleep1500());
                 }
             }
         }

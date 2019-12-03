@@ -45,7 +45,7 @@ public class Main extends TaskScript implements RenderListener, DeathListener, L
     private static final int MULE_AMOUNT = 1_000_000;
     public static final int MULE_WORLD = 454;
     private static final int MULE_AMOUNT_TO_KEEP = 500_000;
-    public static final Position MULE_POSITION = new Position(3203, 3388, 1);
+    public static final Position MULE_POSITION = new Position(3177, 3469, 0);
     public static final String API_KEY = "S1Z8S8QHPE0LST3E2H07T8YABM63L17AW738NN61LAT0CT9NQG38JLDUDY7FCX5YG0ZVZ4"; // Not used atm
 
     private ScriptPaint paint;

@@ -1,17 +1,16 @@
 package script.tasks.fungus;
 
+import api.component.ExWorlds;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.Bank;
-import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.GrandExchange;
-import org.rspeer.runetek.api.component.Interfaces;
+import org.rspeer.runetek.api.component.*;
 import org.rspeer.runetek.api.component.tab.*;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
@@ -45,6 +44,10 @@ public class Fungus extends Task {
     public int execute() {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
+
+        if(!Worlds.getLocal().isMembers()){
+            WorldHopper.hopTo(x -> x.isMembers() && !x.isBounty() && !x.isSkillTotal() && !x.isPVP() && !x.isHighRisk() && !x.isDeadman() && !x.isTournament() && !x.isSeasonDeadman() && !x.isLastManStanding());
+        }
 
         if (!Bank.isOpen() && !Equipment.contains("Silver sickle (b)")) {
             if (Inventory.contains("Silver sickle (b)") && Inventory.getFirst("Silver sickle (b)").interact(a -> true)) {
