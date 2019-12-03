@@ -17,6 +17,7 @@ import org.rspeer.runetek.api.scene.Pickables;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
 import static script.quests.waterfall_quest.data.Quest.PRIEST_IN_PERIL;
 import static script.quests.waterfall_quest.data.Quest.WATERFALL;
@@ -40,6 +41,7 @@ public class PriestInPeril_4 extends Task {
 
     @Override
     public int execute() {
+
         Player local = Players.getLocal();
 
         if (Dialog.canContinue()) {

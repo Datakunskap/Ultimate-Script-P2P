@@ -13,6 +13,7 @@ import org.rspeer.runetek.api.scene.Npcs;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
 import org.rspeer.script.task.Task;
+import org.rspeer.ui.Log;
 
 import java.util.function.Predicate;
 
@@ -49,6 +50,10 @@ public class PriestInPeril_6 extends Task {
                     Time.sleepUntil(() -> Movement.isStaminaEnhancementActive(), 5000);
                 }
             }
+        }
+
+        if(!Inventory.contains("Murky water")){
+            Log.info("Hah");
         }
 
         if (Inventory.contains("Murky water")) {

@@ -5,13 +5,11 @@ import org.rspeer.runetek.adapter.component.Item;
 import org.rspeer.runetek.adapter.scene.Player;
 import org.rspeer.runetek.adapter.scene.SceneObject;
 import org.rspeer.runetek.api.Game;
+import org.rspeer.runetek.api.Worlds;
 import org.rspeer.runetek.api.commons.BankLocation;
 import org.rspeer.runetek.api.commons.Time;
 import org.rspeer.runetek.api.commons.math.Random;
-import org.rspeer.runetek.api.component.Bank;
-import org.rspeer.runetek.api.component.Dialog;
-import org.rspeer.runetek.api.component.GrandExchange;
-import org.rspeer.runetek.api.component.Interfaces;
+import org.rspeer.runetek.api.component.*;
 import org.rspeer.runetek.api.component.tab.*;
 import org.rspeer.runetek.api.movement.Movement;
 import org.rspeer.runetek.api.movement.position.Area;
@@ -54,9 +52,9 @@ public class Fungus extends Task {
                 Log.info("Sickle equipped");
                 Time.sleepUntil(() -> Equipment.contains("Silver sickle (b)"), 5000);
             } else {
-                WalkingWrapper.getSilverSickleB();
-                return SleepWrapper.mediumSleep1000();
-            }
+                    WalkingWrapper.getSilverSickleB();
+                    return SleepWrapper.mediumSleep1000();
+                }
         }
 
         if (!atMortMyreFungusLogs() && !atClanWars() && !inMortania() && !insideClanWars()) {
@@ -255,8 +253,7 @@ public class Fungus extends Task {
                             Time.sleepUntil(() -> BankLocation.CLAN_WARS.getPosition().distance() <= 50, 5000);
                         }
                     }
-                }
-                else {
+                } else {
                     Log.info("Walking to clan wars since I don't have a dueling ring");
                     Movement.walkTo(BankLocation.CLAN_WARS.getPosition());
                 }
@@ -270,7 +267,7 @@ public class Fungus extends Task {
                     }
                 }
                 if (Bank.isOpen()) {
-                    if(Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())){
+                    if (Inventory.contains(x -> x.getName().contains("Ring of dueling(") && x.isNoted())) {
                         Bank.depositInventory();
                         Time.sleepUntil(Inventory::isEmpty, 8000);
                     }
