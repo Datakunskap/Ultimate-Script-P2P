@@ -84,7 +84,10 @@ public class SellGE extends Task {
             }
 
             BankWrapper.doBanking(true);
-            Item[] sellableItems = BankWrapper.withdrawSellableItems(itemsToKeep);
+            // Items to keep will be in bank after
+            BankWrapper.withdrawSellableItems(itemsToKeep);
+
+            Item[] sellableItems = Inventory.getItems(i -> i.getId() != 995);
 
             if (sellableItems != null && sellableItems.length > 0) {
                 Log.info("Selling");
@@ -105,27 +108,17 @@ public class SellGE extends Task {
         }
 
         if (itemsLeftToSell()) {
-            for (int i = 0; i < itemsToSell.length; i ++) {
+            for (int i = 0; i < itemsToSell.length; i++) {
                 status = "Selling";
                 if (itemsToSell[i] != null && GrandExchange.getOffers(RSGrandExchangeOffer.Type.SELL).length < 3) {
-
-                    int quantity = Inventory.getFirst(itemsToSell[i].getName()).getStackSize();
-                    if (quantity == 1) {
-                        quantity = 9999;
-                    }
-
-                    if (GEWrapper.sell(itemsToSell[i].getId(), quantity, Random.nextInt(1, 3), false)) {
+                    if (GEWrapper.sell(itemsToSell[i].getId(), itemsToSell[i].getStackSize(), Random.nextInt(1, 3), false)) {
                         Log.info("Selling: " + itemsToSell[i].getName());
                         final int index = i;
                         if (Time.sleepUntil(() -> GrandExchange.getFirst(x -> x.getItemName().equalsIgnoreCase(itemsToSell[index].getName())) != null,12_000)) {
                             itemsToSell[i] = null;
-                        } else {
-                            Log.severe("Failed to sell");
-                            i --;
                         }
                     } else {
-                        Log.severe("Failed to sell");
-                        i --;
+                        itemsToSell = Inventory.getItems(x -> x.getId() != 995 && x.isExchangeable());
                     }
                 }
             }
