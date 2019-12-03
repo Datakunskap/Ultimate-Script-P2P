@@ -130,7 +130,7 @@ public class BuyGE extends Task {
             }
         }
 
-        if (!GrandExchange.getView().equals(GrandExchange.View.OVERVIEW)) {
+        if (GrandExchange.getView() != (GrandExchange.View.OVERVIEW)) {
             GrandExchange.open(GrandExchange.View.OVERVIEW);
         }
 
