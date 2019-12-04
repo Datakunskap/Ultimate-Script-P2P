@@ -118,9 +118,8 @@ public class BankWrapper {
                 } else if (Bank.contains(i.substring(0, i.length() - 3))) {
                     Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length() - 3)), 1);
                     Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().contains(i.substring(0, i.length() - 3))),
-                            Random.nextInt(500, 800), 10_000);
+                            Random.nextInt(800, 1200), 10_000);
                 }
-                Time.sleep(200, 400);
             }
         }
 
@@ -137,9 +136,8 @@ public class BankWrapper {
                 } else if (Bank.contains(i.substring(0, i.length() - 3))) {
                     Bank.withdraw(x -> x.getName().contains(i.substring(0, i.length() - 3)), 1);
                     Time.sleepUntilForDuration(() -> Inventory.contains(x -> x.getName().contains(i.substring(0, i.length() - 3))),
-                            Random.nextInt(500, 800), 10_000);
+                            Random.nextInt(800, 1200), 10_000);
                 }
-                Time.sleep(200, 400);
             }
         }
 
@@ -157,7 +155,7 @@ public class BankWrapper {
                 } else if (Bank.contains(item.substring(0, item.length() - 3))) {
                     Bank.withdraw(i -> i.getName().contains(item.substring(0, item.length() - 3)), amount);
                     Time.sleepUntilForDuration(() -> Inventory.contains(i -> i.getName().contains(item.substring(0, item.length() - 3))),
-                            Random.nextInt(500, 800), 10_000);
+                            Random.nextInt(800, 1200), 10_000);
                 }
                 Time.sleep(200, 400);
             }
