@@ -48,7 +48,7 @@ public class Fungus extends Task {
             return 2000;
 
         RSWorld world = Worlds.getLocal();
-        if(world != null && world.isMembers()){
+        if(world != null && !world.isMembers()){
             ExWorldHopper.randomInstaHopInPureP2p();
             return 2000;
         }
