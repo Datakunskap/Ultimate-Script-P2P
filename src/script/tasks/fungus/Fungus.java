@@ -1,5 +1,6 @@
 package script.tasks.fungus;
 
+import api.component.ExWorldHopper;
 import api.component.ExWorlds;
 import org.rspeer.runetek.adapter.component.InterfaceComponent;
 import org.rspeer.runetek.adapter.component.Item;
@@ -17,6 +18,7 @@ import org.rspeer.runetek.api.movement.position.Area;
 import org.rspeer.runetek.api.movement.position.Position;
 import org.rspeer.runetek.api.scene.Players;
 import org.rspeer.runetek.api.scene.SceneObjects;
+import org.rspeer.runetek.providers.RSWorld;
 import org.rspeer.script.ScriptMeta;
 import org.rspeer.script.task.Task;
 import org.rspeer.ui.Log;
@@ -45,8 +47,10 @@ public class Fungus extends Task {
         if (!Game.isLoggedIn() || Players.getLocal() == null)
             return 2000;
 
-        if(!Worlds.getLocal().isMembers()){
-            WorldHopper.hopTo(x -> x.isMembers() && !x.isBounty() && !x.isSkillTotal() && !x.isPVP() && !x.isHighRisk() && !x.isDeadman() && !x.isTournament() && !x.isSeasonDeadman() && !x.isLastManStanding());
+        RSWorld world = Worlds.getLocal();
+        if(world != null && world.isMembers()){
+            ExWorldHopper.randomInstaHopInPureP2p();
+            return 2000;
         }
 
         if (!Bank.isOpen() && !Equipment.contains("Silver sickle (b)")) {
