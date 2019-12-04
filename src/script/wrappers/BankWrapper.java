@@ -80,7 +80,7 @@ public class BankWrapper {
         }
 
         Bank.depositInventory();
-        Time.sleepUntilForDuration(Inventory::isEmpty, Random.nextInt(500, 800), 10_000);
+        Time.sleepUntilForDuration(Inventory::isEmpty, Random.nextInt(800, 1200), 10_000);
 
         if (numCoinsToKeep > 0) {
             Bank.withdraw("Coins", numCoinsToKeep);

@@ -68,6 +68,9 @@ public class Mule extends Task {
         if (GrandExchange.isOpen()) {
             GEWrapper.closeGE();
         }
+        if (Bank.isOpen()) {
+            Bank.close();
+        }
 
         if (!banked) {
             Log.info("Withdrawing Items To Mule");
