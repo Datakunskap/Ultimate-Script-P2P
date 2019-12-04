@@ -74,20 +74,17 @@ public class Mule extends Task {
 
         if (!banked) {
             Log.info("Withdrawing Items To Mule");
+            banked = true;
 
             BankWrapper.doBanking(false);
             Time.sleepUntil(Inventory::isEmpty, 2000, 8000);
 
             Log.fine("Withdrawing Coins");
-            Item coins = Bank.getFirst("Coins");
-            if (coins != null) {
-                banked = true;
-                gp = coins.getStackSize()/* - Script.OGRESS_START_GP*/;
-                Bank.withdraw("Coins", gp);
-            } else {
-                Log.severe("Cant find coins");
+            if (Bank.contains("Coins")) {
+                Bank.withdrawAll("Coins");
+                Time.sleepUntil(() -> !Bank.contains("Coins") && Inventory.contains("Coins"), 1000, 8000);
             }
-            Time.sleepUntil(() -> Inventory.contains("Coins"), 1000, 5000);
+            gp = Inventory.getCount("Coins");
 
             BankWrapper.updateBankValue();
             Bank.close();
@@ -99,6 +96,7 @@ public class Mule extends Task {
         loginMule();
 
         if (mulePosition.distance() < 8 && Worlds.getCurrent() != muleWorld && Game.isLoggedIn()) {
+            Log.info("Hopping to mule world");
             if (begWorld < 1 && Worlds.getCurrent() != muleWorld) {
                 begWorld = Worlds.getCurrent();
             }

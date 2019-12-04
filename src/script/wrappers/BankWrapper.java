@@ -63,7 +63,7 @@ public class BankWrapper {
 
     private static void doBanking(boolean keepAllCoins, int numCoinsToKeep, boolean withdrawNoted,
                                   Set<String> set, LinkedHashMap<String, Integer> map, String... itemsToKeep) {
-        if (BankLocation.getNearest().getPosition().distance() > 5) {
+        if (BankLocation.getNearest().getPosition().distance() > 3) {
             if (GEWrapper.isBuySupplies() || GEWrapper.isSellItems()) {
                 Log.info("Walking To GE Bank");
                 WalkingWrapper.walkToPosition(BankLocation.GRAND_EXCHANGE.getPosition());
@@ -73,9 +73,9 @@ public class BankWrapper {
             }
         }
 
-        for (int tries = 10; !openNearest() && Game.isLoggedIn() && tries > 0; tries--) {
+        for (int tries = 20; !openNearest() && Game.isLoggedIn() && tries > 0; tries--) {
             Log.info("Opening Bank");
-            Time.sleep(SleepWrapper.mediumSleep1000());
+            Time.sleepUntil(Bank::isOpen, SleepWrapper.mediumSleep1000());
             tries--;
         }
 
